@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="stylecarrito.css">
+    <title>Carrito de Compras</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+</head>
+<body>
+    <header>
+        <div id="encabezado">
+        <h1>Carrito</h1>
+        <nav>
+            <span class="close" onclick="window.location.href='index.html'">×</span>
+        </nav>
+    </div>
+    </header>
+
+    <section id="cart-items">
+        <h2>Productos en tu carrito:</h2>
+        <!-- Los productos se agregarán dinámicamente aquí -->
+        <div id="cart-items-list"></div>
+
+        <h4>Metodo de pago*</h4>
+
+    <div id="metododepago_y_total" >
+        <select id="opcionesPago">
+            <option value="" disabled selected>Seleccionar</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+        </select>
+        <p id="cart-total">Total: $0</p>
+    </div>
+
+        <div id="botonvaciarcarrito">
+            <button id="vaciarCarrito" onclick="emptyCart()">Eliminar todo</button>
+        </div>
+        <button onclick="openModal() ">¡Confirmar pedido!</button>
+    </section>
+
+    
+
+    <!-- Modal de opciones de entregs -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2>Selecciona una opción de entrega</h2>
+            <button onclick="window.location.href='ubicacion.html'">Domicilio</button>
+            <button onclick="abrirModaldatospersonales()"">Recoger en tienda</button>
+            <button id="botoncancelar" onclick ="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+
+
+<!-- Modal de datos personales -->
+<div class="modaldedatospersonales" id="datospersonales">
+    <div class="modaldatos">
+        <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
+        <h2>¡Estas a un paso de completar tu pedido!</h2>
+        <h3>Regalanos estos datos para entregar exitosamente tu pedido.</h3>
+        <input type="text" id="nombre" placeholder="Nombre y apellido">
+        <input type="number" id="telefono"  placeholder="Número telefónico" oninput="validarTelefono()">
+        <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
+    </div>
+</div> 
+
+
+
+
+
+
+    <footer>
+        <p>&copy; Mr. George. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+
+// Función para formatear los números con puntos
+        function formatNumber(number) {
+            return number.toLocaleString('es-CO');
+        }
+
+
+// Función para cargar los productos del carrito
+function loadCart() {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsList = document.getElementById('cart-items-list');
+    const cartTotal = document.getElementById('cart-total');
+    let total = 0;
+
+    // Limpiar la lista de productos en el carrito
+    cartItemsList.innerHTML = '';
+
+    // Verificar si el carrito está vacío
+    if (cartItems.length === 0) {
+        cartItemsList.innerHTML = `<p>No hay productos en tu carrito.</p>`;
+    } else {
+        // Mostrar productos del carrito
+        cartItems.forEach((product, index) => {
+            const price = isNaN(parseFloat(product.price)) ? 0 : parseFloat(product.price);
+            const imageUrl = product.image ? product.image : 'img/default-image.jpg'; // Imagen alternativa
+
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('cart-item');
+            itemElement.innerHTML = `
+                <div id="nombre_precio_intrucciones">
+                    <!-- Información del producto -->
+                    <p><strong>${product.name} - $${formatNumber(price)} x ${product.quantity}</strong></p>
+                    <p>Indicaciones: ${product.instructions || 'Ninguna'}</p>
+                </div>
+                
+                <img id="basura" src="img/basura.png" alt="Eliminar" onclick="removeItem(${index})">
+            `;
+            cartItemsList.appendChild(itemElement);
+
+            // Asegurarse de que el cálculo sea numérico
+            total += price * product.quantity; // Calculamos el total teniendo en cuenta la cantidad
+        });
+    }
+
+    // Mostrar el total con formato de puntos de mil
+    cartTotal.innerText = `Total: $ ${formatNumber(total)}`;
+}
+
+
+
+
+
+// Función para eliminar un producto del carrito
+        function removeItem(index) {
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Eliminar el producto en la posición indicada
+            cartItems.splice(index, 1);
+
+            // Guardar de nuevo el carrito en el localStorage
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            
+            // Recargar el carrito
+            loadCart();
+        }
+
+// Función para eliminar un producto del carrito con animación
+function removeItem(index) {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Obtener el elemento del producto específico
+    const cartItemsList = document.getElementById('cart-items-list');
+    const itemElement = cartItemsList.children[index];
+
+    // Añadir la clase de animación
+    itemElement.classList.add('fade-out');
+
+    // Esperar a que termine la animación (0.5s) y luego eliminar el elemento
+    setTimeout(() => {
+        // Eliminar el producto en la posición indicada
+        cartItems.splice(index, 1);
+
+        // Guardar de nuevo el carrito en el localStorage
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        
+        // Recargar el carrito
+        loadCart();
+    }, 500); // Tiempo que dura la animación
+}
+
+
+
+
+
+
+// Función para vaciar el carrito
+        function emptyCart() {
+            if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+                localStorage.removeItem('cart');
+                loadCart(); // Recargar el carrito después de vaciarlo
+            }
+        }
+
+
+
+
+// Función para verificar si el carrito esta lleno y tambien insertar metodo de pedido (abre el modal)
+function openModal() {
+    const metodoPago = document.getElementById('opcionesPago').value; // Obtener el valor del select de pago
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    
+    // Verificar si el carrito está vacío
+    if (cartItems.length === 0) {
+        alert("Tu carrito está vacío. Agrega productos antes de proceder.");
+    } 
+
+ // Verificar si no se ha seleccionado un método de pago
+if (!metodoPago) {
+        alert("Por favor, selecciona un método de pago antes de continuar.");
+        return; // Evita abrir el modal si no se seleccionó un método de pago
+    } else {
+        // Si todo está bien, abrir el modal
+        document.getElementById('payment-modal').style.display = 'block'; // Mostrar el modal
+    }
+}
+
+// Función para cerrar el modal con el boton cancelar
+function closeModal() {
+    document.getElementById('payment-modal').style.display = 'none'; // Ocultar el modal
+}
+
+
+// Función para guardar el método de pago en localStorage
+document.getElementById('opcionesPago').addEventListener('change', function() {
+    const metodoPago = this.value;
+    localStorage.setItem('metodoPago', metodoPago);  // Guardar el método de pago
+});
+
+
+
+
+
+
+
+
+
+// Función para abrir el modal de datos personales cuando se hace clic en "Recoger en tienda"
+function abrirModaldatospersonales() {
+    document.getElementById('datospersonales').classList.add('active');
+}
+
+// Función para cerrar el modal
+function cerrarModaldatospersonales() {
+    document.getElementById('datospersonales').classList.remove('active');
+}
+
+// Función para validar solo números en el teléfono y limitar a 10 dígitos
+function validarTelefono() {
+    const telefono = document.getElementById("telefono");
+    telefono.value = telefono.value.replace(/[^0-9]/g, '').substring(0, 10);
+}
+
+// Función para manejar la validación y enviar mensaje de WhatsApp si los datos son válidos
+function aceptarModaldatos() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+
+    // Validar que ambos campos estén llenos y que el teléfono tenga 10 dígitos
+    if (nombre && telefono.length === 10) {
+        // Guardar datos en localStorage
+        localStorage.setItem('nombre', nombre);
+        localStorage.setItem('telefono', telefono);
+        
+        // Cerrar el modal y enviar el mensaje de WhatsApp
+        cerrarModaldatospersonales();
+        enviarMensajeRecoger(); // Llama a la función para enviar el mensaje
+    } else {
+        // Mostrar alerta si la validación falla
+        alert("Por favor, ingresa tu nombre y un teléfono válido de 10 dígitos.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Función para enviar los datos del carrito a WhatsApp
+function enviarMensajeRecoger() {
+    const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
+    const telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartTotalElement = document.getElementById('cart-total').innerText.replace('Total: $ ', '');
+    const cartTotal = parseFloat(cartTotalElement.replace(/\./g, '').replace(',', '.')); // Eliminar formato y convertir a número
+    const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
+
+
+    // Crear el bloque de texto con productos seleccionados, incluyendo la cantidad
+    let messageProducts = cartItems.map(item => 
+        `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` +  // Incluye la cantidad
+        `\n   _Instrucciones: ${item.instructions || ''}_`
+    ).join('\n');
+
+    // Generar el mensaje de WhatsApp para recoger en tienda
+    let mensaje = "*RECOGER EN TIENDA*\n\n";
+    mensaje += "*DATOS DEL USUARIO:*\n";
+    mensaje += `Nombre: ${nombre}\n`;
+    mensaje += `Teléfono: ${telefono}\n\n`;
+    mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
+    mensaje += `${messageProducts}\n\n`;
+    mensaje += `*TOTAL A PAGAR: $${formatNumber(cartTotal)}*\n`;
+    mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`;  // Incluir el método de pago en el mensaje
+    mensaje += "*Ubicación de la tienda:*\n";
+    mensaje += "https://www.google.com/maps/place/Mr.+George/@10.3737614,-75.4761805,17z/data=!3m1!4b1!4m6!3m5!1s0x8ef63b2aa9ab677f:0x239b6ab0ab1c329e!8m2!3d10.3737561!4d-75.4736056!16s%2Fg%2F11l1l0md04?hl.\n";
+
+    // Codificar el mensaje y abrir WhatsApp
+    const encodedMessage = encodeURIComponent(mensaje);
+    window.open(`https://wa.me/3024345404?text=${encodedMessage}`, '_blank');
+}
+
+// Cargar los productos del carrito cuando se carga la página
+window.onload = loadCart;
+
+
+
+
+    </script>
+
+</body>
+</html>
