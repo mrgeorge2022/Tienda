@@ -83,20 +83,20 @@
 
 
     <script src="script.js"></script>
-    <script>
 
 
+<script>
 
-
-
-
-
-// Función para formatear los números con puntos como separadores de miles
+// FUNCIÓN PARA FORMATEAR LOS NÚMEROS CON PUNTOS COMO SEPARADORES DE MILES
 function formatNumber(number) {
-    return number.toLocaleString('es-CO'); // Utiliza el formato de Colombia para agregar puntos como separadores de miles
-}
+    return number.toLocaleString('es-CO');}
 
-// Simula la carga de productos y su visualización en la página principal
+
+
+
+
+
+// SIMULA LA CARGA DE PRODUCTOS Y SU VISUALIZACIÓN EN LA PÁGINA PRINCIPAL
 function displayProducts(category = '', searchQuery = '') {
     const products = [
         { 
@@ -141,7 +141,11 @@ function displayProducts(category = '', searchQuery = '') {
         },
     ];
 
-// Filtra los productos por categoría (si se proporciona) y por nombre (si hay una búsqueda)
+
+
+
+    
+// FILTRA LOS PRODUCTOS POR CATEGORÍA (SI SE PROPORCIONA) Y POR NOMBRE (SI HAY UNA BÚSQUEDA)
     const filteredProducts = products.filter(p => 
         (!category || p.category === category) && 
         (!searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -169,13 +173,21 @@ function displayProducts(category = '', searchQuery = '') {
     });
 }
 
-// Función para buscar productos por nombre
+
+
+
+
+// FUNCIÓN PARA BUSCAR PRODUCTOS POR NOMBRE 
 function searchProducts() {
     const searchQuery = document.getElementById('search-input').value;
     displayProducts('', searchQuery); // Se pasa la consulta de búsqueda al filtro
 }
 
-// Función para abrir el modal con los detalles del producto
+
+
+
+
+// FUNCIÓN PARA ABRIR EL MODAL CON LOS DETALLES DEL PRODUCTO
 function openModal(productId) {
     const products = [
         { 
@@ -218,8 +230,10 @@ function openModal(productId) {
     ];
 
 
-    
-// **Función para mostrar la información del producto en un modal**
+
+
+
+//FUNCIÓN PARA MOSTRAR LA INFORMACIÓN DEL PRODUCTO EN UN MODAL
     const product = products.find(p => p.id === productId);
     if (product) {
         document.getElementById('modal-product-name').innerText = product.name;
@@ -229,40 +243,37 @@ function openModal(productId) {
         document.getElementById('product-modal').style.display = 'block';
     }
 }
-
-
-
-// Función para cerrar el modal
+// FUNCIÓN PARA CERRAR EL MODAL
         function closeModal() {
             document.getElementById('product-modal').style.display = 'none';
         }
-    
 
 
 
 
 
-        function addToCartFromModal() {
+//FUNCION AGREGAR AL CARRTIO DESDE EL MODAL
+function addToCartFromModal() {
     console.log('Verificando si la tienda está abierta...');
 
-    // Verificar si la tienda está abierta
+    // VERIFICAR SI LA TIENDA ESTÁ ABIERTA
     if (!estaAbierta()) {
         alert("La tienda está cerrada. No puedes agregar productos al carrito en este momento.");
-        return; // Detiene la función si la tienda está cerrada
+        return; // DETIENE LA FUNCIÓN SI LA TIENDA ESTÁ CERRADA
     }
 
     const name = document.getElementById('modal-product-name').innerText;
     const priceFormatted = document.getElementById('modal-product-price').innerText;
-    const instructions = document.getElementById('modal-product-instructions').value.trim(); // Usamos trim para quitar espacios innecesarios
-    const quantity = parseInt(document.getElementById('modal-quantity').value, 10); // Obtener la cantidad
-    const image = document.getElementById('modal-product-image').src; // Captura la URL de la imagen
+    const instructions = document.getElementById('modal-product-instructions').value.trim(); // USAMOS TRIM PARA QUITAR ESPACIOS INNECESARIOS
+    const quantity = parseInt(document.getElementById('modal-quantity').value, 10); // OBTENER LA CANTIDAD
+    const image = document.getElementById('modal-product-image').src; // CAPTURA LA URL DE LA IMAGEN
 
-    // Convertimos el precio con formato a su valor numérico (eliminando el punto)
+    // CONVERTIMOS EL PRECIO CON FORMATO A SU VALOR NUMÉRICO (ELIMINANDO EL PUNTO)
     const price = parseInt(priceFormatted.replace(/\./g, ''), 10);
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
-    // Verificar si el producto ya existe en el carrito, si es así, aumentar la cantidad
+    // VERIFICAR SI EL PRODUCTO YA EXISTE EN EL CARRITO, SI ES ASÍ, AUMENTAR LA CANTIDAD
     const existingProductIndex = cart.findIndex(product => product.name === name && product.instructions === instructions);
     if (existingProductIndex !== -1) {
         cart[existingProductIndex].quantity += quantity; // Aumentar la cantidad
@@ -272,17 +283,17 @@ function openModal(productId) {
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
-    // Aumentamos el contador
+    // AUMENTAMOS EL CONTADOR
     updateCartCount();
 
-    // Mostrar la animación del carrito expandiéndose
+    // MOSTRAR LA ANIMACIÓN DEL CARRITO EXPANDIÉNDOSE
     const cartButton = document.getElementById('floating-cart');
     cartButton.classList.add('expanded');  // Expande el botón
 
-    // Mostrar la notificación
+    // MOSTRAR LA NOTIFICACION
     showNotification(`${name} ha sido agregado al carrito ${quantity} veces.`);
 
-    // Después de 3 segundos, restaurar el tamaño del carrito y ocultar la notificación
+    // DESPUÉS DE 3 SEGUNDOS, RESTAURAR EL TAMAÑO DEL CARRITO Y OCULTAR LA NOTIFICACIÓN
     setTimeout(() => {
         cartButton.classList.remove('expanded');
         hideNotification();
@@ -290,12 +301,12 @@ function openModal(productId) {
 
     closeModal(); // Cierra el modal después de agregar al carrito
 
-    // Limpiar el textarea para que no aparezca el texto de las instrucciones anteriores
+    // LIMPIAR EL TEXTAREA PARA QUE NO APAREZCA EL TEXTO DE LAS INSTRUCCIONES ANTERIORES
     document.getElementById('modal-product-instructions').value = ''; // Limpiar el contenido del textarea
     document.getElementById('modal-quantity').value = 1; // Restablecer la cantidad a 1
 }
 
-// Función para mostrar la notificación
+// FUNCIÓN PARA MOSTRAR LA NOTIFICACIÓN
 function showNotification(message) {
     const notification = document.getElementById('notification');
     notification.innerText = message; // Asigna el mensaje a la notificación
@@ -304,7 +315,7 @@ function showNotification(message) {
     notification.classList.add('show');
 }
 
-// Función para ocultar la notificación
+// FUNCIÓN PARA OCULTAR LA NOTIFICACIÓN
 function hideNotification() {
     const notification = document.getElementById('notification');
     notification.classList.remove('show');
@@ -314,36 +325,24 @@ function hideNotification() {
 
 
 
-
-// Mostrar todos los productos al cargar la página
-        window.onload = function() {
-            displayProducts();
-        };
+// MOSTRAR TODOS LOS PRODUCTOS AL CARGAR LA PÁGINA
+window.onload = function() {displayProducts();};
 
 
 
 
 
 
+//FUNCION PARA LA CANTIDAD QUE SE INGRESA DESDE EL MODAL
+let quantity = 1;
 
-
-
-
-
-
-
-
-
-
-        let quantity = 1;
-
-// Función para incrementar la cantidad
+// FUNCIÓN PARA INCREMENTAR LA CANTIDAD
 function increaseQuantity() {
     quantity++;
     document.getElementById('product-quantity').value = quantity;
 }
 
-// Función para decrementar la cantidad, asegurando que no sea menor que 1
+// FUNCIÓN PARA DECREMENTAR LA CANTIDAD, ASEGURANDO QUE NO SEA MENOR QUE 1
 function decreaseQuantity() {
     if (quantity > 1) {
         quantity--;
@@ -351,7 +350,7 @@ function decreaseQuantity() {
     }
 }
 
-// Función para validar que la entrada sea un número válido y actualizar la cantidad
+// FUNCIÓN PARA VALIDAR QUE LA ENTRADA SEA UN NÚMERO VÁLIDO Y ACTUALIZAR LA CANTIDAD
 function validateQuantityInput() {
     const input = document.getElementById('product-quantity');
     const value = parseInt(input.value);
@@ -368,32 +367,7 @@ function validateQuantityInput() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Arreglo con los horarios de apertura y cierre por día
+//ARREGLO PARA HORARIO DE TIENDA
 const horariosTienda = [
     { dia: 0, horaApertura: 0, horaCierre: 24 },  // Domingo
     { dia: 1, horaApertura: 0, horaCierre: 24 },  // Lunes 
@@ -404,17 +378,21 @@ const horariosTienda = [
     { dia: 6, horaApertura: 0, horaCierre: 24 }, // Sábado
 ];
 
-// Función para verificar si la tienda está abierta
+
+
+
+
+// FUNCIÓN PARA VERIFICAR SI LA TIENDA ESTÁ ABIERTA
 function estaAbierta() {
     const horaActual = new Date().getHours(); // Obtiene la hora actual
     const diaActual = new Date().getDay();   // Obtiene el día de la semana (0 = domingo, 1 = lunes, ..., 6 = sábado)
 
     console.log(`Hora actual: ${horaActual}, Día actual: ${diaActual}`); // Para depurar
 
-    // Buscar el horario correspondiente al día actual
+    // BUSCAR EL HORARIO CORRESPONDIENTE AL DÍA ACTUAL
     const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
-    // Verificar si el día tiene un horario definido
+    // VERIFICAR SI EL DÍA TIENE UN HORARIO DEFINIDO
     if (horarioHoy) {
         return horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre;
     } else {
@@ -422,7 +400,7 @@ function estaAbierta() {
     }
 }
 
-// Función para actualizar el estado de la tienda (usada por el HTML)
+// FUNCIÓN PARA ACTUALIZAR EL ESTADO DE LA TIENDA (USADA POR EL HTML)
 function actualizarEstadoTienda() {
     const estadoTienda = document.getElementById('estado-tienda');
     const horaActual = new Date().getHours(); // Obtiene la hora actual
@@ -430,7 +408,7 @@ function actualizarEstadoTienda() {
 
     console.log(`Hora actual para estado: ${horaActual}, Día actual: ${diaActual}`); // Para depurar
 
-    // Buscar el horario correspondiente al día actual
+    // BUSCAR EL HORARIO CORRESPONDIENTE AL DÍA ACTUAL
     const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
     if (horarioHoy && horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre) {
@@ -444,10 +422,7 @@ function actualizarEstadoTienda() {
     }
 }
 
-
-
-
-// Llamamos a la función para actualizar el estado al cargar la página
+// LLAMAMOS A LA FUNCIÓN PARA ACTUALIZAR EL ESTADO AL CARGAR LA PÁGINA
 document.addEventListener("DOMContentLoaded", function() {
     actualizarEstadoTienda();
 });
@@ -456,13 +431,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-// Escuchar el evento de entrada en el campo de cantidad
+// ESCUCHAR EL EVENTO DE ENTRADA EN EL CAMPO DE CANTIDAD EN MODAL
 document.getElementById('modal-quantity').addEventListener('input', function(event) {
     let value = parseInt(event.target.value, 10);
     
-    // Verificar si el valor es mayor que 100
-    if (value > 100) {
-        event.target.value = 100; // Limitar el valor a 100
+    // VERIFICAR SI EL VALOR ES MAYOR QUE 99
+    if (value > 99) {
+        event.target.value = 99; // Limitar el valor a 100
     } else if (value < 1) {
         event.target.value = 1; // Asegurarse de que el valor no sea menor que 1
     }
@@ -473,11 +448,11 @@ function changeQuantity(amount) {
     const quantityInput = document.getElementById('modal-quantity');
     let currentQuantity = parseInt(quantityInput.value, 10);
 
-    // Limitar la cantidad a un máximo de 100 productos
-    if (currentQuantity + amount <= 100 && currentQuantity + amount >= 1) {
+    // Limitar la cantidad a un máximo de 99 productos
+    if (currentQuantity + amount <= 99 && currentQuantity + amount >= 1) {
         quantityInput.value = currentQuantity + amount;
-    } else if (currentQuantity + amount > 100) {
-        quantityInput.value = 100; // Limitar a 100 si el número excede
+    } else if (currentQuantity + amount > 99) {
+        quantityInput.value = 99; // Limitar a 99 si el número excede
     } else {
         quantityInput.value = 1; // Mantener al menos 1
     }
@@ -485,14 +460,18 @@ function changeQuantity(amount) {
 
 
 
-//contador
 
+
+//FUNCION CONTAR LOS PRODUCTOS QUE SE ENCUENTRAN EN EL CARRITO
 function updateCartCount() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartCount = document.getElementById('cart-count');
 
-    if (cart.length > 0) {
-        cartCount.innerText = cart.length;
+    // Calcular la cantidad total de todos los productos en el carrito
+    let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalQuantity > 0) {
+        cartCount.innerText = totalQuantity;
         cartCount.style.display = 'inline-block'; // Muestra el contador
     } else {
         cartCount.style.display = 'none'; // Oculta el contador si está vacío
@@ -503,13 +482,7 @@ function updateCartCount() {
 
 
 
-
-
-
-
-
-
-// Llama a esta función cuando la página termine de cargar
+// LLAMA A ESTA FUNCIÓN CUANDO LA PÁGINA TERMINE DE CARGAR
 document.addEventListener('DOMContentLoaded', updateCartCount);
 
 </script>
