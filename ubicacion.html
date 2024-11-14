@@ -18,7 +18,7 @@
         </h2>
     </div>
     <div class="input-container">
-        <input type="text" id="direccion" placeholder="Ingresa tu dirección" required>
+        <input type="text" id="direccion" placeholder="Ingresa tu barrio" required>
     </div>
 
     <div>
@@ -85,8 +85,7 @@
 
 
 
-
-// Inicializar el mapa al cargar la página
+// INICIALIZAR EL MAPA AL CARGAR LA PÁGINA
 window.onload = initMap;
 
 //VARIABLES GLOBALES
@@ -96,33 +95,41 @@ window.onload = initMap;
         let ubicacion = { lat: 10.3737561, lng: -75.4736056 }; // Coordenadas iniciales en Cartagena
         const cartagenaBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(10.200000, -75.600000),
-            new google.maps.LatLng(10.500000, -75.300000)
+            new google.maps.LatLng(10.550000, -75.300000) //limitador de mapa rectangular acoplando toda cargaena y sus arrededores mas cercanos
         );
         const tarifaPorKm = 1653; // Tarifa en pesos por kilómetro
-        const origen = { lat: 10.3737561, lng: -75.4736056 }; // Coordenadas de tu tienda o restaurante
+        const origen = { lat: 10.3737561, lng: -75.4736056 }; // Coordenadas de tu tienda
 
         let directionsService;
         let directionsRenderer;
+
+
+
+
 
 //FUNCION PARA INICIAR EL MAPA
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: ubicacion,
-                zoom: 13,
+                zoom: 12,
+                center: ubicacion, // Centrado en la ubicación de Cartagena
                 restriction: {
                     latLngBounds: cartagenaBounds,
                     strictBounds: true
+                    
                 }
             });
 
-
-
-            
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer({
                 map: map,
                 suppressMarkers: true // Evita mostrar los marcadores predeterminados
             });
+
+
+
+
+
 
 // VERIFICAR SI EXISTE UNA POSICIÓN GUARDADA PARA EL MARCADOR
             const marcadorLat = parseFloat(localStorage.getItem('marcadorLat'));
@@ -136,7 +143,12 @@ window.onload = initMap;
                     draggable: true,
                     position: ubicacion
                 });
-            
+
+
+
+
+
+
 // REDIBUJAR LA RUTA CON LA POSICIÓN GUARDADA
     calcularRuta(origen, ubicacion);
         } else {
@@ -148,6 +160,11 @@ window.onload = initMap;
         });
     }
 
+
+
+
+
+
 // VERIFICAR SI EXISTE UNA RUTA GUARDADA EN LOCALSTORAGE
     const destinoLat = parseFloat(localStorage.getItem('destinoLat'));
     const destinoLng = parseFloat(localStorage.getItem('destinoLng'));
@@ -156,6 +173,7 @@ window.onload = initMap;
         const destinoGuardado = { lat: destinoLat, lng: destinoLng };
         calcularRuta(origen, destinoGuardado);
     }
+
 
 
 
@@ -173,6 +191,10 @@ window.onload = initMap;
             });
 
 
+
+
+
+
 //AUTOCOMPLETADO DE INPUT DE DIRRECIONES 
 autocomplete = new google.maps.places.Autocomplete(
     document.getElementById('direccion'), {
@@ -183,7 +205,13 @@ autocomplete = new google.maps.places.Autocomplete(
     }
 );
 
-// **Escuchador de evento para el autocompletado: actualización de ubicación seleccionada, mapa y ruta**
+
+
+
+
+
+
+//ESCUCHADOR DE EVENTO PARA EL AUTOCOMPLETADO: ACTUALIZACIÓN DE UBICACIÓN SELECCIONADA, MAPA Y RUTA
 autocomplete.addListener('place_changed', function () {
     // Se obtiene la información del lugar seleccionado
     const place = autocomplete.getPlace();
@@ -222,7 +250,9 @@ autocomplete.addListener('place_changed', function () {
 
 
 
-// **Escuchador de evento para el marcador arrastrado: actualización de la ubicación y la ruta**
+
+
+// ESCUCHADOR DE EVENTO PARA EL MARCADOR ARRASTRADO: ACTUALIZACIÓN DE LA UBICACIÓN Y LA RUTA
 google.maps.event.addListener(marker, 'dragend', function () {
     // Obtiene las nuevas coordenadas del marcador después de ser arrastrado
     const nuevaUbicacion = { lat: marker.getPosition().lat(), lng: marker.getPosition().lng() };
@@ -262,7 +292,11 @@ google.maps.event.addListener(marker, 'dragend', function () {
 
 
 
-// Paso 1: Función al dar clic en "Listo"
+
+
+
+
+//FUNCIÓN AL DAR CLIC EN "LISTO"
 function habilitarModalDatosPersonales() {
     const direccion = document.getElementById("direccion").value; // Obtener la dirección ingresada
     
@@ -275,18 +309,18 @@ function habilitarModalDatosPersonales() {
     }
 }
 
-// Paso 2: Función para abrir el modal de datos personales (nombre y teléfono)
+//FUNCIÓN PARA ABRIR EL MODAL DE DATOS PERSONALES (NOMBRE Y TELÉFONO)
 function abrirModalDatosPersonales() {
     document.getElementById('datospersonales').classList.add('active'); // Mostrar modal de datos
 }
 
-// Función para cerrar el modal de datos personales (nombre y teléfono)
+// FUNCIÓN PARA CERRAR EL MODAL DE DATOS PERSONALES (NOMBRE Y TELÉFONO)
 function cerrarModaldatospersonales() {
     document.getElementById('datospersonales').classList.remove('active');
 }
 
 
-// Paso 3: Validación de teléfono (máximo 10 dígitos)
+//VALIDACIÓN DE TELÉFONO (MÁXIMO 10 DÍGITOS)
 function validarTelefono() {
     const telefono = document.getElementById("telefono");
     telefono.value = telefono.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -295,7 +329,7 @@ function validarTelefono() {
     }
 }
 
-// Paso 4: Validar que los campos nombre y teléfono estén llenos y con teléfono de 10 dígitos
+//VALIDAR QUE LOS CAMPOS NOMBRE Y TELÉFONO ESTÉN LLENOS Y CON TELÉFONO DE 10 DÍGITOS
 function aceptarModalDatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
@@ -314,7 +348,7 @@ function aceptarModalDatos() {
     }
 }
 
-// Paso 5: Habilitar el botón de "Finalizar Compra"
+//HABILITAR EL BOTÓN DE "FINALIZAR COMPRA"
 function habilitarBotonFinalizar() {
     const direccion = document.getElementById("direccion").value; // Obtener la dirección ingresada
 
@@ -336,7 +370,7 @@ function habilitarBotonFinalizar() {
 
 
 
-
+//FUNCION UBICACION ACTUAL
 function usarUbicacionActual() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -388,7 +422,7 @@ function usarUbicacionActual() {
 
 
 
-// **Autocompletado de input de direcciones** 
+//AUTOCOMPLETADO DE INPUT DE DIRECCIONES
 autocomplete = new google.maps.places.Autocomplete(
     document.getElementById('direccion'), {
         bounds: cartagenaBounds, // Limita las sugerencias a un área geográfica específica (Cartagena)
@@ -461,13 +495,57 @@ document.getElementById('direccion').addEventListener('input', function() {
     }
 });
 
-// Función para guardar la dirección y las coordenadas en el localStorage
+
+
+
+
+// FUNCIÓN PARA GUARDAR LA DIRECCIÓN Y LAS COORDENADAS EN EL LOCALSTORAGE
 function guardarDatos() {
     localStorage.setItem('ubicacion', document.getElementById("direccion").value);
     localStorage.setItem('Punto_de_referencia', document.getElementById("Punto_de_referencia").value);
 }
 
-// **Finalizar la compra y enviar un mensaje a través de WhatsApp**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FINALIZAR LA COMPRA Y ENVIAR UN MENSAJE A TRAVÉS DE WHATSAPP
 function finalizarCompra() {
     // Crear el mensaje de productos seleccionados
     const messageProducts = cart.map(item => 
@@ -538,6 +616,12 @@ ${googleMapsLink}`;
     // Codificar el mensaje y abrir WhatsApp con el mensaje preformateado
     const encodedMessage = encodeURIComponent(whatsappMessage);
     window.open(`https://wa.me/3024345404?text=${encodedMessage}`, '_blank');
+
+    // Limpiar todo el localStorage después de 5 minutos (300000 ms)
+    setTimeout(function() {
+        localStorage.clear();  // Limpiar el localStorage
+        window.location.href = 'index.html';  // Redirigir a la página de inicio
+    }, 300000);  // 300000 ms = 5 minutos
 }
 
 
@@ -548,7 +632,8 @@ ${googleMapsLink}`;
 
 
 
-// **Función para calcular y mostrar la ruta entre un origen y un destino en el mapa**
+
+//FUNCIÓN PARA CALCULAR Y MOSTRAR LA RUTA ENTRE UN ORIGEN Y UN DESTINO EN EL MAPA
 function calcularRuta(origen, destino) {
     // Configurar la solicitud para calcular la ruta
     const request = {
@@ -579,7 +664,7 @@ function calcularRuta(origen, destino) {
 
 
 
-// **Función para calcular el costo de envío basado en la distancia entre origen y destino**
+//FUNCIÓN PARA CALCULAR EL COSTO DE ENVÍO BASADO EN LA DISTANCIA ENTRE ORIGEN Y DESTINO
 function calcularCostoEnvio(destino) {
     // Crear una nueva instancia del servicio de matriz de distancias
     const service = new google.maps.DistanceMatrixService();
@@ -625,42 +710,16 @@ function calcularCostoEnvio(destino) {
 
 
 
-// **Función para actualizar el total final de la compra, sumando productos y costo de envío**
-function actualizarTotal(costoEnvio) {
-    // Verificar si el carrito está vacío
-    if (cart.length === 0) {
-        alert("No hay productos en el carrito.");
-        return;  // Salir de la función si no hay productos
-    }
-    
-    // Calcular el total de los productos en el carrito
-    const totalProductos = cart.reduce((acc, item) => acc + item.price, 0);
-    
-    // Calcular el total final sumando el costo de envío
-    const totalFinal = totalProductos + costoEnvio;
-    
-    // Mostrar el total final en el elemento HTML con id "total-final"
-    document.getElementById("total-final").textContent = `Total final: $${totalFinal.toLocaleString('es-CO')}`;
-}
+
+// VARIABLES ADICIONALES PARA LA FUNCIONALIDAD DEL CARRITO
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
 
 
 
-
-
-
-
-
-// Variables adicionales para la funcionalidad del carrito
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        
-
-
-        
-// Cargar datos almacenados al actualizar el sitio web
-        function cargarDatos() {
+// CARGAR DATOS ALMACENADOS AL ACTUALIZAR EL SITIO WEB
+function cargarDatos() {
             const ubicacionGuardada = localStorage.getItem('ubicacion');
             const puntoReferenciaGuardado = localStorage.getItem('puntoReferencia');
             if (ubicacionGuardada) {

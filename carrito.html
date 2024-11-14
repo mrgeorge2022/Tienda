@@ -22,7 +22,7 @@
         <!-- Los productos se agregarán dinámicamente aquí -->
         <div id="cart-items-list"></div>
 
-        <h4>Metodo de pago*</h4>
+        <h4>Metódo de pago*</h4>
 
     <div id="metododepago_y_total" >
         <select id="opcionesPago">
@@ -65,46 +65,48 @@
     </div>
 </div> 
 
-
-
-
-
-
-    <footer>
+<footer>
         <p>&copy; Mr. George. Todos los derechos reservados.</p>
-    </footer>
+</footer>
 
     <script src="script.js"></script>
+
     <script>
 
-// Función para formatear los números con puntos
+// FUNCIÓN PARA FORMATEAR LOS NÚMEROS CON PUNTOS
         function formatNumber(number) {
             return number.toLocaleString('es-CO');
         }
 
 
-// Función para cargar los productos del carrito
+
+
+
+// FUNCIÓN PARA CARGAR LOS PRODUCTOS DEL CARRITO
 function loadCart() {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsList = document.getElementById('cart-items-list');
     const cartTotal = document.getElementById('cart-total');
     let total = 0;
 
-    // Limpiar la lista de productos en el carrito
+    // LIMPIAR LA LISTA DE PRODUCTOS EN EL CARRITO
     cartItemsList.innerHTML = '';
 
     // Verificar si el carrito está vacío
     if (cartItems.length === 0) {
         cartItemsList.innerHTML = `<p>No hay productos en tu carrito.</p>`;
     } else {
-        // Mostrar productos del carrito
+        // MOSTRAR PRODUCTOS DEL CARRITO
         cartItems.forEach((product, index) => {
             const price = isNaN(parseFloat(product.price)) ? 0 : parseFloat(product.price);
-            const imageUrl = product.image ? product.image : 'img/default-image.jpg'; // Imagen alternativa
+            const imageUrl = product.image ? product.image : 'img/default.jpg'; // Imagen alternativa
 
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
             itemElement.innerHTML = `
+            <div id="contenedordeimagencarrito">
+            <img src="${imageUrl}" alt="${product.name}" class="cart-product-image"> <!-- Imagen del producto -->
+            </div>
                 <div id="nombre_precio_intrucciones">
                     <!-- Información del producto -->
                     <p><strong>${product.name} - $${formatNumber(price)} x ${product.quantity}</strong></p>
@@ -115,12 +117,12 @@ function loadCart() {
             `;
             cartItemsList.appendChild(itemElement);
 
-            // Asegurarse de que el cálculo sea numérico
+            // ASEGURARSE DE QUE EL CÁLCULO SEA NUMÉRICO
             total += price * product.quantity; // Calculamos el total teniendo en cuenta la cantidad
         });
     }
 
-    // Mostrar el total con formato de puntos de mil
+    // MOSTRAR EL TOTAL CON FORMATO DE PUNTOS DE MIL
     cartTotal.innerText = `Total: $ ${formatNumber(total)}`;
 }
 
@@ -128,22 +130,21 @@ function loadCart() {
 
 
 
-// Función para eliminar un producto del carrito
-        function removeItem(index) {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Eliminar el producto en la posición indicada
-            cartItems.splice(index, 1);
-
-            // Guardar de nuevo el carrito en el localStorage
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            
-            // Recargar el carrito
-            loadCart();
-        }
-
-// Función para eliminar un producto del carrito con animación
+// FUNCIÓN PARA ELIMINAR UN PRODUCTO DEL CARRITO
 function removeItem(index) {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            
+    // Eliminar el producto en la posición indicada
+    cartItems.splice(index, 1);
+
+    // Guardar de nuevo el carrito en el localStorage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+            
+    // Recargar el carrito
+    loadCart();}
+
+// FUNCIÓN PARA ELIMINAR UN PRODUCTO DEL CARRITO CON (ANIMACIÓN)
+    function removeItem(index) {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Obtener el elemento del producto específico
@@ -171,18 +172,33 @@ function removeItem(index) {
 
 
 
-// Función para vaciar el carrito
-        function emptyCart() {
-            if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-                localStorage.removeItem('cart');
-                loadCart(); // Recargar el carrito después de vaciarlo
-            }
-        }
+// FUNCIÓN PARA VACIAR EL CARRITO CON ANIMACIÓN
+function emptyCart() {
+    if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+        const cartItemsList = document.getElementById('cart-items-list');
+        
+        // Añadir clase de animación de desvanecimiento a cada elemento del carrito
+        const cartItems = Array.from(cartItemsList.children);
+        cartItems.forEach((item, index) => {
+            item.style.transition = `opacity 0.3s ease ${(index + 1) * 0.1}s`; // Retraso escalonado
+            item.style.opacity = '0'; // Desvanecer elemento
+        });
+        
+        // Esperar que la animación termine antes de limpiar el carrito
+        setTimeout(() => {
+            localStorage.removeItem('cart'); // Eliminar elementos del carrito en localStorage
+            loadCart(); // Recargar el carrito después de vaciarlo
+        }, cartItems.length * 100 + 300); // Tiempo total de animación
+    }
+}
 
 
 
 
-// Función para verificar si el carrito esta lleno y tambien insertar metodo de pedido (abre el modal)
+
+
+
+// FUNCIÓN PARA VERIFICAR SI EL CARRITO ESTA LLENO Y TAMBIEN INSERTAR METODO DE PAGO (ABRE EL MODAL)
 function openModal() {
     const metodoPago = document.getElementById('opcionesPago').value; // Obtener el valor del select de pago
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
@@ -193,8 +209,8 @@ function openModal() {
         alert("Tu carrito está vacío. Agrega productos antes de proceder.");
     } 
 
- // Verificar si no se ha seleccionado un método de pago
-if (!metodoPago) {
+    // Verificar si no se ha seleccionado un método de pago
+    if (!metodoPago) {
         alert("Por favor, selecciona un método de pago antes de continuar.");
         return; // Evita abrir el modal si no se seleccionó un método de pago
     } else {
@@ -203,43 +219,39 @@ if (!metodoPago) {
     }
 }
 
-// Función para cerrar el modal con el boton cancelar
-function closeModal() {
-    document.getElementById('payment-modal').style.display = 'none'; // Ocultar el modal
-}
-
-
-// Función para guardar el método de pago en localStorage
+// FUNCIÓN PARA GUARDAR EL MÉTODO DE PAGO EN LOCALSTORAGE
 document.getElementById('opcionesPago').addEventListener('change', function() {
     const metodoPago = this.value;
     localStorage.setItem('metodoPago', metodoPago);  // Guardar el método de pago
 });
 
+// FUNCIÓN PARA CERRAR EL MODAL CON EL BOTON CANCELAR
+function closeModal() {
+    document.getElementById('payment-modal').style.display = 'none'; // Ocultar el modal
+}
 
 
 
 
 
 
-
-
-// Función para abrir el modal de datos personales cuando se hace clic en "Recoger en tienda"
+// FUNCIÓN PARA ABRIR EL MODAL DE DATOS PERSONALES CUANDO SE HACE CLIC EN "RECOGER EN TIENDA"
 function abrirModaldatospersonales() {
     document.getElementById('datospersonales').classList.add('active');
 }
 
-// Función para cerrar el modal
+// FUNCIÓN PARA CERRAR EL MODAL DE DATOS PERSONALES
 function cerrarModaldatospersonales() {
     document.getElementById('datospersonales').classList.remove('active');
 }
 
-// Función para validar solo números en el teléfono y limitar a 10 dígitos
+// FUNCIÓN PARA VALIDAR SOLO NÚMEROS EN EL TELÉFONO Y LIMITAR A 10 DÍGITOS
 function validarTelefono() {
     const telefono = document.getElementById("telefono");
     telefono.value = telefono.value.replace(/[^0-9]/g, '').substring(0, 10);
 }
 
-// Función para manejar la validación y enviar mensaje de WhatsApp si los datos son válidos
+// FUNCIÓN PARA MANEJAR LA VALIDACIÓN Y ENVIAR MENSAJE DE WHATSAPP SI LOS DATOS SON VÁLIDOS
 function aceptarModaldatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
@@ -271,7 +283,7 @@ function aceptarModaldatos() {
 
 
 
-// Función para enviar los datos del carrito a WhatsApp
+// FUNCIÓN PARA ENVIAR LOS DATOS DEL CARRITO A WHATSAPP
 function enviarMensajeRecoger() {
     const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
     const telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
@@ -281,13 +293,11 @@ function enviarMensajeRecoger() {
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
 
 
-    // Crear el bloque de texto con productos seleccionados, incluyendo la cantidad
+    // CREAR EL BLOQUE DE TEXTO CON PRODUCTOS SELECCIONADOS, INCLUYENDO LA CANTIDAD
     let messageProducts = cartItems.map(item => 
-        `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` +  // Incluye la cantidad
-        `\n   _Instrucciones: ${item.instructions || ''}_`
-    ).join('\n');
+        `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` + `\n   _Instrucciones: ${item.instructions || ''}_`).join('\n');
 
-    // Generar el mensaje de WhatsApp para recoger en tienda
+    // GENERAR EL MENSAJE DE WHATSAPP PARA RECOGER EN TIENDA
     let mensaje = "*RECOGER EN TIENDA*\n\n";
     mensaje += "*DATOS DEL USUARIO:*\n";
     mensaje += `Nombre: ${nombre}\n`;
@@ -295,14 +305,24 @@ function enviarMensajeRecoger() {
     mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
     mensaje += `${messageProducts}\n\n`;
     mensaje += `*TOTAL A PAGAR: $${formatNumber(cartTotal)}*\n`;
-    mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`;  // Incluir el método de pago en el mensaje
+    mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`; 
     mensaje += "*Ubicación de la tienda:*\n";
     mensaje += "https://www.google.com/maps/place/Mr.+George/@10.3737614,-75.4761805,17z/data=!3m1!4b1!4m6!3m5!1s0x8ef63b2aa9ab677f:0x239b6ab0ab1c329e!8m2!3d10.3737561!4d-75.4736056!16s%2Fg%2F11l1l0md04?hl.\n";
 
-    // Codificar el mensaje y abrir WhatsApp
+    // CODIFICAR EL MENSAJE Y ABRIR WHATSAPP
     const encodedMessage = encodeURIComponent(mensaje);
     window.open(`https://wa.me/3024345404?text=${encodedMessage}`, '_blank');
+
+    // Limpiar todo el localStorage después de 5 minutos (300000 ms)
+    setTimeout(function() {
+        localStorage.clear();  // Limpiar el localStorage
+        window.location.href = 'index.html';  // Redirigir a la página de inicio
+    }, 300000);  // 300000 ms = 5 minutos
 }
+
+
+
+
 
 // Cargar los productos del carrito cuando se carga la página
 window.onload = loadCart;

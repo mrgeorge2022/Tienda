@@ -21,7 +21,7 @@ if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         lastTouchEnd = now;
     }, false);
 
-    // Evitar zoom en campos de texto en móviles
+    // EVITAR ZOOM EN CAMPOS DE TEXTO EN MÓVILES
     document.querySelectorAll('input, textarea, select').forEach((element) => {
         element.addEventListener('focus', () => {
             document.body.style.zoom = '100%'; // Previene el zoom en campos de entrada
@@ -31,7 +31,7 @@ if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         });
     });
 
-    // Evitar zoom con gesto de desplazamiento (dos dedos)
+    // EVITAR ZOOM CON GESTO DE DESPLAZAMIENTO (DOS DEDOS)
     document.addEventListener('touchmove', (event) => {
         if (event.touches.length > 1) {
             event.preventDefault(); // Bloquea zoom de desplazamiento de dos dedos
@@ -39,11 +39,15 @@ if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
     }, { passive: false });
 }
 
-// Evitar zoom en la página a través de meta tags en dispositivos móviles
+// EVITAR ZOOM EN LA PÁGINA A TRAVÉS DE META TAGS EN DISPOSITIVOS MÓVILES
 const metaTag = document.createElement('meta');
 metaTag.name = 'viewport';
 metaTag.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
 document.head.appendChild(metaTag);
+
+
+
+
 
 
 

@@ -84,7 +84,7 @@ header nav button:hover {
 
 @media (min-width: 1024px) {
     #cart-items {
-        max-width: 40%; /* Cambia a 40% en pantallas grandes */
+        max-width: 30%; /* Cambia a 40% en pantallas grandes */
     }
 }
 
@@ -109,6 +109,17 @@ header nav button:hover {
     margin-bottom: 10px;
     border-radius: 8px;
     justify-content: space-between;
+}
+
+#contenedordeimagencarrito{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart-product-image {
+    margin-right: 10px;
+    width: 50px;
+    height: auto;
 }
 
 

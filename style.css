@@ -189,35 +189,6 @@ header h1 {
 
 
 
-#floating-cart {
-    position: fixed; /* Fija el carrito en una posición */
-    bottom: 40px; /* A 20px desde la parte inferior */
-    right: 20px; /* A 20px desde el lado derecho */
-    background-color:  #333 ; /* Fondo transparente */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
-    cursor: pointer; /* Cambia el cursor cuando se pasa por encima */
-    z-index: 1000; /* Asegura que el carrito se superponga sobre otros elementos */
-    padding: 0px;
-    position: relative;
-    overflow: hidden; /* Esconde el contenido que sobresalga */
-    width: 60px; /* Ancho inicial del botón */
-    height: 60px; /* Alto inicial del botón */
-    transition: width 0.5s ease-in-out, height 0.5s ease-in-out; /* Animación para expansión */
-}
-
-#floating-cart.expanded {
-    width: 200px; /* Ancho expandido del botón */
-    height: 60px; /* Mantiene la altura */
-}
-
-
-#cart-icon {
-    width: 40px;
-    height: 40px;
-}
-
 /* Estilos del filtro de categorías */
 #Filtar {
     background-color: #333;
@@ -405,7 +376,7 @@ nav ul li a.active {
     z-index: 1000;
     padding: 10px;
     overflow: hidden;
-    width: 68px;
+    width: 70px;
     height: 70px;
     transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
     display: flex;
