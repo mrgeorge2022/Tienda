@@ -8,21 +8,37 @@
     <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
 </head>
 <body>
-<header>
+    <header>
         <div id="encabezado">
-            <img id="logo" src= "img/icono_tienda.png" alt="Mr. George" onclick="window.location.href='index.html'">
-        <div>
-                <h1>Mr. George</h1>
-                <div id="estado-tienda"></div>
-            </div>
-        </div>
+            <!-- Logo -->
+            <img id="logo" src="img/icono_tienda.png" alt="Mr. George" onclick="window.location.href='index.html'">
+            
+            <div>
+            <h1>Mr. George</h1>
+            <div id="estado-tienda">
+            </div><!-- Estado de la tienda (si lo necesitas, puedes agregar contenido aquí) -->
+    </header>
+
+    <div id="redessociales">
+    <a href="https://api.whatsapp.com/message/RR4ZENOC2S25D1?autoload=1&app_absent=0">
+        <img src="img/redes/whatsapp.png" alt="Whatsapp" id="logoredes">
+    </a>
+
+    <a href="https://www.instagram.com/mr_ge0rge/">
+        <img src="img/redes/instagram.png" alt="Instagram" id="logoredes">
+    </a>
+
+    <a href="https://www.facebook.com/MISTERGE0RGE">
+        <img src="img/redes/facebook.png" alt="Facebook" id="logoredes">
+    </a>
     </div>
-        <button id="floating-cart" onclick="window.location.href='carrito.html'">
-            <img src="img/carrito.png" alt="Carrito" id="cart-icon">
-            <span id="cart-count">0</span> <!-- Contador para mostrar la cantidad de productos -->
-            <div id="notification" class="notification"></div>
-        </button>
-</header>
+
+<button id="floating-cart" onclick="window.location.href='carrito.html'">
+        <img src="img/carrito.png" alt="Carrito" id="cart-icon">
+        <span id="cart-count">0</span> <!-- Contador para mostrar la cantidad de productos -->
+        <div id="notification" class="notification"></div>
+    </button>
+</div>
 
 
 
@@ -77,6 +93,7 @@
         Politicas<a href="terms.html" target="_blank" class="terms-link">términos y condiciones</a>
     </label>
 </div>
+
 
     <footer>
         <p>&copy; Mr. George. Todos los derechos reservados.</p>
