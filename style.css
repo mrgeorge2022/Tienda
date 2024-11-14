@@ -12,6 +12,8 @@ body {
     color: #333;
 }
 
+
+
 /* Encabezado del menú */
 header {
     background-image: url('img/Mr.\ George\ foto.jpg');
@@ -175,13 +177,13 @@ header {
 }
 
 #logo{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin: 10px;
 }
 
 header h1 {
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 1.8rem;
 }
 
@@ -433,7 +435,7 @@ nav ul li a.active {
 
 /* Estilos para cada elemento de producto */
 .product-item {
-    background-color: #3338; /* Fondo blanco para los productos */
+    background-color: #333; /* Fondo blanco para los productos */
     border-radius: 10px; /* Bordes redondeados */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
     overflow: hidden; /* Asegura que los bordes se mantengan redondeados */
@@ -557,6 +559,7 @@ nav ul li a.active {
     font-size: 24px;
     color: #ffffff;
     margin-bottom: 15px;
+    margin-top: 20px;
 }
 
 /* Imagen del producto en el modal */
@@ -662,5 +665,4 @@ nav ul li a.active {
     background-color: #333;
     color: #fff;
 }
-
 

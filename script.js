@@ -54,5 +54,3 @@ document.head.appendChild(metaTag);
 
 
 
-
-

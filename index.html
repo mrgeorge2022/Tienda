@@ -34,9 +34,10 @@
         <ul>
             <li><a href="#" onclick="displayProducts()">Todos</a></li>
             <li><a href="#" onclick="displayProducts('hamburguesas')">Hamburguesas</a></li>
+            <li><a href="#" onclick="displayProducts('perros')">Perros</a></li>
+            <li><a href="#" onclick="displayProducts('picadas')">Picadas</a></li>
             <li><a href="#" onclick="displayProducts('pizzas')">Pizzas</a></li>
             <li><a href="#" onclick="displayProducts('bebidas')">Bebidas</a></li>
-            <li><a href="#" onclick="displayProducts('postres')">Postres</a></li>
         </ul>
     </nav>
 
@@ -70,6 +71,7 @@
 </div>
 
 
+
 <div class="terms-container">
     <label class="terms-label">
         Politicas<a href="terms.html" target="_blank" class="terms-link">términos y condiciones</a>
@@ -99,45 +101,77 @@ function formatNumber(number) {
 // SIMULA LA CARGA DE PRODUCTOS Y SU VISUALIZACIÓN EN LA PÁGINA PRINCIPAL
 function displayProducts(category = '', searchQuery = '') {
     const products = [
-        { 
+    { 
             id: 1, 
             image: 'img/hamburguesa.jpg', 
-            name: 'Hamburguesa Clásica', 
+            name: 'La Costeña', 
             category: 'hamburguesas', 
-            price: 5000, 
+            price: 25000, 
             description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 2, 
-            image: 'img/pizza.jpg', 
-            name: 'Pizza Margarita', 
-            category: 'pizzas', 
-            price: 8000, 
-            description: 'Pizza con salsa de tomate y queso mozzarella.' 
+            image: 'img/hamburguesa.jpg', 
+            name: 'La Mentirosa', 
+            category: 'hamburguesas', 
+            price: 28000, 
+            description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 3, 
-            image: 'img/cocacola.jpg', 
-            name: 'Coca-Cola', 
-            category: 'bebidas', 
-            price: 2000, 
-            description: 'Refresco clásico.' 
+            image: 'img/hamburguesa.jpg', 
+            name: 'La bestia', 
+            category: 'hamburguesas', 
+            price: 32000, 
+            description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 4, 
-            image: 'img/Pepsi.jpeg', 
-            name: 'Pepsi', 
-            category: 'bebidas', 
-            price: 4000, 
-            description: 'Refresco clásico.' 
+            image: 'img/perrocaliente.png', 
+            name: 'Mister', 
+            category: 'perros', 
+            price: 16000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
         },
         { 
             id: 5, 
-            image: 'img/postre.jpg', 
-            name: 'Gelatina', 
-            category: 'postres', 
-            price: 9000, 
-            description: 'Refresco clásico.' 
+            image: 'img/perrocaliente.png', 
+            name: 'Royal', 
+            category: 'perros', 
+            price: 19000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 6, 
+            image: 'img/perrocaliente.png', 
+            name: 'Express', 
+            category: 'perros', 
+            price: 21000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 7, 
+            image: 'img/perrocaliente.png', 
+            name: 'Rancher', 
+            category: 'perros', 
+            price: 24000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 8, 
+            image: 'img/picada.jpg', 
+            name: 'La Golosa', 
+            category: 'picadas', 
+            price: 27000, 
+            description: 'Embutidos, salami, jamón y prosciutto.' 
+        },
+        { 
+            id: 9, 
+            image: 'img/picada.jpg', 
+            name: 'La atrevida', 
+            category: 'picadas', 
+            price: 34000, 
+            description: 'Embutidos, salami, jamón y prosciutto.' 
         },
     ];
 
@@ -193,39 +227,74 @@ function openModal(productId) {
         { 
             id: 1, 
             image: 'img/hamburguesa.jpg', 
-            name: 'Hamburguesa Clásica', 
-            price: 5000, 
+            name: 'La Costeña', 
+            category: 'hamburguesas', 
+            price: 25000, 
             description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 2, 
-            image: 'img/pizza.jpg', 
-            name: 'Pizza Margarita', 
-            price: 8000, 
-            description: 'Pizza con salsa de tomate y queso mozzarella.' 
+            image: 'img/hamburguesa.jpg', 
+            name: 'La Mentirosa', 
+            category: 'hamburguesas', 
+            price: 28000, 
+            description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 3, 
-            image: 'img/cocacola.jpg', 
-            name: 'Coca-Cola', 
-            price: 2000, 
-            description: 'Refresco clásico.' 
+            image: 'img/hamburguesa.jpg', 
+            name: 'La bestia', 
+            category: 'hamburguesas', 
+            price: 32000, 
+            description: 'Deliciosa hamburguesa con carne de res.' 
         },
         { 
             id: 4, 
-            image: 'img/Pepsi.jpeg', 
-            name: 'Pepsi', 
-            category: 'bebidas', 
-            price: 4000, 
-            description: 'Refresco clásico.' 
+            image: 'img/perrocaliente.png', 
+            name: 'Mister', 
+            category: 'perros', 
+            price: 16000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
         },
         { 
             id: 5, 
-            image: 'img/postre.jpg', 
-            name: 'Gelatina', 
-            category: 'postres', 
-            price: 9000, 
-            description: 'Refresco clásico.' 
+            image: 'img/perrocaliente.png', 
+            name: 'Royal', 
+            category: 'perros', 
+            price: 19000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 6, 
+            image: 'img/perrocaliente.png', 
+            name: 'Express', 
+            category: 'perros', 
+            price: 21000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 7, 
+            image: 'img/perrocaliente.png', 
+            name: 'Rancher', 
+            category: 'perros', 
+            price: 24000, 
+            description: 'Salchicha con chili con carne, cebolla y queso rallado.' 
+        },
+        { 
+            id: 8, 
+            image: 'img/picada.jpg', 
+            name: 'La Golosa', 
+            category: 'picadas', 
+            price: 27000, 
+            description: 'Embutidos, salami, jamón y prosciutto.' 
+        },
+        { 
+            id: 9, 
+            image: 'img/picada.jpg', 
+            name: 'La atrevida', 
+            category: 'picadas', 
+            price: 34000, 
+            description: 'Embutidos, salami, jamón y prosciutto.' 
         },
     ];
 
