@@ -31,12 +31,12 @@ header {
     align-items: center;
 }
 
+
+
+
 #redessociales {
-    position: absolute;
-    right: 20px;
-    top: 30px;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     gap: 15px;
 }
 
