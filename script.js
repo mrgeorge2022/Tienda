@@ -302,7 +302,7 @@ function displayProducts(category = '', searchQuery = '') {
     },
     { 
       id: 8, 
-      image: 'img/productos/picada.jpg', 
+      image: 'img/productos/golosa.jpg', 
       name: 'La Golosa', 
       category: ['todos','picadas','recomendados'], 
       price: 25000, 
@@ -442,7 +442,7 @@ function openModal(productId) {
       },
       { 
           id: 8, 
-          image: 'img/productos/picada.jpg', 
+          image: 'img/productos/golosa.jpg', 
           name: 'La Golosa', 
           category: 'picadas', 
           price: 25000, 
