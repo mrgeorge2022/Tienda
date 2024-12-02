@@ -315,8 +315,40 @@ function displayProducts(category = '', searchQuery = '') {
       category: ['todos','picadas'], 
       price: 32000, 
       description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
-    }
-  ];
+    },
+    { 
+      id: 10, 
+      image: 'img/productos/limon.jpg', 
+      name: 'Limonada', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 5000, 
+      description: '¡Frescura que te llena de vida en cada sorbo!' 
+    },
+    { 
+      id: 11, 
+      image: 'img/productos/mora.jpg', 
+      name: 'Mora En Leche', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 6000, 
+      description: '¡El sabor que acaricia tus sentidos!' 
+    },
+    { 
+      id: 12, 
+      image: 'img/productos/maracuya.jpg', 
+      name: 'Maracuyá', 
+      category: ['todos','bebidas','recomendados'],
+      price: 5000, 
+      description: '¡Pura pasión en cada gota!' 
+    },
+    { 
+      id: 13, 
+      image: 'img/productos/lulo.jpg', 
+      name: 'Lulo', 
+      category: ['todos','bebidas'], 
+      price: 5000, 
+      description:'¡La frescura cítrica que te llena de energía!' 
+    },
+];
 
 
 
@@ -456,7 +488,39 @@ function openModal(productId) {
           price: 32000,  
           description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
       },
-  ];
+      {
+          id: 10, 
+          image: 'img/productos/limon.jpg', 
+          name: 'Limonada', 
+          category: ['todos','bebidas','recomendados'], 
+          price: 5000, 
+          description: 'Nuestra limonada combina zumo de limones frescos, el toque justo de dulzura y abundante hielo para ofrecerte una bebida naturalmente refrescante y llena de sabor. ¡Perfecta para cualquier momento del día!' 
+      },
+      { 
+          id: 11, 
+          image: 'img/productos/mora.jpg', 
+          name: 'Mora En Leche', 
+          category: ['todos','bebidas','recomendados'], 
+          price: 6000, 
+          description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
+      },
+      { 
+          id: 12, 
+          image: 'img/productos/maracuya.jpg', 
+          name: 'Maracuyá', 
+          category: ['todos','bebidas','recomendados'], 
+          price: 5000, 
+          description:'Nuestra bebida de maracuyá combina el intenso sabor tropical de su pulpa con la frescura justa para ofrecerte una experiencia deliciosa y revitalizante. Ideal para los amantes de lo exótico. ¡Perfecta para     cualquier ocasión!' 
+      },
+      { 
+          id: 13, 
+          image: 'img/productos/lulo.jpg', 
+          name: 'Lulo', 
+          category: ['todos','bebidas','recomendados'], 
+          price: 5000, 
+          description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
+      },
+];
 
 
 
@@ -632,13 +696,13 @@ function validateQuantityInput() {
 
 //ARREGLO PARA HORARIO DE TIENDA
 const horariosTienda = [
-  { dia: 0, horaApertura: 17.5, horaCierre: 24 },  // Domingo
-  { dia: 1, horaApertura: 17.5, horaCierre: 24 },  // Lunes 
-  { dia: 2, horaApertura: 17.5, horaCierre: 24 },  // Martes
-  { dia: 3, horaApertura: 17.5, horaCierre: 24 },  // Miércoles
-  { dia: 4, horaApertura: 17.5, horaCierre: 24 },  // Jueves
-  { dia: 5, horaApertura: 17.5, horaCierre: 24 },  // Viernes
-  { dia: 6, horaApertura: 17.5, horaCierre: 24 },  // Sábado
+  { dia: 0, horaApertura: 18, horaCierre: 24 },  // Domingo
+  { dia: 1, horaApertura: 10, horaCierre: 24 },  // Lunes 
+  { dia: 2, horaApertura: 18, horaCierre: 24 },  // Martes
+  { dia: 3, horaApertura: 18, horaCierre: 24 },  // Miércoles
+  { dia: 4, horaApertura: 18, horaCierre: 24 },  // Jueves
+  { dia: 5, horaApertura: 18, horaCierre: 24 },  // Viernes
+  { dia: 6, horaApertura: 18, horaCierre: 24 },  // Sábado
 ];
 
 

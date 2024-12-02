@@ -25,7 +25,6 @@ header {
     height: 100%;                /* Hace que el fondo ocupe toda la altura de la ventana */
     margin: 0;
     color: white;
-    padding: 4px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -361,7 +360,7 @@ header {
 }
 
 #encabezado{
-    margin-top: 30px;
+    margin-top: 60px;
     display: flex;
     width: 100%;
 }
@@ -564,6 +563,7 @@ nav ul li a.active {
 #floating-cart:hover {
     transform: scale(1.1); /* Aumenta ligeramente el tamaño del carrito */
     box-shadow: 0 5px 30px #ffc400;
+    background-color: #222;
 }
 
 /* Estilo para la imagen del carrito */
@@ -611,7 +611,7 @@ nav ul li a.active {
     width: 320px; /* Ancho fijo para los productos */
     padding: 15px; /* Espaciado interno */
     text-align: center; /* Centra el texto dentro del producto */
-    transition: transform 0.1s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Animación suave */
 }
 
 /* Efecto de hover en cada producto */
@@ -664,8 +664,9 @@ nav ul li a.active {
     font-size: 12px; /* Tamaño del texto */
     font-weight: bold; /* Resaltar texto */
     border-radius: 50%; /* Forma circular */
-    padding: 5px 8px; /* Espaciado interno */
+    padding: 5px; /* Espaciado interno */
     min-width: 20px; /* Asegura un tamaño mínimo */
+    height: 60%;
     text-align: center; /* Centra el texto */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra opcional */
 
