@@ -396,73 +396,8 @@ header h1 {
 }
 
 
-.modal-qr {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.contenido-modal-qr {
-    background-color: #222;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 80%;
-    max-width: 400px;
-    position: relative;
-}
-
-.contenido-modal-qr h2{
-    margin-top: 20px;
-    font-size: 20px;
-    color: #777;
-}
-
-.cerrar-modal-qr {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 40px;
-    cursor: pointer;
-    color: #fff;
-}
-
-.imagen-modal-qr {
-    max-width: 100%;
-    height: auto;
-    margin: 15px 0;
-}
-
-.btn-descarga-qr {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color:#999;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.btn-descarga-qr:hover {
-    background-color: #888;
-}
 
 
-/* Estilo de los productos */
-#product-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
 
 
 
@@ -621,7 +556,7 @@ nav ul li a.active {
 }
 
 #floating-cart.expanded {
-    width: 250px;
+    width: 220px;
     height: 60px;
 }
 
