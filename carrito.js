@@ -340,11 +340,6 @@ function monitorearCambios() {
 
 
 
-
-
-
-
-
 // FUNCIÓN PARA ENVIAR LOS DATOS DEL CARRITO A WHATSAPP
 function finalizarCompra() {
 const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
@@ -368,7 +363,7 @@ mensaje += `${messageProducts}\n\n`;
 mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
 mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`; 
 mensaje += "*Ubicación de la tienda:*\n";
-mensaje += "https://www.google.com/maps/place/Mr.+George/@10.3737614,-75.4761805,17z/data=!3m1!4b1!4m6!3m5!1s0x8ef63b2aa9ab677f:0x239b6ab0ab1c329e!8m2!3d10.3737561!4d-75.4736056!16s%2Fg%2F11l1l0md04?hl.\n";
+mensaje += "https://bit.ly/4f2GU5I\n";
 
 // CODIFICAR EL MENSAJE Y ABRIR WHATSAPP
 const encodedMessage = encodeURIComponent(mensaje);

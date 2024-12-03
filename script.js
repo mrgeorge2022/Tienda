@@ -62,6 +62,28 @@ document.addEventListener('wheel', (event) => {
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////
+// Abrir el modal del QR
+document.getElementById("btnAbrirModalQR").addEventListener("click", function () {
+  document.getElementById("modalQR").style.display = "flex";
+});
+
+// Cerrar el modal del QR cuando se hace clic en el botón de cierre
+document.getElementById("btnCerrarModalQR").addEventListener("click", function () {
+  document.getElementById("modalQR").style.display = "none";
+});
+
+// Cerrar el modal del QR al hacer clic fuera del contenido
+window.addEventListener("click", function (event) {
+  const modalQR = document.getElementById("modalQR");
+  if (event.target === modalQR) {
+      modalQR.style.display = "none";
+  }
+});
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 

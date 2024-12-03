@@ -57,8 +57,11 @@ header {
 
 #qrcontenedor {
     display: flex;
+    flex-direction: column; /* Organiza los elementos en una columna */
     justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
     margin-top: 25px;
+    color: #999;
 }
 
 #qrtienda {
@@ -360,6 +363,7 @@ header {
 }
 
 #encabezado{
+    padding-left: 15px;
     margin-top: 60px;
     display: flex;
     width: 100%;
@@ -377,6 +381,79 @@ header h1 {
 
 
 
+/* Estilo del modal QR */
+#btnAbrirModalQR{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 200px;
+    height: 50px;
+    background: none; /* Sin fondo */
+    border: none; /* Sin bordes */
+    outline: none; /* Sin contorno al enfocarse */
+    cursor: pointer; /* Indica que es clickeable */
+    padding: 0;
+}
+
+
+.modal-qr {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenido-modal-qr {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+}
+
+.contenido-modal-qr h2{
+    margin-top: 20px;
+    font-size: 20px;
+    color: #777;
+}
+
+.cerrar-modal-qr {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 40px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.imagen-modal-qr {
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+}
+
+.btn-descarga-qr {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color:#999;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-descarga-qr:hover {
+    background-color: #888;
+}
 
 
 /* Estilo de los productos */
@@ -388,18 +465,7 @@ header h1 {
 }
 
 
-button {
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-button:hover {
-    background-color: #e64a19;
-}
 
 /* Footer */
 footer {
@@ -563,7 +629,6 @@ nav ul li a.active {
 #floating-cart:hover {
     transform: scale(1.1); /* Aumenta ligeramente el tamaño del carrito */
     box-shadow: 0 5px 30px #ffc400;
-    background-color: #222;
 }
 
 /* Estilo para la imagen del carrito */
