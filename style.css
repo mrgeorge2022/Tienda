@@ -145,7 +145,7 @@ header {
     left: 50%;
     transform: translate(-50%, -50%); /* Centrado absoluto */
     font-size: 15px;
-    color: #111;
+    color: #FFF;
     z-index: 2; /* Asegura que el texto esté encima de la capa negra */
 }
 
@@ -363,7 +363,7 @@ header {
 }
 
 #encabezado{
-    padding-left: 15px;
+   /*padding-left: 15px;*/
     margin-top: 60px;
     display: flex;
     width: 100%;

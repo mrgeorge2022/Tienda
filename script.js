@@ -112,8 +112,10 @@ document.getElementById("scrollTopButton").addEventListener("click", function ()
 // Array de imágenes
 const images = [
   'anuncios/ILUSTRACION1.jpg',
-  'anuncios/ILUSTRACION2.jpg',
-  'anuncios/ILUSTRACION3.jpg'
+  //'anuncios/ILUSTRACION2.jpg',
+  //'anuncios/ILUSTRACION3.jpg',
+  'anuncios/ILUSTRACION4.jpg',
+  'anuncios/ILUSTRACION5.jpg',
 ];
 
 let currentImageIndex = 0;
