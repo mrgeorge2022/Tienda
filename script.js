@@ -312,7 +312,7 @@ function displayProducts(category = '', searchQuery = '') {
     },
     { 
       id: 9, 
-      image: 'img/productos/picada.jpg', 
+      image: 'img/productos/atrevida.jpg', 
       name: 'La Atrevida', 
       category: ['todos','picadas'], 
       price: 32000, 
@@ -484,7 +484,7 @@ function openModal(productId) {
       },
       { 
           id: 9, 
-          image: 'img/productos/picada.jpg', 
+          image: 'img/productos/atrevida.jpg', 
           name: 'La Atrevida', 
           category: 'picadas', 
           price: 32000,  
