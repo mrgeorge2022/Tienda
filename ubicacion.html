@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>Ubicación</title>
     <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
     <link rel="stylesheet" href="stylesubicacion.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPS6Wmnr0HF-fJ3hm7LcGWNkPycosXDcY&libraries=places"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPS6Wmnr0HF-fJ3hm7LcGWNkPycosXDcY&libraries=places"></script>
 </head>
+
 <body>
     <header>
         <div id="cerrar">
@@ -23,7 +26,7 @@
 
     <!-- Mapa de Google Maps -->
     <div id="map"></div>
-    
+
 
     <section id="direccion-container">
         <button onclick="usarUbicacionActual()">Usar mi ubicación actual</button>
@@ -60,7 +63,7 @@
         </div>
     </div>
 
-    <div id="compraFinalizadaModal" class="modalfin" >
+    <div id="compraFinalizadaModal" class="modalfin">
         <div class="modal-content-fin">
             <span class="closefin">&times;</span>
             <h2>¡Compra finalizada!</h2>
@@ -77,4 +80,5 @@
 
     <script src="ubicacion.js"></script>
 </body>
+
 </html>

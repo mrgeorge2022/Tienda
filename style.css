@@ -202,6 +202,7 @@ header {
 #estado-tienda.abierto {
     background-color: #27ae27;     /* Fondo verde claro */
     color: #fff;                /* Texto verde */
+    padding: 3px 5px;
 
 }
 
@@ -209,6 +210,7 @@ header {
 #estado-tienda.cerrado {
     background-color: #ff0000;     /* Fondo rojo claro */
     color: #fff;                /* Texto rojo */
+    padding: 3px 5px;
 }
 
 
@@ -308,7 +310,7 @@ header {
 
 .creatutienda{
     text-align: center;
-    margin: 20px 0;
+    padding-bottom: 100px;
     font-size: 16px;
     color: #fff;
 }
@@ -381,35 +383,10 @@ header h1 {
 
 
 
-/* Estilo del modal QR */
-#btnAbrirModalQR{
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    width: 200px;
-    height: 50px;
-    background: none; /* Sin fondo */
-    border: none; /* Sin bordes */
-    outline: none; /* Sin contorno al enfocarse */
-    cursor: pointer; /* Indica que es clickeable */
-    padding: 0;
-}
 
 
 
 
-
-
-
-
-/* Footer */
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 0.9rem;
-}
 
 
 /* Responsividad */
@@ -437,14 +414,22 @@ footer {
 
 
 
+#navegadorylista{
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    margin: 5px;
+    border-radius: 50px;
+    align-items: center;
+}
 
 
 /* Estilos para barra de categorias */
 nav {
     margin-top: 10px;
-    margin: 5px;
-    background-color: #333; /* Fondo oscuro */
-    padding: 10px 10px;
+    margin: 0px;
+    width: 100%;
+    padding: 10px 15px;
     border-radius: 50px; /* Bordes redondeados */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
     overflow-x: auto; /* Activa el desplazamiento horizontal cuando es necesario */
@@ -462,7 +447,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: inline-flex; /* Usamos flex en línea para mantener los elementos en una fila */
-    gap: 15px; /* Espaciado entre los elementos */
+    gap: 10px; /* Espaciado entre los elementos */
 }
 
 /* Estilos para los elementos de la lista */
@@ -498,12 +483,93 @@ nav ul li a.active {
 /*solo para el li recomendado*/ 
 #recomendados {
     color: #ffc400;
+    margin-left: 35px;
 }
 
 
 #recomendados.active{
     color: #000000;
 }
+
+#recomendadoslist{
+    color: #ffc400;
+}
+
+#recomendadoslist:hover {
+color: #333;
+}
+
+
+
+/* Estilo para el contenedor del dropdown fuera del nav */
+.dropdown-container {
+    position: absolute;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-left: 0px;
+    z-index: 1;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-color: #555;
+    width: 40px;
+    height: 39px;
+}
+
+/* Estilo para el enlace de "Categorías" */
+.custom-dropdown-toggle {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 6px 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+/* Efecto hover para el enlace de "Categorías" */
+.custom-dropdown-toggle:hover {
+    color: #ffc400;
+}
+
+
+/* Submenú oculto por defecto */
+.custom-dropdown-menu {
+    display: none;  /* Inicialmente oculto */
+    position: absolute;
+    top: 100%;  /* Coloca el submenú justo debajo del enlace */
+    left: 0;
+    background-color: #333;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 150px;  /* Asegura que el submenú tenga un ancho suficiente */
+}
+
+/* Mostrar el submenú cuando se activa la clase "open" */
+.custom-dropdown-menu.open {
+    display: block;  /* Muestra el submenú */
+}
+
+/* Estilo para los enlaces dentro del submenú */
+.custom-dropdown-menu a {
+    color: #fff;
+    padding: 8px 15px;
+    display: block;  /* Hace que los enlaces se apilen verticalmente */
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efecto hover para los ítems del submenú */
+.custom-dropdown-menu a:hover {
+    background-color: #ffc400;
+    color: #333;
+}
+
+
+
 
 
 
@@ -519,7 +585,7 @@ nav ul li a.active {
         display: flex; /* Usar flex para mantener las categorías en una fila */
         overflow-x: auto; /* Habilitar desplazamiento horizontal si el contenido es más largo que el contenedor */
         -webkit-overflow-scrolling: touch; /* Habilitar desplazamiento suave en iOS */
-        gap: 9px; /* Espacio entre las categorías */
+        gap: 10px; /* Espacio entre las categorías */
         margin-top: 5px;
         padding-bottom: 10px; /* Espacio inferior para evitar que se corte el scroll */
     }

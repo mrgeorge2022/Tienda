@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -7,72 +8,88 @@
     <title>Mr. George</title>
     <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
 </head>
+
 <body>
     <header>
         <div id="encabezado">
             <!-- Logo -->
-            <img id="logo" src="img/iconos/icono_tiendanavidad.png" alt="Mr. George" onclick="window.location.href='index.html'">
-            
+            <img id="logo" src="img/iconos/icono_tiendanavidad.png" alt="Mr. George"
+                onclick="window.location.href='index.html'">
+
             <div id="textoprincipal">
-            <h1>Mr. George</h1>
-            <div id="estado-tienda">
-            </div>
-            <p id="horario-tienda"></p>
+                <h1>Mr. George</h1>
+                <div id="estado-tienda">
+                </div>
+                <p id="horario-tienda"></p>
     </header>
 
-<div class="floating-banner">
-    <div id="logobarra"> 
-        <img src="img/logo.png" alt="Mr. George" >
+    <div class="floating-banner">
+        <div id="logobarra">
+            <img src="img/logo.png" alt="Mr. George">
+        </div>
+
     </div>
 
-</div>
 
 
-
-<button id="floating-cart" onclick="window.location.href='carrito.html'">
+    <button id="floating-cart" onclick="window.location.href='carrito.html'">
         <img src="img/iconos/carrito.png" alt="Carrito" id="cart-icon">
         <span id="cart-count">0</span> <!-- Contador para mostrar la cantidad de productos -->
         <div id="notification" class="notification"></div>
     </button>
-</div>
-
-<button id="scrollTopButton">
-    <img src="img/iconos/volverarriba.png" alt="volver arriba" id="volverarribaimg">
-</button>
-
-
-
-
-
-<div id="anuncios">
-    <img src="anuncios/ILUSTRACION1.jpg" alt="anuncio" >
-    <p>¡FELIZ NAVIDAD Y UN PRÓSPERO AÑO NUEVO!</p>
     </div>
 
-<div id="buscador">
-    <input type="text" id="search-input" placeholder="Buscar..." oninput="searchProducts()">
-</div>
+    <button id="scrollTopButton">
+        <img src="img/iconos/volverarriba.png" alt="volver arriba" id="volverarribaimg">
+    </button>
 
 
 
-    <nav>
-        <ul>
-            <li><a id="recomendados" href="#" onclick="displayProducts('recomendados')">¡Recomendados!</a></li>
-            <li><a href="#" onclick="displayProducts('todos')">Todos</a></li>
-            <li><a href="#" onclick="displayProducts('perros')">Perros</a></li>
-            <li><a href="#" onclick="displayProducts('hamburguesas')">Hamburguesas</a></li>
-            <li><a href="#" onclick="displayProducts('picadas')">Picadas</a></li>
-            <!--<li><a href="#" onclick="displayProducts('pizzas')">Pizzas</a></li>-->
-            <li><a href="#" onclick="displayProducts('bebidas')">Bebidas</a></li>
-        </ul>
-    </nav>
+
+
+    <div id="anuncios">
+        <img src="anuncios/ILUSTRACION1.jpg" alt="anuncio">
+        <p>¡FELIZ NAVIDAD Y UN PRÓSPERO AÑO NUEVO!</p>
+    </div>
+
+    <div id="buscador">
+        <input type="text" id="search-input" placeholder="Buscar..." oninput="searchProducts()">
+    </div>
+
+
+    <!-- Menú de navegación -->
+    <div id="navegadorylista">
+        <div class="dropdown-container">
+            <a href="#" class="custom-dropdown-toggle" onclick="toggleCategoryDropdown(event)"><span>▼</span></a>
+            <ul class="custom-dropdown-menu">
+                <li><a id="recomendadoslist" href="#" onclick="activateCategoryLink('recomendados')">¡Recomendados!</a></li>
+                <li><a href="#" onclick="activateCategoryLink('todos')">Todos</a></li>
+                <li><a href="#" onclick="activateCategoryLink('perros')">Perros</a></li>
+                <li><a href="#" onclick="activateCategoryLink('hamburguesas')">Hamburguesas</a></li>
+                <li><a href="#" onclick="activateCategoryLink('picadas')">Picadas</a></li>
+                <li><a href="#" onclick="activateCategoryLink('bebidas')">Bebidas</a></li>
+            </ul>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a id="recomendados" href="#" onclick="displayProducts('recomendados')">¡Recomendados!</a></li>
+                <li><a href="#" onclick="displayProducts('todos')">Todos</a></li>
+                <li><a href="#" onclick="displayProducts('perros')">Perros</a></li>
+                <li><a href="#" onclick="displayProducts('hamburguesas')">Hamburguesas</a></li>
+                <li><a href="#" onclick="displayProducts('picadas')">Picadas</a></li>
+                <li><a href="#" onclick="displayProducts('bebidas')">Bebidas</a></li>
+            </ul>
+        </nav>
+
+    </div>
 
     <section id="product-list">
         <!-- Los productos se mostrarán aquí dinámicamente -->
     </section>
 
     <!-- Modal para ver detalles del producto -->
-   <div id="product-modal" class="modal" >
+    <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2 id="modal-product-name"></h2>
@@ -80,74 +97,74 @@
             <p id="modal-product-description"></p>
             <p><strong>$<span id="modal-product-price"></span></strong></p>
             <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
-            
+
 
             <div class="quantity-control">
                 <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
-                
-                <input type="text" id="modal-quantity" value="1"  oninput="validateQuantityInput()">
+
+                <input type="text" id="modal-quantity" value="1" oninput="validateQuantityInput()">
 
                 <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
             </div>
-            
+
             <button id="add-to-cart-button" onclick="addToCartFromModal()">Agregar al carrito</button>
 
         </div>
     </div>
-</div>
-
-<div id="redessociales">
-    <a href="https://api.whatsapp.com/message/RR4ZENOC2S25D1?autoload=1&app_absent=0">
-        <img src="img/redes/whatsapp.png" alt="Whatsapp" id="logoredes">
-    </a>
-
-    <a href="https://www.instagram.com/mr_ge0rge/">
-        <img src="img/redes/instagram.png" alt="Instagram" id="logoredes">
-    </a>
-
-    <a href="https://www.facebook.com/MISTERGE0RGE">
-        <img src="img/redes/facebook.png" alt="Facebook" id="logoredes">
-    </a>
     </div>
 
-<div id="qrcontenedor">
-    <img src="img/iconos/qrtienda.png" alt="qrtienda" id="qrtienda">
-    <p>QR tienda</p>
-</div>
+    <div id="redessociales">
+        <a href="https://api.whatsapp.com/message/RR4ZENOC2S25D1?autoload=1&app_absent=0">
+            <img src="img/redes/whatsapp.png" alt="Whatsapp" id="logoredes">
+        </a>
+
+        <a href="https://www.instagram.com/mr_ge0rge/">
+            <img src="img/redes/instagram.png" alt="Instagram" id="logoredes">
+        </a>
+
+        <a href="https://www.facebook.com/MISTERGE0RGE">
+            <img src="img/redes/facebook.png" alt="Facebook" id="logoredes">
+        </a>
+    </div>
+
+    <div id="qrcontenedor">
+        <img src="img/iconos/qrtienda.png" alt="qrtienda" id="qrtienda">
+        <p>QR tienda</p>
+    </div>
 
     <div id="direcciontienda">
-    <p><strong>Sedes</strong><br>
-        Mr. George Cartagena, Bolivar<br>
-        San fernando, Cl 5, Cra 81 f 05<br>
-        <span class="telefono">(+57) 302 266 6530</span>
+        <p><strong>Sedes</strong><br>
+            Mr. George Cartagena, Bolivar<br>
+            San fernando, Cl 5, Cra 81 f 05<br>
+            <span class="telefono">(+57) 302 266 6530</span>
     </div>
-        
-    
-<div class="terms-container">
-    <label class="terms-label">
-        Politicas<a href="terms.html" target="_blank" class="link">términos y condiciones</a>
-    </label>
-</div>
 
 
-<div id="fotofinalcontenedor">
-<img src="img/logo.png" alt="Mr George" id="fotofinal">
-</div>
-
-<div class="creatutienda">
-<label class="creatutienda-label">
-    Crea tu tienda<a href="https://wa.me/573024345404?text=%C2%A1Hola!%20Quiero%20crear%20mi%20tienda" target="_blank" class="link">aquí</a>
-</label>
-</div>
+    <div class="terms-container">
+        <label class="terms-label">
+            Politicas<a href="terms.html" target="_blank" class="link">términos y condiciones</a>
+        </label>
+    </div>
 
 
-<footer>
-    <p>&copy; Mr. George. Todos los derechos reservados.</p>
-</footer>
+    <div id="fotofinalcontenedor">
+        <img src="img/logo.png" alt="Mr George" id="fotofinal">
+    </div>
+
+    <div class="creatutienda">
+        <label class="creatutienda-label">
+            Crea tu tienda<a href="https://wa.me/573024345404?text=%C2%A1Hola!%20Quiero%20crear%20mi%20tienda"
+                target="_blank" class="link">aquí</a>
+        </label>
+    </div>
+
+
+
 
 
 
     <script src="script.js"></script>
 
 </body>
+
 </html>

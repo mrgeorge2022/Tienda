@@ -166,6 +166,11 @@ changeImage();
 
 
 
+// FUNCIÓN PARA BUSCAR PRODUCTOS POR NOMBRE 
+function searchProducts() {
+  const searchQuery = document.getElementById('search-input').value;
+  displayProducts('', searchQuery); // Se pasa la consulta de búsqueda al filtro
+}
 
 
 
@@ -250,7 +255,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 1, 
       image: 'img/productos/LaCosteña.jpg', 
       name: 'La Costeña', 
-      category: ['todos','hamburguesas', 'recomendados'], 
+      category: ['todos','hamburguesas'], 
       price: 21000, 
       description: '¡Un viaje directo al paraíso del sabor!' 
     },
@@ -404,12 +409,71 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
 
+// Función para activar el enlace de la categoría seleccionada en el listado 
+function activateCategoryLink(category) {
+  // Primero, eliminamos la clase 'active' de todos los enlaces
+  const allLinks = document.querySelectorAll('nav ul li a, .custom-dropdown-menu a');
+  allLinks.forEach(link => {
+    link.classList.remove('active');
+  });
 
-// FUNCIÓN PARA BUSCAR PRODUCTOS POR NOMBRE 
-function searchProducts() {
-  const searchQuery = document.getElementById('search-input').value;
-  displayProducts('', searchQuery); // Se pasa la consulta de búsqueda al filtro
+  // Luego, agregamos la clase 'active' al enlace seleccionado
+  const selectedLink = document.querySelector(`a[href*="${category}"]`);
+  if (selectedLink) {
+    selectedLink.classList.add('active');
+  }
+
+  // Filtrar los productos según la categoría seleccionada
+  displayProducts(category);
+
+  // Cerrar el submenú al seleccionar una categoría
+  const dropdownMenu = document.querySelector('.custom-dropdown-menu');
+  dropdownMenu.classList.remove('open');
+  
+  // Cambiar el icono de la flecha a ▼
+  const span = document.querySelector('.custom-dropdown-toggle span');
+  if (span) {
+    span.textContent = '▼';
+  }
 }
+//funcion para al desplegar es spam ▼ se cambie correspondinte a su estado 
+function toggleCategoryDropdown(event) {
+  event.preventDefault(); // Evita comportamientos no deseados
+
+  const dropdownToggle = event.target.closest('.custom-dropdown-toggle');
+  if (!dropdownToggle) return;
+
+  const dropdownMenu = dropdownToggle.closest('.dropdown-container').querySelector('.custom-dropdown-menu');
+  dropdownMenu.classList.toggle('open');
+
+  const span = dropdownToggle.querySelector('span');
+  if (span) {
+    span.textContent = dropdownMenu.classList.contains('open') ? '▲' : '▼';
+  }
+}
+
+// Función para cerrar el submenú si se hace clic fuera de él
+document.addEventListener('click', function(event) {
+  const dropdown = document.querySelector('.dropdown-container');
+  const dropdownMenu = dropdown.querySelector('.custom-dropdown-menu');
+  
+  // Verifica si el clic fue fuera del dropdown
+  if (!dropdown.contains(event.target)) {
+    dropdownMenu.classList.remove('open');
+    const span = dropdown.querySelector('.custom-dropdown-toggle span');
+    
+    // Manejo seguro del cambio del texto de la flecha
+    if (span) {
+      span.textContent = '▼';  // Vuelve a mostrar la flecha hacia abajo
+    }
+  }
+});
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -7,14 +8,15 @@
     <title>Carrito de Compras</title>
     <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
 </head>
+
 <body>
     <header>
         <div id="encabezado">
-        <h1>Carrito de compras</h1>
-        <nav>
-            <span class="close" onclick="window.location.href='index.html'">×</span>
-        </nav>
-    </div>
+            <h1>Carrito de compras</h1>
+            <nav>
+                <span class="close" onclick="window.location.href='index.html'">×</span>
+            </nav>
+        </div>
     </header>
 
     <section id="cart-items">
@@ -24,19 +26,19 @@
 
         <h4>Metódo de pago*</h4>
 
-    <div id="metododepago_y_total" >
-        <select id="opcionesPago">
-            <option value="" disabled selected>Seleccionar</option>
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia</option>
-        </select>
-        <p id="cart-total"></p>
-    </div>
+        <div id="metododepago_y_total">
+            <select id="opcionesPago">
+                <option value="" disabled selected>Seleccionar</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+            <p id="cart-total"></p>
+        </div>
 
         <button onclick="openModal() ">¡Confirmar pedido!</button>
     </section>
 
-    
+
 
     <!-- Modal de opciones de entregs -->
     <div id="payment-modal" class="modal">
@@ -44,46 +46,45 @@
             <h2>Selecciona una opción de entrega</h2>
             <button onclick="window.location.href='ubicacion.html'">Domicilio</button>
             <button onclick="abrirModaldatospersonales()"">Recoger en tienda</button>
-            <button id="botoncancelar" onclick ="closeModal()">Cancelar</button>
+            <button id="botoncancelar" onclick="closeModal()">Cancelar</button>
         </div>
     </div>
 
 
 
-<!-- Modal de datos personales -->
-<div class="modaldedatospersonales" id="datospersonales">
-    <div class="modaldatos">
-        <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
-        <h2>¡Estas a un paso de completar tu pedido!</h2>
-        <h3>Regalanos estos datos para entregar exitosamente tu pedido.</h3>
-        <input type="text" id="nombre" placeholder="Nombre y apellido">
-        <input type="number" id="telefono"  placeholder="Número telefónico" oninput="validarTelefono()">
-        <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
+    <!-- Modal de datos personales -->
+    <div class="modaldedatospersonales" id="datospersonales">
+        <div class="modaldatos">
+            <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
+            <h2>¡Estas a un paso de completar tu pedido!</h2>
+            <h3>Regalanos estos datos para entregar exitosamente tu pedido.</h3>
+            <input type="text" id="nombre" placeholder="Nombre y apellido">
+            <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+            <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
 
-        <div id="direccion-container">
-            <button id="btnFinalizar" style="display: none;" onclick="finalizarCompra()">Finalizar Compra</button>
+            <div id="direccion-container">
+                <button id="btnFinalizar" style="display: none;" onclick="finalizarCompra()">Finalizar Compra</button>
+            </div>
+
         </div>
-        
     </div>
-</div> 
 
-<div id="compraFinalizadaModal" class="modalfin">
-    <div class="modal-content-fin">
-        <span id="closeModal" class="closefin">&times;</span>
-        <h2>¡Compra finalizada!</h2>
-        <p>Gracias por tu compra.
-            <br>Revisa tu WhatsApp
-        </p>
-        <button onclick="volverAlInicio()">Volver al inicio</button>
+    <div id="compraFinalizadaModal" class="modalfin">
+        <div class="modal-content-fin">
+            <span id="closeModal" class="closefin">&times;</span>
+            <h2>¡Compra finalizada!</h2>
+            <p>Gracias por tu compra.
+                <br>Revisa tu WhatsApp
+            </p>
+            <button onclick="volverAlInicio()">Volver al inicio</button>
+        </div>
     </div>
-</div>
 
-<footer>
-        <p>&copy; Mr. George. Todos los derechos reservados.</p>
-</footer>
+
 
     <script src="carrito.js"></script>
 
 
 </body>
+
 </html>
