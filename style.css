@@ -518,10 +518,11 @@ color: #333;
 
 /* Estilo para el enlace de "Categorías" */
 .custom-dropdown-toggle {
+    display: flex;
     text-decoration: none;
     color: #fff;
-    font-size: 16px;
-    font-weight: 800;
+    font-size: 20px;
+    align-items: center;
     padding: 6px 10px;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
