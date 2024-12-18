@@ -286,15 +286,16 @@ function calcularRuta(origen, destino) {
     });
 }
 
-// Función para calcular el costo de envío con los límites
 function calcularCostoEnvio(distanciaKilometros) {
     let costoEnvio = distanciaKilometros * costoPorKilometro;
 
     // Aplicar los límites de costo (mínimo y máximo)
     costoEnvio = Math.max(costoMinimo, Math.min(costoEnvio, costoMaximo));
 
-    return Math.round(costoEnvio); // Redondear el costo al valor más cercano
+    // Redondear el costo al siguiente múltiplo de 1,000
+    return Math.ceil(costoEnvio / 1000) * 1000;
 }
+
 
 // Función para formatear el costo en pesos colombianos
 function formatearPesoColombiano(valor) {
