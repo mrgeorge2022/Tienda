@@ -1,3 +1,32 @@
+// Función para ocultar la animación de bienvenida
+function hideWelcomeLoader() {
+    var welcomeLoader = document.getElementById('welcome-loader');
+    welcomeLoader.style.display = 'none'; // Ocultar la animación de bienvenida
+}
+
+  // Ejecutamos la función cuando la página haya cargado completamente
+window.addEventListener('load', function() {
+    // Esperamos 4 segundos para que la animación de bienvenida se complete
+    setTimeout(hideWelcomeLoader, 700); // El tiempo puede ser ajustado (0.7s = 0.7 segundos)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // EVITAR CLICK DERECHO EN TODA LA PÁGINA
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 

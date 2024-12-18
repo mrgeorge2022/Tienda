@@ -1,3 +1,30 @@
+// Función para ocultar la animación de bienvenida
+function hideWelcomeLoader() {
+  var welcomeLoader = document.getElementById('welcome-loader');
+  welcomeLoader.style.display = 'none'; // Ocultar la animación de bienvenida
+}
+
+// Ejecutamos la función cuando la página haya cargado completamente
+window.addEventListener('load', function() {
+  // Esperamos 4 segundos para que la animación de bienvenida se complete
+  setTimeout(hideWelcomeLoader, 1000); // El tiempo puede ser ajustado (1000s = 1 segundos)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // EVITAR CLICK DERECHO EN TODA LA PÁGINA
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 
@@ -760,19 +787,15 @@ function validateQuantityInput() {
 
 
 
-//ARREGLO PARA HORARIO DE TIENDA
 const horariosTienda = [
   { dia: 0, horaApertura: 18, horaCierre: 24 },  // Domingo
   { dia: 1, horaApertura: 18, horaCierre: 24 },  // Lunes 
   { dia: 2, horaApertura: 18, horaCierre: 24 },  // Martes
-  { dia: 3, horaApertura: 18, horaCierre: 24 },  // Miércoles
+  { dia: 3, horaApertura: null, horaCierre: null },  // Miércoles - cerrado
   { dia: 4, horaApertura: 18, horaCierre: 24 },  // Jueves
   { dia: 5, horaApertura: 18, horaCierre: 24 },  // Viernes
   { dia: 6, horaApertura: 18, horaCierre: 24 },  // Sábado
 ];
-
-
-
 
 // FUNCIÓN PARA VERIFICAR SI LA TIENDA ESTÁ ABIERTA
 function estaAbierta() {
@@ -785,7 +808,7 @@ function estaAbierta() {
   const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
   // VERIFICAR SI EL DÍA TIENE UN HORARIO DEFINIDO
-  if (horarioHoy) {
+  if (horarioHoy && horarioHoy.horaApertura !== null && horarioHoy.horaCierre !== null) {
       return horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre;
   } else {
       return false; // Si no hay horario para el día, la tienda está cerrada
@@ -804,7 +827,7 @@ function actualizarEstadoTienda() {
   // BUSCAR EL HORARIO CORRESPONDIENTE AL DÍA ACTUAL
   const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
-  if (horarioHoy && horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre) {
+  if (horarioHoy && horarioHoy.horaApertura !== null && horarioHoy.horaCierre !== null && horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre) {
       estadoTienda.textContent = "¡La tienda está abierta!";
       estadoTienda.classList.add("abierto");
       estadoTienda.classList.remove("cerrado");
@@ -819,7 +842,6 @@ function actualizarEstadoTienda() {
 document.addEventListener("DOMContentLoaded", function() {
   actualizarEstadoTienda();
 });
-
 
 // Función para calcular los minutos restantes
 function calcularMinutosRestantes(horaFin) {
@@ -839,7 +861,7 @@ function actualizarHorarioTienda() {
   // Buscar el horario correspondiente al día actual
   const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
-  if (horarioHoy) {
+  if (horarioHoy && horarioHoy.horaApertura !== null && horarioHoy.horaCierre !== null) {
       const minutosRestantesApertura = calcularMinutosRestantes(horarioHoy.horaApertura);
       const minutosRestantesCierre = calcularMinutosRestantes(horarioHoy.horaCierre);
 
@@ -864,6 +886,8 @@ function actualizarHorarioTienda() {
               horarioElemento.textContent = `Cierra en ${minutosCierreRestantes} minuto(s).`;
           }
       }
+  } else {
+      horarioElemento.textContent = "Hoy la tienda permanece cerrada.";
   }
 }
 
