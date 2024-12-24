@@ -394,6 +394,15 @@ button {
 }
 
 
+#motodomicilio{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    filter: invert();
+
+}
+
+
 #botoncancelar {
     margin-top: 30px;
     width: 130px;

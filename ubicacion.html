@@ -26,10 +26,19 @@
         <h2 id="Selecciona_tu_ubicacion">Selecciona tu ubicación:</h2>
     </header>
 
+
+    
     <section class="input-container">
         <input type="text" id="direccion" placeholder="Buscar tu dirección" required>
-        <input id="Punto_de_referencia" type="text" placeholder="Punto de referencia (Opcional)">
+        <img src="img/iconos/borrartexto.png" alt="Borrar texto" onclick="borrarTexto('direccion')">
     </section>
+
+    <section class="input-container">
+        <input id="Punto_de_referencia" type="text" placeholder="Punto de referencia (Opcional)">
+        <img src="img/iconos/borrartexto.png" alt="Borrar texto" onclick="borrarTexto('Punto_de_referencia')">
+    </section>
+
+    
 
     <!-- Mapa de Google Maps -->
     <div id="map"></div>

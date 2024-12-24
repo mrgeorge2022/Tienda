@@ -17,7 +17,10 @@ window.addEventListener('load', function() {
 
 
 
-
+//BORRAR INPUT CON IMAGEN
+function borrarTexto(id) {
+    document.getElementById(id).value = ''; // Limpia el valor del input
+}
 
 
 
