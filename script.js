@@ -362,7 +362,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 11, 
       image: 'img/productos/mora.jpg', 
       name: 'Mora En Leche', 
-      category: ['todos','bebidas','recomendados'], 
+      category: ['todos','bebidas'], 
       price: 6000, 
       description: '¡El sabor que acaricia tus sentidos!' 
     },
@@ -382,6 +382,15 @@ function displayProducts(category = '', searchQuery = '') {
       price: 5000, 
       description:'¡La frescura cítrica que te llena de energía!' 
     },
+    { 
+      id: 14, 
+      image: 'img/productos/combofantasticweb.jpg', 
+      name: 'Combo Fantastic', 
+      category: ['todos','combos','recomendados'], 
+      price: 23500, 
+      description:'¡Llena tu vida de experiencia con un combo!' 
+    },
+
 ];
 
 
@@ -593,7 +602,7 @@ function openModal(productId) {
           id: 11, 
           image: 'img/productos/mora.jpg', 
           name: 'Mora En Leche', 
-          category: ['todos','bebidas','recomendados'], 
+          category: ['todos','bebidas'], 
           price: 6000, 
           description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
       },
@@ -613,6 +622,14 @@ function openModal(productId) {
           price: 5000, 
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
+      { 
+        id: 14, 
+        image: 'img/productos/combofantasticweb.jpg', 
+        name: 'Combo Fantastic', 
+        category: ['todos','combos','recomendados'], 
+        price: 23500, 
+        description:'La costeña  +  porción de papas  +  limonada.' 
+    },
 ];
 
 
