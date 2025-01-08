@@ -369,40 +369,53 @@ function monitorearCambios() {
 
 
 
-// FUNCIÓN PARA ENVIAR LOS DATOS DEL CARRITO A WHATSAPP
 function finalizarCompra() {
-const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
-const telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
-const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
+    let telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
+    const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
 
-const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
-const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
+    // Formatear el número telefónico con el patrón 000 000 0000
+    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
 
-// CREAR EL BLOQUE DE TEXTO CON PRODUCTOS SELECCIONADOS, INCLUYENDO LA CANTIDAD
-let messageProducts = cartItems.map(item => 
-`*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` + `\n   _Indicaciones: ${item.instructions || ''}_`).join('\n');
+    // Obtener la fecha y hora actuales
+    const fechaActual = new Date();
+    const dia = String(fechaActual.getDate()).padStart(2, '0');
+    const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
+    const anio = fechaActual.getFullYear();
+    const fecha = `${dia}/${mes}/${anio}`;
 
-// GENERAR EL MENSAJE DE WHATSAPP PARA RECOGER EN TIENDA
-let mensaje = "*RECOGER EN TIENDA*\n\n";
-mensaje += "*DATOS DEL USUARIO:*\n";
-mensaje += `NOMBRE: ${nombre}\n`;
-mensaje += `TELÉFONO: ${telefono}\n\n`;
-mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
-mensaje += `${messageProducts}\n\n`;
-mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
-mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`; 
-mensaje += "*Ubicación de la tienda:*\n";
-mensaje += "https://bit.ly/4f2GU5I\n";
+    const hora = fechaActual.toLocaleTimeString('es-ES', { hour12: false }); // Formato 24 horas
 
-// CODIFICAR EL MENSAJE Y ABRIR WHATSAPP
-const encodedMessage = encodeURIComponent(mensaje);
-window.open(`https://wa.me/3022666530?text=${encodedMessage}`, '_blank');
+    // CREAR EL BLOQUE DE TEXTO CON PRODUCTOS SELECCIONADOS, INCLUYENDO LA CANTIDAD
+    let messageProducts = cartItems.map(item => 
+        `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` +
+        `\n   _Indicaciones: ${item.instructions || ''}_`
+    ).join('\n');
 
+    // GENERAR EL MENSAJE DE WHATSAPP PARA RECOGER EN TIENDA
+    let mensaje = "*RECOGER EN TIENDA*\n\n";
+    mensaje += `*FECHA:* ${fecha}\n`;
+    mensaje += `*HORA:* ${hora}\n\n`;
+    mensaje += "*DATOS DEL USUARIO:*\n";
+    mensaje += `*NOMBRE:* ${nombre}\n`;
+    mensaje += `*TELÉFONO:* ${telefono}\n\n`;
+    mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
+    mensaje += `${messageProducts}\n\n`;
+    mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
+    mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`; 
+    mensaje += "*Ubicación de la tienda:*\n";
+    mensaje += "https://bit.ly/4f2GU5I\n";
 
+    // CODIFICAR EL MENSAJE Y ABRIR WHATSAPP
+    const encodedMessage = encodeURIComponent(mensaje);
+    window.open(`https://wa.me/3022666530?text=${encodedMessage}`, '_blank');
 
     // Mostrar el modal tras finalizar la compra
     mostrarModalCarrito();
 }
+
 
 
 

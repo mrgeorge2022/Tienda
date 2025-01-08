@@ -544,10 +544,19 @@ function finalizarCompra() {
         return;
     }
 
+    // Obtener fecha y hora actuales
+    const fechaActual = new Date();
+    const dia = String(fechaActual.getDate()).padStart(2, '0');
+    const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
+    const anio = fechaActual.getFullYear();
+    const fecha = `${dia}/${mes}/${anio}`;
+
+    const hora = fechaActual.toLocaleTimeString('es-ES', { hour12: false }); // Formato 24 horas
+
     const messageProducts = cartItems.map(item =>
         `*${item.name} - $${formatNumber(parseFloat(item.price))} x ${item.quantity}*` +
         `\n   _Indicaciones: ${item.instructions || ''}_`).join('\n');
-    
+
     const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
     const costoDomicilio = parseFloat(localStorage.getItem('costoDomicilio') || 0);
     const totalFinal = totalProductos + costoDomicilio;
@@ -569,15 +578,22 @@ function finalizarCompra() {
     // Crear el enlace de Google Maps con las coordenadas de la ubicación
     const googleMapsLink = `https://www.google.com/maps?q=${latitud},${longitud}`;
 
-    const nombre = localStorage.getItem('nombre');
-    const telefono = localStorage.getItem('telefono');
+    const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
+    let telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
 
+    // Formatear el número telefónico con el patrón 000 000 0000
+    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
+    // Generar el mensaje para WhatsApp
     const whatsappMessage = `
 *DOMICILIO*
 
+*FECHA:* ${fecha}
+*HORA:* ${hora}
+
 *DATOS DEL USUARIO:*
-NOMBRE: ${nombre}
-TELÉFONO: ${telefono}
+*NOMBRE:* ${nombre}
+*TELÉFONO:* ${telefono}
 
 *DIRECCIÓN:*
 ${ubicacion}
@@ -598,13 +614,13 @@ COSTO DE DOMICILIO: $${formatNumber(costoDomicilio)}
 *Ubicación en Google Maps:*
 ${googleMapsLink}`;
 
-const encodedMessage = encodeURIComponent(whatsappMessage);
-window.open(`https://wa.me/3022666530?text=${encodedMessage}`, '_blank');
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    window.open(`https://wa.me/3022666530?text=${encodedMessage}`, '_blank');
 
-
-        // Mostrar el modal tras finalizar la compra
-        mostrarModalFin();
+    // Mostrar el modal tras finalizar la compra
+    mostrarModalFin();
 }
+
 
 
 
