@@ -33,14 +33,21 @@ body {
 .loader-image {
     width: 100px; /* Ajusta el tamaño de la imagen */
     height: 100px;
-    animation: spin 2s linear infinite; /* Animación de giro */
+    animation: pulse 1.5s ease-in-out infinite; /* Animación de palpitar */
     margin-bottom: 15px; /* Espacio entre la imagen y el texto */
 }
 
-/* Animación de giro */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Animación de palpitar (escala hacia arriba y hacia abajo) */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Tamaño original */
+    }
+    50% {
+        transform: scale(1.2); /* Aumenta el tamaño */
+    }
+    100% {
+        transform: scale(1); /* Vuelve al tamaño original */
+    }
 }
 
 /* Estilo para el texto */
@@ -146,8 +153,13 @@ header nav button:hover {
 
 /* Estilo de los artículos en el carrito */
 #cart-items-list {
-    margin-bottom: 10px;
+    margin-bottom: 50px;
     text-align: center;
+}
+
+#carritoimagen {
+    max-width: 40px;
+    margin-top: 20px;
 }
 
 .cart-item {

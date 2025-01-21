@@ -115,7 +115,10 @@ function loadCart() {
 
     // Verificar si el carrito está vacío
     if (cartItems.length === 0) {
-        cartItemsList.innerHTML = `<p>No hay productos en tu carrito.</p>`;
+        const imageUrl = 'img/iconos/carrito.png';
+        cartItemsList.innerHTML = `
+        <img src="${imageUrl}" alt="Imagen sin productos" id=carritoimagen>
+        <p>No hay productos en tu carrito.</p>`;
     } else {
         // MOSTRAR PRODUCTOS DEL CARRITO
         cartItems.forEach((product, index) => {
@@ -375,7 +378,7 @@ function finalizarCompra() {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
     const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
-
+    
     // Formatear el número telefónico con el patrón 000 000 0000
     telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
 
@@ -388,11 +391,11 @@ function finalizarCompra() {
 
     const hora = fechaActual.toLocaleTimeString('es-ES', { hour12: false }); // Formato 24 horas
 
-    // CREAR EL BLOQUE DE TEXTO CON PRODUCTOS SELECCIONADOS, INCLUYENDO LA CANTIDAD
-    let messageProducts = cartItems.map(item => 
-        `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity}*` +
-        `\n   _Indicaciones: ${item.instructions || ''}_`
-    ).join('\n');
+// Crear el bloque de texto con los productos seleccionados
+let messageProducts = cartItems.map(item => 
+    `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity} = $${formatNumber(parseFloat(item.price) * item.quantity)}*` +  // Total de cada producto
+    `\n   _${item.instructions || ''}_`  // Instrucciones del producto
+).join('\n');
 
     // GENERAR EL MENSAJE DE WHATSAPP PARA RECOGER EN TIENDA
     let mensaje = "*RECOGER EN TIENDA*\n\n";
@@ -404,7 +407,7 @@ function finalizarCompra() {
     mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
     mensaje += `${messageProducts}\n\n`;
     mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
-    mensaje += `*MÉTODO DE PAGO:* ${metodoPago}\n\n`; 
+    mensaje += `MÉTODO DE PAGO: *${metodoPago}*\n\n`; 
     mensaje += "*Ubicación de la tienda:*\n";
     mensaje += "https://bit.ly/4f2GU5I\n";
 

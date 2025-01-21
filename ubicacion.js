@@ -553,9 +553,11 @@ function finalizarCompra() {
 
     const hora = fechaActual.toLocaleTimeString('es-ES', { hour12: false }); // Formato 24 horas
 
-    const messageProducts = cartItems.map(item =>
-        `*${item.name} - $${formatNumber(parseFloat(item.price))} x ${item.quantity}*` +
-        `\n   _Indicaciones: ${item.instructions || ''}_`).join('\n');
+// Crear el bloque de texto con los productos seleccionados
+let messageProducts = cartItems.map(item => 
+    `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity} = $${formatNumber(parseFloat(item.price) * item.quantity)}*` +  // Total de cada producto
+    `\n   _${item.instructions || ''}_`  // Instrucciones del producto
+).join('\n');
 
     const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
     const costoDomicilio = parseFloat(localStorage.getItem('costoDomicilio') || 0);
@@ -563,7 +565,7 @@ function finalizarCompra() {
 
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';
     const ubicacion = localStorage.getItem('ubicacion') || document.getElementById('direccion').value || "Ubicación no disponible";
-    const puntoDeReferencia = document.getElementById('Punto_de_referencia').value || "";
+    const puntoDeReferencia = document.getElementById('Punto_de_referencia').value || "Ninguno";
 
     // Obtener las coordenadas de latitud y longitud
     const latitud = localStorage.getItem('latitud');
@@ -605,11 +607,11 @@ ${puntoDeReferencia}
 
 ${messageProducts}
 
-*TOTAL PRODUCTOS: $${formatNumber(totalProductos)}*
+TOTAL PRODUCTOS: $${formatNumber(totalProductos)}
 COSTO DE DOMICILIO: $${formatNumber(costoDomicilio)}
 
 *TOTAL A PAGAR: $${formatNumber(totalFinal)}*
-*MÉTODO DE PAGO:* ${metodoPago}
+MÉTODO DE PAGO: *${metodoPago}*
 
 *Ubicación en Google Maps:*
 ${googleMapsLink}`;

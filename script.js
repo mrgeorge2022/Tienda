@@ -305,7 +305,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 4, 
       image: 'img/productos/mister.jpg', 
       name: 'Mister', 
-      category: ['todos','perros','recomendados'], 
+      category: ['todos','perros'], 
       price: 15000, 
       description: '¡El sabor artesanal, en su máxima expresión!' 
     },
@@ -313,7 +313,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 5, 
       image: 'img/productos/royal.jpg', 
       name: 'Royal', 
-      category: ['todos','perros','recomendados'], 
+      category: ['todos','perros'], 
       price: 18000, 
       description: '¡Un bocado real, lleno de sabor y frescura!' 
     },
@@ -321,7 +321,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 6, 
       image: 'img/productos/express.jpg', 
       name: 'Express', 
-      category: ['todos','perros'], 
+      category: ['todos','perros','recomendados'], 
       price: 19000, 
       description: '¡Rapidez, sabor y calidad en cada mordisco!' 
     },
@@ -335,6 +335,14 @@ function displayProducts(category = '', searchQuery = '') {
     },
     { 
       id: 8, 
+      image: 'img/productos/papasfrancesas.jpg', 
+      name: 'Papas a la Francesa', 
+      category: ['todos','acompañantes','recomendados'], 
+      price: 5000, 
+      description: '¡Delicias de papas junto con paprika!' 
+    },
+    { 
+      id: 9, 
       image: 'img/productos/golosa.jpg', 
       name: 'La Golosa', 
       category: ['todos','picadas','recomendados'], 
@@ -342,15 +350,15 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Un festín de sabores que te hará volver por más!' 
     },
     { 
-      id: 9, 
+      id: 10, 
       image: 'img/productos/atrevida.jpg', 
       name: 'La Atrevida', 
-      category: ['todos','picadas'], 
+      category: ['todos','picadas','recomendados'], 
       price: 32000, 
       description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
     },
     { 
-      id: 10, 
+      id: 11, 
       image: 'img/productos/limon.jpg', 
       name: 'Limonada', 
       category: ['todos','bebidas','recomendados'], 
@@ -358,7 +366,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Frescura que te llena de vida en cada sorbo!' 
     },
     { 
-      id: 11, 
+      id: 12, 
       image: 'img/productos/mora.jpg', 
       name: 'Mora En Leche', 
       category: ['todos','bebidas'], 
@@ -366,7 +374,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡El sabor que acaricia tus sentidos!' 
     },
     { 
-      id: 12, 
+      id: 13, 
       image: 'img/productos/maracuya.jpg', 
       name: 'Maracuyá', 
       category: ['todos','bebidas','recomendados'],
@@ -374,7 +382,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Pura pasión en cada gota!' 
     },
     { 
-      id: 13, 
+      id: 14, 
       image: 'img/productos/lulo.jpg', 
       name: 'Lulo', 
       category: ['todos','bebidas'], 
@@ -382,7 +390,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'¡La frescura cítrica que te llena de energía!' 
     },
     { 
-      id: 14, 
+      id: 15, 
       image: 'img/productos/combofantasticweb.jpg', 
       name: 'Combo Fantastic', 
       category: ['todos','combos','recomendados'], 
@@ -566,7 +574,7 @@ function openModal(productId) {
           description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
       },
       { 
-          id: 7, 
+          id:7, 
           image: 'img/productos/rancher.jpg', 
           name: 'Rancher', 
           category: 'perros', 
@@ -574,7 +582,15 @@ function openModal(productId) {
           description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
       },
       { 
-          id: 8, 
+        id: 8, 
+        image: 'img/productos/papasfrancesas.jpg', 
+        name: 'Papas a la Francesa', 
+        category: ['todos','acompañantes'], 
+        price: 5000, 
+        description: '¡Delicias de papas junto con paprika!' 
+      },
+      { 
+          id: 9, 
           image: 'img/productos/golosa.jpg', 
           name: 'La Golosa', 
           category: 'picadas', 
@@ -582,7 +598,7 @@ function openModal(productId) {
           description: 'Chorizo costeño, cerdo jugoso y pechuga de pollo, acompañados de queso mozzarella, maíz tierno, salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco y un toque especial de salsa de maíz. ¡Un festín irresistible!' 
       },
       { 
-          id: 9, 
+          id: 10, 
           image: 'img/productos/atrevida.jpg', 
           name: 'La Atrevida', 
           category: 'picadas', 
@@ -590,7 +606,7 @@ function openModal(productId) {
           description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
       },
       {
-          id: 10, 
+          id: 11, 
           image: 'img/productos/limon.jpg', 
           name: 'Limonada', 
           category: ['todos','bebidas','recomendados'], 
@@ -598,7 +614,7 @@ function openModal(productId) {
           description: 'Nuestra limonada combina zumo de limones frescos, el toque justo de dulzura y abundante hielo para ofrecerte una bebida naturalmente refrescante y llena de sabor. ¡Perfecta para cualquier momento del día!' 
       },
       { 
-          id: 11, 
+          id: 12, 
           image: 'img/productos/mora.jpg', 
           name: 'Mora En Leche', 
           category: ['todos','bebidas'], 
@@ -606,7 +622,7 @@ function openModal(productId) {
           description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
       },
       { 
-          id: 12, 
+          id: 13, 
           image: 'img/productos/maracuya.jpg', 
           name: 'Maracuyá', 
           category: ['todos','bebidas','recomendados'], 
@@ -614,7 +630,7 @@ function openModal(productId) {
           description:'Nuestra bebida de maracuyá combina el intenso sabor tropical de su pulpa con la frescura justa para ofrecerte una experiencia deliciosa y revitalizante. Ideal para los amantes de lo exótico. ¡Perfecta para     cualquier ocasión!' 
       },
       { 
-          id: 13, 
+          id: 14, 
           image: 'img/productos/lulo.jpg', 
           name: 'Lulo', 
           category: ['todos','bebidas','recomendados'], 
@@ -622,7 +638,7 @@ function openModal(productId) {
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
       { 
-        id: 14, 
+        id: 15, 
         image: 'img/productos/combofantasticweb.jpg', 
         name: 'Combo Fantastic', 
         category: ['todos','combos','recomendados'], 
@@ -656,6 +672,7 @@ if (product) {
     document.getElementById('modal-product-instructions').value = '';
     document.getElementById('modal-quantity').value = 1;
   }
+  
 
   document.getElementById('product-modal').style.display = 'flex'; // Mostrar modal centrado
 }
@@ -673,6 +690,7 @@ window.onclick = function (event) {
       closeModal();
   }
 };
+
 
 
 

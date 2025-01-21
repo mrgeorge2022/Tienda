@@ -1,0 +1,10 @@
+recuerda el horario 
+
+1. mejoramos backgroung de terminos y condiciones 
+2. añadimos modal de papas francesas
+3.animacion de zoom en productos index
+4. cambiamos resaltado de total de productos en sms de whatsapp
+5. agregamos variante de no punto de referencia como "ninguno"
+6. añadimos iamgen de carrito a carrito de compras
+7. cambiamos el efecto giratoreo de carga 
+8. oculatamos capa negra de anuncios 

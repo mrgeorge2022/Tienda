@@ -73,6 +73,7 @@
                 <li><a href="#" onclick="activateCategoryLink('todos')">Todos</a></li>
                 <li><a href="#" onclick="activateCategoryLink('perros')">Perros</a></li>
                 <li><a href="#" onclick="activateCategoryLink('hamburguesas')">Hamburguesas</a></li>
+                <li><a href="#" onclick="activateCategoryLink('acompañantes')">Acompañantes</a></li>
                 <li><a href="#" onclick="activateCategoryLink('picadas')">Picadas</a></li>
                 <li><a href="#" onclick="activateCategoryLink('bebidas')">Bebidas</a></li>
                 <li><a href="#" onclick="activateCategoryLink('combos')">Combos</a></li>
@@ -85,6 +86,7 @@
                 <li><a href="#" onclick="displayProducts('todos')">Todos</a></li>
                 <li><a href="#" onclick="displayProducts('perros')">Perros</a></li>
                 <li><a href="#" onclick="displayProducts('hamburguesas')">Hamburguesas</a></li>
+                <li><a href="#" onclick="displayProducts('acompañantes')">Acompañantes</a></li>
                 <li><a href="#" onclick="displayProducts('picadas')">Picadas</a></li>
                 <li><a href="#" onclick="displayProducts('bebidas')">Bebidas</a></li>
                 <li><a href="#" onclick="displayProducts('combos')">Combos</a></li>
@@ -104,20 +106,28 @@
             <h2 id="modal-product-name"></h2>
             <img id="modal-product-image" src="" alt="Imagen del Producto" class="modal-product-image">
             <p id="modal-product-description"></p>
+
+                <!-- Opción para agregar papas (solo para productos con id 1, 2, 3) -->
+                <div id="add-fries-container" style="display: none;">
+                    <label for="add-fries">¿Deseas agregar papas?</label>
+                    <input type="checkbox" id="add-fries" name="add-fries">
+                </div>
+
             <p><strong>$<span id="modal-product-price"></span></strong></p>
             <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
 
 
             <div class="quantity-control">
                 <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
-
-                <input type="text" id="modal-quantity" value="1" oninput="validateQuantityInput()">
-
+            
+                <input type="text" id="modal-quantity" value="1" oninput="updateTotalPrice()">
+            
                 <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
             </div>
-
+            
+            <!-- Botón de agregar al carrito, se actualiza con el precio total -->
             <button id="add-to-cart-button" onclick="addToCartFromModal()">Agregar al carrito</button>
-
+            
         </div>
     </div>
     </div>
