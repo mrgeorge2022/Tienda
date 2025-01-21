@@ -747,14 +747,8 @@ color: #333;
     object-fit: cover; /* Recorta la imagen para llenar el contenedor */
     border-radius: 8px; /* Bordes redondeados en la imagen */
     margin-bottom: 10px; /* Espacio debajo de la imagen */
-    transition: transform 0.2s ease-in-out; /* Transición suave para el efecto de zoom */
 }
 
-/* Efecto de zoom al pasar el cursor */
-.product-image:hover {
-    transform: scale(1.45); /* Escala la imagen al 140% de su tamaño original */
-    cursor: zoom-in; /* Cambia el cursor para indicar que la imagen se puede hacer zoom */
-}
 
 /* Estilos para el nombre del producto */
 .product-item h3 {
