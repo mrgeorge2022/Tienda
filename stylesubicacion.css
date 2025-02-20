@@ -1,0 +1,526 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    color: #333;
+}
+
+
+/* Estilo del loader de bienvenida */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333; /* Fondo oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column; /* Alinea el texto y la imagen en una columna */
+    text-align: center; /* Centra el texto */
+}
+
+/* Estilo para la imagen */
+.loader-image {
+    width: 100px; /* Ajusta el tamaño de la imagen */
+    height: 100px;
+    animation: pulse 1.5s ease-in-out infinite; /* Animación de palpitar */
+    margin-bottom: 15px; /* Espacio entre la imagen y el texto */
+}
+
+/* Animación de palpitar (escala hacia arriba y hacia abajo) */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Tamaño original */
+    }
+    50% {
+        transform: scale(1.2); /* Aumenta el tamaño */
+    }
+    100% {
+        transform: scale(1); /* Vuelve al tamaño original */
+    }
+}
+
+/* Estilo para el texto */
+#welcome-text {
+    font-size: 18px;
+    color: #fff; /* Color blanco para el texto */
+    animation: fadeInText 6s ease-out; /* Animación para que el texto aparezca con efecto */
+}
+
+
+#cerrar{
+    cursor: pointer;
+}
+
+.close {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 40px;
+    cursor: pointer;
+    margin-right: 20px;
+    margin-top: 20px;
+    color: #aaa; /* Color del botón */
+    transition: color 0.1s;
+}  
+
+.close:hover {
+    color: #ff0000; /* Color al pasar el ratón */
+}
+
+/* Estilo para el botón de "¡Finalizar compra!" */
+#btnFinalizar {
+    background-color: #4CAF50; /* Verde */
+    color: white; /* Texto blanco */
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: none; /* Se oculta inicialmente */
+}
+
+/* Estilo para cuando el botón es hover */
+#btnFinalizar:hover {
+    background-color: #45a049; /* Verde más oscuro */
+}
+
+
+
+#Selecciona_tu_ubicacion{
+    color: #ffffff;
+    margin-bottom: 0PX;
+
+}
+
+#carrito {
+    background-color: #444; /* Fondo blanco con 20% de transparencia */
+    border-radius: 8px;
+    padding: 5px;
+    margin: 10px auto;
+    width: 81%;
+}
+
+
+/* Estilo común para todos los inputs */
+#direccion, #Punto_de_referencia {
+    border: 1px solid #fff; /* Borde blanco cuando se selecciona */
+    background-color: #444; /* Fondo oscuro cuando se selecciona */
+    color: #fff; /* Color de texto blanco */
+    padding: 8px; /* Ajuste de padding */
+    padding-right: 40px; /* Espacio adicional a la derecha para el ícono */
+    margin: 5px auto; /* Margen para centrar el input */
+    display: block; /* Asegura que se mantenga en bloque */
+    outline: none; /* Elimina el borde por defecto del navegador */
+}
+
+/* Estilo cuando el input está seleccionado (focus) */
+#direccion:focus, #Punto_de_referencia:focus {
+    border: 1px solid #ffc400; /* Borde amarillo cuando se selecciona */
+    background-color: #555; /* Fondo oscuro cuando se selecciona */
+    color: #fff; /* Color de texto blanco */
+    padding: 8px; /* Ajuste de padding */
+    padding-right: 40px; /* Espacio adicional a la derecha para el ícono */
+    margin: 5px auto; /* Margen para centrar el input */
+    display: block; /* Asegura que se mantenga en bloque */
+    outline: none; /* Elimina el borde por defecto del navegador */
+}
+
+
+
+
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 0px;
+}
+
+h3 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+    display: none;
+}
+
+#lista-carrito {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+#lista-carrito li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#lista-carrito li:last-child {
+    border-bottom: none;
+}
+
+#productos_seleccionados p {
+    text-align: right;
+    margin: 2px;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#total-pago{
+    border-top: solid 1px #fff;
+    padding-top: 5px;
+}
+
+#total {
+    font-weight: bold;
+    text-align: right;
+    margin: 8px;
+    font-size: 1.1em;
+    color: #ffffff;
+}
+
+#direccion-container {
+    display: flex;
+    margin: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+
+
+
+/* Estilo común para los inputs */
+input[type="text"] {
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    box-sizing: border-box; /* Asegura que el padding no desborde */
+    width: 100%; /* Ocupa el 100% del ancho disponible */
+    padding-right: 40px; /* Espacio adicional para el ícono */
+    position: relative; /* Necesario para que el ícono esté posicionado dentro */
+}
+
+/* Contenedor padre que centra el .input-container */
+.input-container-wrapper {
+    display: flex;
+    justify-content: center; /* Centra el contenedor hijo horizontalmente */
+    width: 100%; /* Ocupa el 100% del ancho disponible */
+    align-items: center; /* Centra los elementos verticalmente */
+    height: 100vh; /* Hace que ocupe toda la altura de la ventana */
+}
+
+/* Estilo para el contenedor del input */
+.input-container {
+    display: flex; /* Utiliza flexbox para alinear los elementos */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Alinea el contenido verticalmente */
+    position: relative; /* Necesario para posicionar la imagen dentro del input */
+    width: 80%; /* Ajusta el ancho del contenedor */
+    margin: 0 auto; /* Centra el contenedor de manera horizontal */
+}
+
+/* Estilo para la imagen dentro del input */
+.input-container input {
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    box-sizing: border-box; /* Asegura que el padding no desborde */
+    width: 100%; /* Ocupa el 100% del ancho disponible */
+    padding-right: 30px; /* Deja espacio para la imagen */
+}
+
+/* Estilo para la imagen del ícono dentro del input */
+.input-container img {
+    width: 20px; /* Ancho de la imagen */
+    height: 20px; /* Alto de la imagen */
+    position: absolute; /* Posiciona la imagen dentro del input */
+    right: 10px; /* Coloca la imagen a la derecha del input */
+    top: 50%; /* Centra verticalmente la imagen */
+    transform: translateY(-50%); /* Ajuste para centrar la imagen verticalmente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+/* Estilos responsivos para pantallas más pequeñas */
+@media (max-width: 768px) {
+    /* Para pantallas más pequeñas, reducimos el ancho de los inputs */
+    .input-container {
+        width: 80%; /* Los inputs ocupan el 80% del ancho en móviles */
+    }
+}
+
+/* Estilos para pantallas muy pequeñas (móviles) */
+@media (max-width: 480px) {
+    /* Los inputs ocupan el 80% en pantallas móviles */
+    .input-container {
+        width: 80%; /* Los inputs ocupan el 80% del ancho en móviles */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffc400;
+    color: #000;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #c29502;
+}
+
+#btnListo {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffc400;
+    color: #000;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnListo:hover {
+    background-color: #009708;
+    color: #fff;
+}
+
+#map {
+    border: 1px solid #fffb00;
+    border-radius: 8px;
+    margin: 10px auto;
+    height: 450px;
+    width: 82%;
+
+}
+
+
+/* Modal de datos personales */
+.modaldedatospersonales {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo más oscuro */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modaldedatospersonales.active {
+    display: flex;
+}
+
+/* Contenedor del contenido del modal */
+.modaldatosubicacion {
+    color: #fff;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 100px #c29502;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Estilo común para todos los inputs */
+.modaldatosubicacion input {
+    color: #fff;
+    background-color: #444;
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+/* Estilo para los inputs de texto */
+.modaldatosubicacion input[type="text"] {
+    font-size: 14px;
+}
+
+/* Estilo para los inputs de número */
+.modaldatosubicacion input[type="number"] {
+    font-size: 14px;
+}
+
+/* Ocultar el aumentador en campos de tipo number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#contentspancerrar {
+    justify-content: right;
+}
+
+
+/* Estilo del botón de cerrar */
+.cerrarModal {
+    font-size: 40px;
+    cursor: pointer;
+    color: #444; /* Color del botón */
+    padding: 8px;
+    font-weight: bold;
+    transition: color 0.3s;
+    position: absolute; /* Para posicionarlo en relación al contenedor modal */
+    top: 8px;  /* Distancia desde el borde superior */
+    right: 10px; /* Distancia desde el borde derecho */
+    z-index: 1001; /* Asegura que esté por encima de otros elementos */
+}
+
+/* Efecto al pasar el cursor sobre el botón */
+.cerrarModal:hover {
+    color: #ff0000;
+}
+
+.modaldatosubicacion h2{
+    margin-top: 40px;
+    color: #fff;
+    margin-bottom: 0px;
+}
+
+.modaldatosubicacion h4 {
+    font-size: 12px;
+    margin: 0px;
+}
+.modaldatosubicacion button{
+    background-color: #ffc400;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin: 15px 0;
+
+}
+
+.modaldatosubicacion button:hover {
+    background-color: #c29502;
+}
+
+
+/* Estilos generales para el modal */
+.modalfin {
+    display: none; /* Ocultar el modal por defecto */
+    position: fixed;
+    z-index: 1000; /* Asegurarse de que el modal esté encima de todo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+    backdrop-filter: blur(10px); /* Aplica el desenfoque al fondo */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenido del modal */
+.modal-content-fin {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Necesario para posicionar la X dentro de este contenedor */
+}
+
+/* Estilo de la "X" de cierre */
+.closefin {
+    color: #333;
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px; /* Ajustar para que quede en la parte superior */
+    right: 10px; /* Alineado a la derecha */
+    cursor: pointer;
+}
+
+/* Título del modal */
+.modal-content-fin h2 {
+    font-size: 22px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+/* Texto del modal */
+.modal-content-fin p {
+    font-size: 16px;
+    color: #555;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Botón de "Volver al inicio" */
+.modal-content-fin button {
+    width: 250px;
+    background-color: #ffc400;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 0px;
+}
+
+.modal-content-fin button:hover {
+    background-color: #c29502; /* Azul más oscuro al pasar el ratón */
+}
+
+
+
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-size: 0.9rem
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Ubicación</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+    <link rel="stylesheet" href="stylesubicacion.css">
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4cJpzAAwtAkH-pBZasL1BDOfITcxyyYE&libraries=places"></script>
+</head>
+
+<body>
+
+<!-- Animación de carga con una imagen giratoria y texto -->
+<div id="welcome-loader" class="loader" style="display: flex;">
+    <img src="img/icono_tienda.png" alt="Cargando..." class="loader-image">
+    <p id="welcome-text">Cargando...</p>
+</div>
+
+    <header>
+        <div id="cerrar">
+            <span class="close" onclick="window.location.href='carrito.html'">×</span>
+        </div>
+        <h2 id="Selecciona_tu_ubicacion">Selecciona tu ubicación:</h2>
+    </header>
+
+
+    
+    <section class="input-container">
+        <input type="text" id="direccion" placeholder="Buscar tu dirección" required>
+        <img src="img/iconos/borrartexto.png" alt="Borrar texto" onclick="borrarTexto('direccion')">
+    </section>
+
+    <section class="input-container">
+        <input id="Punto_de_referencia" type="text" placeholder="Punto de referencia (Opcional)">
+        <img src="img/iconos/borrartexto.png" alt="Borrar texto" onclick="borrarTexto('Punto_de_referencia')">
+    </section>
+
+    
+
+    <!-- Mapa de Google Maps -->
+    <div id="map"></div>
+
+
+    <section id="direccion-container">
+        <button onclick="usarUbicacionActual()">Usar mi ubicación actual</button>
+    </section>
+
+    <!-- Carrito de compras -->
+    <section id="carrito">
+        <h3>Tu pedido</h3>
+        <div id="productos_seleccionados">
+            <p id="costo-envio">Domicilio: $ 0</p>
+            <p id="costo-productos">Productos: $0</p>
+            <p id="total-pago">Total a pagar: $0</p>
+        </div>
+    </section>
+
+    <!-- Botón ¡Listo! -->
+    <section id="direccion-container">
+        <button id="btnListo" onclick="habilitarModalDatosPersonales()">¡Listo!</button>
+    </section>
+
+    <!-- Modal de datos personales -->
+    <div class="modaldedatospersonales" id="datospersonales">
+        <div class="modaldatosubicacion">
+            <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
+            <h2>¡Estas a un paso de completar tu pedido!</h2>
+            <h4>Regálanos estos datos para entregar exitosamente tu pedido.</h4>
+            <input type="text" id="nombre" placeholder="Nombre y apellido">
+            <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+            <button id="aceptarmodal" onclick="aceptarModalDatos()">Aceptar</button>
+
+            <div id="direccion-container">
+                <button id="btnFinalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="compraFinalizadaModal" class="modalfin">
+        <div class="modal-content-fin">
+            <span class="closefin">&times;</span>
+            <h2>¡Compra finalizada!</h2>
+            <p>Gracias por tu compra.
+                <br>Revisa tu WhatsApp
+            </p>
+            <button id="volverIniciofin">Volver al inicio</button>
+        </div>
+    </div>
+
+    <!--<footer>
+        <p>&copy; Mr. George. Todos los derechos reservados.</p>
+    </footer>-->
+
+    <script src="ubicacion.js"></script>
+</body>
+
+</html>

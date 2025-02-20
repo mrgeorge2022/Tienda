@@ -1,0 +1,666 @@
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #333;
+}
+
+
+
+/* Estilo del loader de bienvenida */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333; /* Fondo oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column; /* Alinea el texto y la imagen en una columna */
+    text-align: center; /* Centra el texto */
+}
+
+/* Estilo para la imagen */
+.loader-image {
+    width: 100px; /* Ajusta el tamaño de la imagen */
+    height: 100px;
+    animation: pulse 1.5s ease-in-out infinite; /* Animación de palpitar */
+    margin-bottom: 15px; /* Espacio entre la imagen y el texto */
+}
+
+/* Animación de palpitar (escala hacia arriba y hacia abajo) */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Tamaño original */
+    }
+    50% {
+        transform: scale(1.2); /* Aumenta el tamaño */
+    }
+    100% {
+        transform: scale(1); /* Vuelve al tamaño original */
+    }
+}
+
+/* Estilo para el texto */
+#welcome-text {
+    font-size: 18px;
+    color: #fff; /* Color blanco para el texto */
+    animation: fadeInText 6s ease-out; /* Animación para que el texto aparezca con efecto */
+}
+
+
+
+
+
+
+
+
+/* Header */
+header {
+    margin: 0;
+    margin-top: 20px;
+    color: white;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#encabezado{
+    
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.close {
+    font-size: 40px;
+    cursor: pointer;
+    color: #aaa; /* Color del botón */
+    padding: 8px;
+    transition: color 0.1s;
+}
+
+.close:hover {
+    color: #ff0000; /* Color al pasar el ratón */
+}
+
+
+
+
+header h1 {
+    margin-top: 8px;
+    font-size: 24px;
+}
+
+
+
+header nav button {
+    background-color: #333; /* Color suave para los botones */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+header nav button:hover {
+    color: #ff5722; /* Texto a color al hacer hover */
+    background-color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}
+
+/* Carrito de compras */
+
+#contenedorproductos{
+    justify-content: space-between;
+}
+
+#cart-items {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 90%; /* Ancho máximo en pantallas pequeñas */
+}
+
+@media (min-width: 1024px) {
+    #cart-items {
+        max-width: 30%; /* Cambia a 40% en pantallas grandes */
+    }
+}
+
+
+#cart-items h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilo de los artículos en el carrito */
+#cart-items-list {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+#carritoimagen {
+    max-width: 40px;
+    margin-top: 20px;
+}
+
+.cart-item {
+    height: 80px;
+    display: flex;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    justify-content: space-between;
+}
+
+#contenedordeimagencarrito{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart-product-image {
+    width: 80px; /* Ajusta el tamaño según prefieras */
+    height: 50px; /* Mantén esta altura para un contenedor cuadrado */
+    margin-right: 10px;
+    overflow: hidden; /* Asegura que la imagen no se salga del contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Estilos para la imagen dentro del contenedor */
+.cart-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra todo el contenedor sin deformarse */
+    display: block;
+}
+
+
+
+#basura{
+    position: relative;
+    width: 20px;/* Tamaño ajustado */
+    height: 20px;/* Tamaño ajustado */
+}
+
+
+/* Contenedor de acciones */
+.action-container {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en una columna */
+    justify-content: space-between; /* Espaciado máximo entre los elementos */
+    align-items: flex-end; /* Alinea los elementos a la derecha */
+    position: relative;
+}
+
+/* Botón de basura */
+.action-container #basura {
+    cursor: pointer;
+    width: 20px; /* Ajusta el tamaño del icono */
+    height: 20px;
+    margin-bottom: auto; /* Empuja el subtotal hacia la parte inferior */
+}
+
+/* Subtotal en la parte inferior derecha */
+.action-container .subtotal-popup {
+margin-top: 30px;
+}
+
+/* Alineación del texto dentro de la mini ventana */
+.action-container .subtotal-popup p {
+    margin: 0; /* Eliminar márgenes del párrafo */
+    font-weight: bold; /* Hacer el texto en negrita */
+}
+
+
+
+/* Animación para el elemento que desaparece al darle clik en la imagen de basura*/
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translateX(20px);
+    }
+}
+
+.cart-item.fade-out {
+    animation: fadeOut 0.5s forwards;
+}
+
+
+
+#nombre_precio_intrucciones{
+    width: 350px;               /* Definir el ancho del contenedor */
+    text-align: left;           /* Alineación del texto */
+    max-height: 100px;          /* Altura máxima para el contenedor */
+    overflow-y: auto;           /* Barra de desplazamiento vertical si es necesario */
+    overflow-x: hidden;         /* Eliminar la barra de desplazamiento horizontal */
+    word-wrap: break-word;      /* Permite que el texto se ajuste a un nuevo salto de línea cuando es demasiado largo */
+    word-break: break-word;     /* Hace que las palabras largas se rompan para evitar el desbordamiento */
+
+}
+
+#nombre_precio_intrucciones p{
+    margin: 2px;
+}
+
+
+.cart-item p {
+    max-width: 80%;
+    max-height: 25px;
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+.cart-item button {
+    background-color: #aaa; 
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item button:hover {
+    background-color: #ff0000;
+    color: #fafafa;
+}
+
+h4{
+    margin-top: 20px;
+    font-size: 15px;
+    color: #ff0000;
+}
+
+/* Estilo para el select */
+#opcionesPago {
+    margin-top: 10px;
+    width: 40%; /* Ajusta el ancho al contenedor */
+    max-width: 200px; /* Limita el tamaño máximo */
+    padding: 8px 5px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border: 2px solid #b9b9b9; /* Borde amarillo */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #ffffff; 
+    color: #000000; /* Color de texto */
+    transition: border-color 0.3s, background-color 0.3s; /* Transiciones suaves */
+    
+    cursor: pointer; /* Cambio de cursor a mano */
+}
+
+/* Estilo para la opción predeterminada */
+#opcionesPago option:disabled {
+    color: #bdbdbd; /* Color gris para la opción predeterminada */
+    background-color: #888888; /* Fondo gris oscuro */
+}
+
+/* Estilo cuando se selecciona el select */
+#opcionesPago:focus {
+    border-color: #00b13b; /* Cambio de color del borde cuando se enfoca */
+    background-color: #fcfcfc; /* Fondo un poco más oscuro */
+}
+
+/* Estilo de las opciones */
+#opcionesPago option {
+    background-color: #ffffff; /* Fondo oscuro para las opciones */
+    color: #000000; /* Color blanco para el texto */
+}
+
+/* Estilo para cuando el select tiene hover */
+#opcionesPago:hover {
+    border-color: #00b13b; /* Borde rojo cuando el mouse pasa por encima */
+    background-color: #ffffff; /* Fondo más claro */
+}
+
+
+
+#metododepago_y_total{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Total del carrito */
+#cart-total {
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #000000;
+    /*margin: 20px 0;*/
+    text-align: right;
+}
+
+
+
+
+/* Botón principal de acción */
+
+button {
+    background-color: #ffc400;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin: 15px 0;
+}
+
+
+
+
+/* Modal de opciones de pago */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+    backdrop-filter: blur(5px); /* Aplica el desenfoque al fondo */
+}
+
+.modal-content {
+    margin: auto;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 10px 100px #ffae00;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+    justify-content: center;
+}
+
+
+#motodomicilio{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    filter: invert();
+
+}
+
+
+#botoncancelar {
+    margin-top: 30px;
+    width: 130px;
+    text-align: center;
+    font-size: 15px;
+    background-color: #00000070;
+}
+
+#botoncancelar:hover {
+    background-color: #ff0000;
+}
+
+.modal-content h2 {
+    font-size: 26px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.modal button {
+    margin: 5px;
+    width: 90%;
+    font-size: 18px;
+    background-color: #ffc400;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+    background-color: #c29502;
+}
+
+/* Animación de aparición del modal */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+/* Modal de datos personales */
+.modaldedatospersonales {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modaldedatospersonales.active {
+    display: flex;
+}
+
+/* Contenedor del contenido del modal */
+.modaldatos {
+    color: #fff;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 100px #c29502;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.modaldatos h2{
+    margin-top: 40px;
+}
+
+/* Estilo común para todos los inputs */
+.modaldatos input {
+    color: #fff;
+    background-color: #444;
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+/* Estilo para los inputs de texto */
+.modaldatos input[type="text"] {
+    font-size: 14px;
+}
+
+/* Estilo para los inputs de número */
+.modaldatos input[type="number"] {
+    font-size: 14px;
+}
+
+/* Ocultar el aumentador en campos de tipo number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+#contentspancerrar {
+    justify-content: right;
+}
+
+
+/* Estilo del botón de cerrar */
+.cerrarModal {
+    font-size: 40px;
+    cursor: pointer;
+    color: #444; /* Color del botón */
+    padding: 8px;
+    font-weight: bold;
+    transition: color 0.3s;
+    position: absolute; /* Para posicionarlo en relación al contenedor modal */
+    top: 8px;  /* Distancia desde el borde superior */
+    right: 10px; /* Distancia desde el borde derecho */
+    z-index: 1001; /* Asegura que esté por encima de otros elementos */
+}
+
+/* Efecto al pasar el cursor sobre el botón */
+.cerrarModal:hover {
+    color: #ff0000;
+}
+
+
+/* Estilo para el botón de "¡Finalizar compra!" */
+#btnFinalizar {
+    background-color: #4CAF50; /* Verde */
+    color: white; /* Texto blanco */
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: none; /* Se oculta inicialmente */
+}
+
+/* Estilo para cuando el botón es hover */
+#btnFinalizar:hover {
+    background-color: #45a049; /* Verde más oscuro */
+}
+
+.modaldatos button:hover {
+    background-color: #c29502;
+}
+
+
+h3{
+    font-size: 12px;
+}
+
+
+
+/* Estilos generales para el modal */
+.modalfin {
+    display: none; /* Ocultar el modal por defecto */
+    position: fixed;
+    z-index: 1000; /* Asegurarse de que el modal esté encima de todo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+    backdrop-filter: blur(10px); /* Aplica el desenfoque al fondo */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenido del modal */
+.modal-content-fin {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Necesario para posicionar la X dentro de este contenedor */
+}
+
+/* Estilo de la "x" de cierre */
+.closefin {
+    color: #333;
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px; /* Ajustar para que quede en la parte superior */
+    right: 10px; /* Alineado a la derecha */
+    cursor: pointer;
+}
+
+/* Título del modal */
+.modal-content-fin h2 {
+    font-size: 22px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+/* Texto del modal */
+.modal-content-fin p {
+    font-size: 16px;
+    color: #555;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Botón de "Volver al inicio" */
+.modal-content-fin button {
+    width: 250px;
+    background-color: #ffc400; 
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 0px;
+    font-weight: normal;
+}
+
+.modal-content-fin button:hover {
+    background-color: #c29502; 
+}
+
+
+
+
+
+
