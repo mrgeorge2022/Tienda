@@ -281,63 +281,63 @@ let cart = []; // Este arreglo almacenará los productos del carrito con su cant
 
 function displayProducts(category = '', searchQuery = '') {
   const products = [
-    
     { 
       id: 1, 
-      image: 'img/productos/LaCosteña.jpg', 
-      name: 'La Costeña', 
-      category: ['todos','hamburguesas'], 
-      price: 21000, 
-      description: '¡Un viaje directo al paraíso del sabor!' 
-    },
-    { 
-      id: 2, 
-      image: 'img/productos/LaMentirosa.jpg', 
-      name: 'La Mentirosa', 
-      category: ['todos','hamburguesas'], 
-      price: 24000, 
-      description: '¡Sabor tan increíble, que parece un mito!' 
-    },
-    { 
-      id: 3, 
-      image: 'img/productos/LaBestia.jpg', 
-      name: 'La Bestia', 
-      category: ['todos','hamburguesas', 'recomendados'], 
-      price: 28000, 
-      description: '¡Doble de carne, doble de sabor, el rey de las hamburguesas!' 
-    },
-    { 
-      id: 4, 
-      image: 'img/productos/mister.jpg', 
-      name: 'Mister', 
-      category: ['todos','perros'], 
-      price: 15000, 
-      description: '¡El sabor artesanal, en su máxima expresión!' 
-    },
-    { 
-      id: 5, 
-      image: 'img/productos/royal.jpg', 
-      name: 'Royal', 
-      category: ['todos','perros'], 
-      price: 18000, 
-      description: '¡Un bocado real, lleno de sabor y frescura!' 
-    },
-    { 
-      id: 6, 
       image: 'img/productos/express.jpg', 
       name: 'Express', 
       category: ['todos','perros','recomendados'], 
-      price: 19000, 
+      price: 15000, 
       description: '¡Rapidez, sabor y calidad en cada mordisco!' 
     },
     { 
-      id: 7, 
+      id: 2, 
+      image: 'img/productos/mister.jpg', 
+      name: 'Mister', 
+      category: ['todos','perros'], 
+      price: 10000, 
+      description: '¡El sabor artesanal, en su máxima expresión!' 
+    },
+    { 
+      id: 3, 
+      image: 'img/productos/royal.jpg', 
+      name: 'Royal', 
+      category: ['todos','perros'], 
+      price: 14000, 
+      description: '¡Un bocado real, lleno de sabor y frescura!' 
+    },
+    { 
+      id: 4, 
       image: 'img/productos/rancher.jpg', 
       name: 'Rancher', 
       category: ['todos','perros'], 
-      price: 20000, 
+      price: 16000, 
       description: '¡Irresistible y lleno de pasión, el mejor perro de la casa!' 
     },
+    { 
+      id: 5, 
+      image: 'img/productos/LaCosteña.jpg', 
+      name: 'La Costeña', 
+      category: ['todos','hamburguesas'], 
+      price: 17000, 
+      description: '¡Un viaje directo al paraíso del sabor!' 
+    },
+    { 
+      id: 6, 
+      image: 'img/productos/LaMentirosa.jpg', 
+      name: 'La Mentirosa', 
+      category: ['todos','hamburguesas'], 
+      price: 20000, 
+      description: '¡Sabor tan increíble, que parece un mito!' 
+    },
+    { 
+      id: 7, 
+      image: 'img/productos/LaBestia.jpg', 
+      name: 'La Bestia', 
+      category: ['todos','hamburguesas', 'recomendados'], 
+      price: 24000, 
+      description: '¡Doble de carne, doble de sabor, el rey de las hamburguesas!' 
+    },
+
     { 
       id: 8, 
       image: 'img/productos/papasfrancesas.jpg', 
@@ -546,62 +546,63 @@ document.addEventListener('click', function(event) {
 // FUNCIÓN PARA ABRIR EL MODAL CON LOS DETALLES DEL PRODUCTO
 function openModal(productId) {
   const products = [
+    { 
+      id: 1, 
+      image: 'img/productos/express.jpg', 
+      name: 'Express', 
+      category: 'perros', 
+      price: 15000, 
+      description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
+    },
+    { 
+      id: 2, 
+      image: 'img/productos/mister.jpg', 
+      name: 'Mister', 
+      category: 'perros', 
+      price: 10000, 
+      description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
+  },
+  { 
+      id: 3, 
+      image: 'img/productos/royal.jpg', 
+      name: 'Royal', 
+      category: 'perros', 
+      price: 14000, 
+      description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
+  },
+  { 
+      id:4, 
+      image: 'img/productos/rancher.jpg', 
+      name: 'Rancher', 
+      category: 'perros', 
+      price: 16000, 
+      description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
+  },
       {
-          id: 1, 
+          id: 5, 
           image: 'img/productos/LaCosteña.jpg', 
           name: 'La Costeña', 
           category: 'hamburguesas', 
-          price: 21000, 
+          price: 17000, 
           description: 'Carne de res jugosa (150g), queso costeño, tocineta ahumada, lechuga crespa, cebolla caramelizada estilo gourmet, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. ¡Una explosión de sabor!' 
       },
       { 
-          id: 2, 
+          id: 6, 
           image: 'img/productos/LaMentirosa.jpg', 
           name: 'La Mentirosa', 
           category: 'hamburguesas', 
-          price: 24000, 
+          price: 20000, 
           description: 'Carne de res (150g), lechuga fresquita, cebolla caramelizada, aguacate cremoso, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. Todo esto, presentado con queso mozzarella y maíz tierno. ¡Increíblemente deliciosa!' 
       },
       { 
-          id: 3, 
+          id: 7, 
           image: 'img/productos/LaBestia.jpg', 
           name: 'La Bestia', 
           category: 'hamburguesas', 
-          price: 28000,  
+          price: 24000,  
           description: 'Doble carne de res (300g), tocineta ahumada, lechuga fresquita, cebolla caramelizada estilo gourmet, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. ¡Completada con plátano amarillo frito, aguacate y una capa de queso mozzarella con maíz tierno!' 
       },
-      { 
-          id: 4, 
-          image: 'img/productos/mister.jpg', 
-          name: 'Mister', 
-          category: 'perros', 
-          price: 15000, 
-          description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
-      },
-      { 
-          id: 5, 
-          image: 'img/productos/royal.jpg', 
-          name: 'Royal', 
-          category: 'perros', 
-          price: 18000, 
-          description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
-      },
-      { 
-          id: 6, 
-          image: 'img/productos/express.jpg', 
-          name: 'Express', 
-          category: 'perros', 
-          price: 19000, 
-          description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
-      },
-      { 
-          id:7, 
-          image: 'img/productos/rancher.jpg', 
-          name: 'Rancher', 
-          category: 'perros', 
-          price: 20000, 
-          description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
-      },
+      
       { 
         id: 8, 
         image: 'img/productos/papasfrancesas.jpg', 
@@ -738,13 +739,15 @@ window.onclick = function (event) {
 // FUNCIÓN PARA AGREGAR AL CARRITO DESDE EL MODAL
 function addToCartFromModal() {
 
-
   console.log('Verificando si la tienda está abierta...');
 
-  // VERIFICAR SI LA TIENDA ESTÁ ABIERTA
+  // VERIFICAR SI LA TIENDA ESTÁ ABIERTA O EN MODO RESERVA
   if (!estaAbierta()) {
-    alert("La tienda está cerrada, no puedes agregar productos al carrito en este momento. Te invitamos a ver nuestro horario");
-    return; // DETIENE LA FUNCIÓN SI LA TIENDA ESTÁ CERRADA
+    const estadoTienda = document.getElementById('estado-tienda');
+    if (!estadoTienda.classList.contains('reservar')) {
+      alert("La tienda está cerrada, no puedes agregar productos al carrito en este momento. Te invitamos a ver nuestro horario");
+      return; // DETIENE LA FUNCIÓN SI LA TIENDA ESTÁ CERRADA Y NO ESTÁ EN MODO RESERVA
+    }
   }
 
   const name = document.getElementById('modal-product-name').innerText;
@@ -898,14 +901,27 @@ function actualizarEstadoTienda() {
   // BUSCAR EL HORARIO CORRESPONDIENTE AL DÍA ACTUAL
   const horarioHoy = horariosTienda.find(horario => horario.dia === diaActual);
 
-  if (horarioHoy && horarioHoy.horaApertura !== null && horarioHoy.horaCierre !== null && horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre) {
+  if (horarioHoy && horarioHoy.horaApertura !== null && horarioHoy.horaCierre !== null) {
+    if (horaActual >= horarioHoy.horaApertura && horaActual < horarioHoy.horaCierre) {
       estadoTienda.textContent = "¡La tienda está abierta!";
       estadoTienda.classList.add("abierto");
       estadoTienda.classList.remove("cerrado");
-  } else {
+    } else if (horaActual >= (horarioHoy.horaApertura - 1) && horaActual < horarioHoy.horaApertura) {
+      estadoTienda.textContent = "Cerrado, pero puedes reservar.";
+      estadoTienda.classList.add("reservar");
+      estadoTienda.classList.remove("cerrado");
+      estadoTienda.classList.remove("abierto");
+    } else {
       estadoTienda.textContent = "La tienda está cerrada.";
       estadoTienda.classList.add("cerrado");
       estadoTienda.classList.remove("abierto");
+      estadoTienda.classList.remove("reservar");
+    }
+  } else {
+    estadoTienda.textContent = "Hoy la tienda permanece cerrada.";
+    estadoTienda.classList.add("cerrado");
+    estadoTienda.classList.remove("abierto");
+    estadoTienda.classList.remove("reservar");
   }
 }
 

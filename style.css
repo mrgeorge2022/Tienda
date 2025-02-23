@@ -259,13 +259,19 @@ header {
     background-color: #27ae27;     /* Fondo verde claro */
     color: #fff;                /* Texto verde */
     padding: 3px 5px;
-
 }
 
-  /* Estilo cuando la tienda está cerrada */
+/* Estilo cuando la tienda está cerrada */
 #estado-tienda.cerrado {
     background-color: #ff0000;     /* Fondo rojo claro */
     color: #fff;                /* Texto rojo */
+    padding: 3px 5px;
+}
+
+/* Estilo cuando la tienda está cerrada pero se puede reservar */
+#estado-tienda.reservar {
+    background-color: #ffa500;     /* Fondo naranja */
+    color: #fff;                /* Texto blanco */
     padding: 3px 5px;
 }
 
