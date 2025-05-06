@@ -18,17 +18,6 @@ window.addEventListener('load', function() {
 
 
 
-// Función para activar el enlace de categoría y cargar los productos correspondientes
-function activateCategoryLink(category) {
-  // Ocultar el menú de navegación y mostrar los productos
-  document.getElementById('navegadorylista').style.display = 'none';
-  const productList = document.getElementById('product-list');
-  productList.style.display = 'block';
-
-  // Llamar a la función de mostrar productos según la categoría seleccionada
-  displayProducts(category);
-}
-
 
 
 
@@ -103,7 +92,6 @@ document.addEventListener('wheel', (event) => {
 
 
 
-
 // Asegúrate de que el botón esté oculto al cargar la página
 window.addEventListener("load", function () {
   const scrollTopButton = document.getElementById("scrollTopButton");
@@ -129,6 +117,7 @@ document.getElementById("scrollTopButton").addEventListener("click", function ()
       behavior: "smooth" // Desplazamiento suave
   });
 });
+
 
 
 
@@ -223,139 +212,27 @@ let cart = []; // Este arreglo almacenará los productos del carrito con su cant
 function displayProducts(category = '', searchQuery = '') {
   const products = [
     { 
-      id: 1, 
-      image: 'img/productos/express.jpg', 
-      name: 'Express', 
-      category: ['todos','perros','recomendados'], 
-      price: 15000, 
-      description: '¡Rapidez, sabor y calidad en cada mordisco!' 
+      id: 18, 
+      image: 'img/productos/armatupizza.jpg', 
+      name: 'Arma Tu Pizza', 
+      category: ['todos', 'armatupizza'], 
+      description: '¡Crea tu pizza con los ingredientes que prefieras!' 
     },
     { 
-      id: 2, 
-      image: 'img/productos/mister.jpg', 
-      name: 'Mister', 
-      category: ['todos','perros'], 
-      price: 10000, 
-      description: '¡El sabor artesanal, en su máxima expresión!' 
+      id: 19, 
+      image: 'img/productos/pizzamargarita.jpg', 
+      name: 'Pizza Margarita', 
+      category: ['todos', 'Gourmet', 'recomendados'], 
+      description: '¡La clásica pizza Margarita con queso mozzarella y albahaca fresca!' 
     },
     { 
-      id: 3, 
-      image: 'img/productos/royal.jpg', 
-      name: 'Royal', 
-      category: ['todos','perros'], 
-      price: 14000, 
-      description: '¡Un bocado real, lleno de sabor y frescura!' 
+      id: 20, 
+      image: 'img/productos/pizzapepperoni.jpg', 
+      name: 'Pizza Pepperoni', 
+      category: ['todos', 'Dulces'], 
+      description: '¡Deliciosa pizza con pepperoni y queso mozzarella!' 
     },
-    { 
-      id: 4, 
-      image: 'img/productos/rancher.jpg', 
-      name: 'Rancher', 
-      category: ['todos','perros'], 
-      price: 16000, 
-      description: '¡Irresistible y lleno de pasión, el mejor perro de la casa!' 
-    },
-    { 
-      id: 5, 
-      image: 'img/productos/LaCosteña.jpg', 
-      name: 'La Costeña', 
-      category: ['todos','hamburguesas'], 
-      price: 17000, 
-      description: '¡Un viaje directo al paraíso del sabor!' 
-    },
-    { 
-      id: 6, 
-      image: 'img/productos/LaMentirosa.jpg', 
-      name: 'La Mentirosa', 
-      category: ['todos','hamburguesas'], 
-      price: 20000, 
-      description: '¡Sabor tan increíble, que parece un mito!' 
-    },
-    { 
-      id: 7, 
-      image: 'img/productos/LaBestia.jpg', 
-      name: 'La Bestia', 
-      category: ['todos','hamburguesas', 'recomendados'], 
-      price: 24000, 
-      description: '¡Doble de carne, doble de sabor, el rey de las hamburguesas!' 
-    },
-
-    { 
-      id: 8, 
-      image: 'img/productos/papasfrancesas.jpg', 
-      name: 'Papas a la Francesa', 
-      category: ['todos','acompañantes','recomendados'], 
-      price: 5000, 
-      description: '¡Delicias de papas junto con paprika!' 
-    },
-    { 
-      id: 9, 
-      image: 'img/productos/LaSalchichera.jpg', 
-      name: 'La Salchichera', 
-      category: ['todos','salchipapas'], 
-      price: 15000, 
-      description: '¡Una explosión de sabor en cada bocado!' 
-    },
-    { 
-      id: 10, 
-      image: 'img/productos/Choripapazo.jpg', 
-      name: 'Choripapazo', 
-      category: ['todos','salchipapas','recomendados'], 
-      price: 18000, 
-      description: '¡Atrévete a probar una explosión de sabores!' 
-    },
-    { 
-      id: 11, 
-      image: 'img/productos/golosa.jpg', 
-      name: 'La Golosa', 
-      category: ['todos','picadas','recomendados'], 
-      price: 25000, 
-      description: '¡Un festín de sabores que te hará volver por más!' 
-    },
-    { 
-      id: 12, 
-      image: 'img/productos/atrevida.jpg', 
-      name: 'La Atrevida', 
-      category: ['todos','picadas','recomendados'], 
-      price: 32000, 
-      description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
-    },
-    { 
-      id: 13, 
-      image: 'img/productos/limon.jpg', 
-      name: 'Limonada', 
-      category: ['todos','bebidas','recomendados'], 
-      price: 5000, 
-      description: '¡Frescura que te llena de vida en cada sorbo!' 
-    },
-    { 
-      id: 14, 
-      image: 'img/productos/mora.jpg', 
-      name: 'Mora En Leche', 
-      category: ['todos','bebidas'], 
-      price: 6000, 
-      description: '¡El sabor que acaricia tus sentidos!' 
-    },
-    { 
-      id: 15, 
-      image: 'img/productos/maracuya.jpg', 
-      name: 'Maracuyá', 
-      category: ['todos','bebidas','recomendados'],
-      price: 5000, 
-      description: '¡Pura pasión en cada gota!' 
-    },
-    { 
-      id: 16, 
-      image: 'img/productos/lulo.jpg', 
-      name: 'Lulo', 
-      category: ['todos','bebidas'], 
-      price: 5000, 
-      description:'¡La frescura cítrica que te llena de energía!' 
-    },
-
-];
-
-
-
+  ];
 
   const filteredProducts = products.filter(p => {
     // Filtrar por categoría si es proporcionada
@@ -368,7 +245,7 @@ function displayProducts(category = '', searchQuery = '') {
   productList.innerHTML = '';
 
   // Recuperar cantidad de producto seleccionado desde el carrito desde localStorage
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
   // Mostrar los productos filtrados
   filteredProducts.forEach(product => {
@@ -376,20 +253,16 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
     productElement.classList.add('product-item');
     productElement.id = `product-${product.id}`;
 
-
-
-
     productElement.onclick = function() {
       openModal(product.id); // Llama a la función openModal con el ID del producto
-    };
+  };
 
-    productElement.innerHTML = `
+productElement.innerHTML = `
 <div id="contenedorvacio">
   <div id="product-item">
     <img src="${product.image}" alt="${product.name}" class="product-image">
     <h3>${product.name}</h3>
     <p>${product.description}</p>
-    <p><strong>$${formatNumber(product.price)}</strong></p>
   </div>
 
   <div id="botondeagregarcontendor">
@@ -397,11 +270,12 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
  </div>
 </div>
 
-    `;
-    productList.appendChild(productElement);
+`;
+
+// Agregar el producto al contenedor de la lista
+productList.appendChild(productElement);
   });
 }
-
 
 
 
@@ -418,6 +292,10 @@ function activateCategoryLink(category) {
   if (selectedLink) {
     selectedLink.classList.add('active');
   }
+
+  // Filtrar los productos según la categoría seleccionada
+  displayProducts(category);
+
 }
 
 
@@ -433,168 +311,243 @@ function activateCategoryLink(category) {
 // FUNCIÓN PARA ABRIR EL MODAL CON LOS DETALLES DEL PRODUCTO
 function openModal(productId) {
   const products = [
-    { 
-      id: 1, 
-      image: 'img/productos/express.jpg', 
-      name: 'Express', 
-      category: 'perros', 
-      price: 15000, 
-      description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
+    {
+      id: 18,
+      image: 'img/productos/armatupizza.jpg',
+      name: 'Arma Tu Pizza',
+      category: ['todos', 'armatupizza'],
+      price: 0,
+      description: '¡Crea tu pizza con los ingredientes que prefieras!',
+      flavorOptions: [
+        { name: 'Jamón', price: 5000 },
+        { name: 'Queso', price: 4000 },
+        { name: 'Pepperoni', price: 6000 },
+        { name: 'Champiñones', price: 4500 },
+        { name: 'Tocineta', price: 7000 },
+        { name: 'Pollo', price: 6500 },
+        { name: 'Vegetales', price: 3000 },
+
+      ],
+      checkboxOptions: [
+        { name: 'Borde Queso', price: 10000 },
+        { name: 'Borde Queso y Bocadillo', price: 15000 }
+      ],
+      sizeOptions: [
+        { size: 'Pequeña x6', price: 10000 },
+        { size: 'Mediana x8', price: 20000 },
+        { size: 'Familiar x12', price: 50000 }
+      ],
+      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
     },
     { 
-      id: 2, 
-      image: 'img/productos/mister.jpg', 
-      name: 'Mister', 
-      category: 'perros', 
-      price: 10000, 
-      description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
-  },
-  { 
-      id: 3, 
-      image: 'img/productos/royal.jpg', 
-      name: 'Royal', 
-      category: 'perros', 
-      price: 14000, 
-      description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
-  },
-  { 
-      id:4, 
-      image: 'img/productos/rancher.jpg', 
-      name: 'Rancher', 
-      category: 'perros', 
-      price: 16000, 
-      description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
-  },
-      {
-          id: 5, 
-          image: 'img/productos/LaCosteña.jpg', 
-          name: 'La Costeña', 
-          category: 'hamburguesas', 
-          price: 17000, 
-          description: 'Carne de res jugosa (150g), queso costeño, tocineta ahumada, lechuga crespa, cebolla caramelizada estilo gourmet, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. ¡Una explosión de sabor!' 
-      },
-      { 
-          id: 6, 
-          image: 'img/productos/LaMentirosa.jpg', 
-          name: 'La Mentirosa', 
-          category: 'hamburguesas', 
-          price: 20000, 
-          description: 'Carne de res (150g), lechuga fresquita, cebolla caramelizada, aguacate cremoso, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. Todo esto, presentado con queso mozzarella y maíz tierno. ¡Increíblemente deliciosa!' 
-      },
-      { 
-          id: 7, 
-          image: 'img/productos/LaBestia.jpg', 
-          name: 'La Bestia', 
-          category: 'hamburguesas', 
-          price: 24000,  
-          description: 'Doble carne de res (300g), tocineta ahumada, lechuga fresquita, cebolla caramelizada estilo gourmet, salsa de cilantro, salsa crema parrilla y salsa de maíz dulce. ¡Completada con plátano amarillo frito, aguacate y una capa de queso mozzarella con maíz tierno!' 
-      },
-      
-      { 
-        id: 8, 
-        image: 'img/productos/papasfrancesas.jpg', 
-        name: 'Papas a la Francesa', 
-        category: ['todos','acompañantes'], 
-        price: 5000, 
-        description: '¡Delicias de papas junto con paprika!' 
-      },
-      { 
-        id: 9, 
-        image: 'img/productos/LaSalchichera.jpg', 
-        name: 'La Salchichera', 
-        category: ['todos','salchipapas'], 
-        price: 15000, 
-        description: 'Deliciosa salchipapa con salsa de maíz, crema parrillera, salchichas New Yorker, queso mozzarella derretido y jamón. ¡Un festín de sabores en cada bocado!' 
-      },
-      { 
-        id: 10, 
-        image: 'img/productos/Choripapazo.jpg', 
-        name: 'Choripapazo', 
-        category: ['todos','salchipapas','recomendados'], 
-        price: 18000, 
-        description: 'Chorizo express jugoso, salsa de maíz cremosa, crema parrillera, queso mozzarella derretido y un toque de jamón. ¡Una combinación perfecta en cada bocado!' 
-      },
-      { 
-          id: 11, 
-          image: 'img/productos/golosa.jpg', 
-          name: 'La Golosa', 
-          category: 'picadas', 
-          price: 25000, 
-          description: 'Chorizo costeño, cerdo jugoso y pechuga de pollo, acompañados de queso mozzarella, maíz tierno, salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco y un toque especial de salsa de maíz. ¡Un festín irresistible!' 
-      },
-      { 
-          id: 12, 
-          image: 'img/productos/atrevida.jpg', 
-          name: 'La Atrevida', 
-          category: 'picadas', 
-          price: 32000,  
-          description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
-      },
-      {
-          id: 13, 
-          image: 'img/productos/limon.jpg', 
-          name: 'Limonada', 
-          category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
-          description: 'Nuestra limonada combina zumo de limones frescos, el toque justo de dulzura y abundante hielo para ofrecerte una bebida naturalmente refrescante y llena de sabor. ¡Perfecta para cualquier momento del día!' 
-      },
-      { 
-          id: 14, 
-          image: 'img/productos/mora.jpg', 
-          name: 'Mora En Leche', 
-          category: ['todos','bebidas'], 
-          price: 6000, 
-          description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
-      },
-      { 
-          id: 15, 
-          image: 'img/productos/maracuya.jpg', 
-          name: 'Maracuyá', 
-          category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
-          description:'Nuestra bebida de maracuyá combina el intenso sabor tropical de su pulpa con la frescura justa para ofrecerte una experiencia deliciosa y revitalizante. Ideal para los amantes de lo exótico. ¡Perfecta para     cualquier ocasión!' 
-      },
-      { 
-          id: 16, 
-          image: 'img/productos/lulo.jpg', 
-          name: 'Lulo', 
-          category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
-          description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
-      },
-];
+      id: 19, 
+      image: 'img/productos/pizzamargarita.jpg', 
+      name: 'Pizza Margarita', 
+      category: ['todos', 'Gourmet', 'recomendados'], 
+      price: 0, 
+      description: '¡La tradicional pizza Margarita con queso mozzarella y albahaca fresca!',
+      checkboxOptions: [
+        { name: 'Borde Queso', price: 10000 },
+        { name: 'Borde Queso y Bocadillo', price: 15000 }
+      ],
+      sizeOptions: [
+        { size: 'Pequeña x6', price: 10000 },
+        { size: 'Mediana x8', price: 20000 },
+        { size: 'Familiar x12', price: 50000 }
+      ],
+      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
+    },
+    { 
+      id: 20, 
+      image: 'img/productos/pizzapepperoni.jpg', 
+      name: 'Pizza Pepperoni', 
+      category: ['todos', 'Dulces'], 
+      price: 0, 
+      description: '¡Deliciosa pizza con pepperoni y queso mozzarella!',
+      checkboxOptions: [
+        { name: 'Extra pepperoni', price: 12000 },
+        { name: 'Sin queso', price: 0 },
+        { name: 'Masa gruesa', price: 5000 }
+      ],
+      sizeOptions: [
+        { size: 'Pequeña x6', price: 12000 },
+        { size: 'Mediana x8', price: 22000 },
+        { size: 'Familiar x12', price: 52000 }
+      ],
+      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
+    },
+  ];
 
+  const product = products.find(p => p.id === productId);
+  if (product) {
+    document.getElementById('modal-product-name').innerText = product.name;
+    document.getElementById('modal-product-image').src = product.image;
+    document.getElementById('modal-product-description').innerText = product.description;
 
+    let dynamicPrice = 0;
 
+    const updatePrice = () => {
+      const sizeCheckboxes = document.querySelectorAll('#modal-size-container input[type="checkbox"]');
+      const borderCheckboxes = document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]');
+      const additionalCheckboxes = document.querySelectorAll('#modal-additional-container input[type="checkbox"]');
+      const flavorCheckboxes = document.querySelectorAll('#modal-flavor-container input[type="checkbox"]');
+      const quantityInput = document.getElementById('modal-quantity');
+      const totalPriceElement = document.getElementById('modal-product-price');
 
+      dynamicPrice = 0;
 
-// FUNCIÓN PARA MOSTRAR LA INFORMACIÓN DEL PRODUCTO EN UN MODAL
-const product = products.find(p => p.id === productId);
-if (product) {
-  document.getElementById('modal-product-name').innerText = product.name;
-  document.getElementById('modal-product-price').innerText = formatNumber(product.price);
-  document.getElementById('modal-product-image').src = product.image;
-  document.getElementById('modal-product-description').innerText = product.description;
+      sizeCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          const sizeOption = product.sizeOptions.find(option => option.size === cb.value);
+          if (sizeOption) dynamicPrice += sizeOption.price;
+        }
+      });
 
-  // Buscar el producto en el carrito
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const existingProduct = cart.find(item => item.name === product.name);
+      borderCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          const borderOption = product.checkboxOptions.find(option => option.name === cb.value);
+          if (borderOption) dynamicPrice += borderOption.price;
+        }
+      });
 
-  // Si el producto ya está en el carrito, mostrar las instrucciones y cantidad previas
-  if (existingProduct) {
-    document.getElementById('modal-product-instructions').value = existingProduct.instructions || '';
-    document.getElementById('modal-quantity').value = existingProduct.quantity || 1;
-  } else {
-    // Si no está en el carrito, reiniciar los campos
-    document.getElementById('modal-product-instructions').value = '';
-    document.getElementById('modal-quantity').value = 1;
+      flavorCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          const flavorOption = product.flavorOptions.find(option => option.name === cb.value);
+          if (flavorOption) dynamicPrice += flavorOption.price;
+        }
+      });
+
+      additionalCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          dynamicPrice += 0;
+        }
+      });
+
+      const quantity = parseInt(quantityInput.value, 10) || 1;
+      const totalPrice = dynamicPrice * quantity;
+
+      totalPriceElement.innerText = `${formatNumber(totalPrice)}`;
+    };
+
+    document.getElementById('modal-quantity').addEventListener('input', updatePrice);
+
+    document.querySelectorAll('#modal-size-container input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', updatePrice);
+    });
+    document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', updatePrice);
+    });
+    document.querySelectorAll('#modal-additional-container input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', updatePrice);
+    });
+    document.querySelectorAll('#modal-flavor-container input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', updatePrice);
+    });
+
+    const modalSizeContainer = document.getElementById('modal-size-container');
+    modalSizeContainer.innerHTML = '';
+    product.sizeOptions.forEach(option => {
+      const checkbox = document.createElement('label');
+      checkbox.innerHTML = `
+        <input type="checkbox" name="size" value="${option.size}">
+         ${option.size}: $${formatNumber(option.price)}
+      `;
+      const input = checkbox.querySelector('input');
+
+      input.addEventListener('change', () => {
+        const checkboxes = modalSizeContainer.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+          if (cb !== input) cb.checked = false;
+        });
+        updatePrice();
+      });
+
+      modalSizeContainer.appendChild(checkbox);
+    });
+
+    const modalCheckboxContainer = document.getElementById('modal-checkbox-container');
+    modalCheckboxContainer.innerHTML = '';
+    product.checkboxOptions.forEach(option => {
+      const checkbox = document.createElement('label');
+      checkbox.innerHTML = `
+        <input type="checkbox" value="${option.name}">
+        ${option.name}: $${formatNumber(option.price)}
+      `;
+      const input = checkbox.querySelector('input');
+
+      input.addEventListener('change', () => {
+        const checkboxes = modalCheckboxContainer.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+          if (cb !== input) cb.checked = false;
+        });
+        updatePrice();
+      });
+
+      modalCheckboxContainer.appendChild(checkbox);
+    });
+
+    const modalFlavorContainer = document.getElementById('modal-flavor-container');
+    modalFlavorContainer.innerHTML = '';
+    
+    if (product.id === 18) {
+      document.getElementById('Eligesabores').style.display = 'block';
+      modalFlavorContainer.style.display = 'block';
+
+      product.flavorOptions.forEach(option => {
+        const checkbox = document.createElement('label');
+        checkbox.innerHTML = `
+          <input type="checkbox" value="${option.name}">
+          ${option.name}: $${formatNumber(option.price)}
+        `;
+        const input = checkbox.querySelector('input');
+    
+        input.addEventListener('change', () => {
+          const checkboxes = modalFlavorContainer.querySelectorAll('input[type="checkbox"]');
+          const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    
+          if (selectedCount > 2) {
+            input.checked = false;
+          }
+          updatePrice();
+        });
+    
+        modalFlavorContainer.appendChild(checkbox);
+      });
+    } else {
+      modalFlavorContainer.innerHTML = '';
+      document.getElementById('Eligesabores').style.display = 'none';
+      modalFlavorContainer.style.display = 'none';
+    }
+
+    const modalAdditionalContainer = document.getElementById('modal-additional-container');
+    modalAdditionalContainer.innerHTML = '';
+    product.additionalOptions.forEach(option => {
+      const checkbox = document.createElement('label');
+      checkbox.innerHTML = `
+        <input type="checkbox" value="${option}">
+        ${option}
+      `;
+      const input = checkbox.querySelector('input');
+
+      input.addEventListener('change', () => {
+        const checkboxes = modalAdditionalContainer.querySelectorAll('input[type="checkbox"]');
+        const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+        if (selectedCount > 2) {
+          input.checked = false;
+        }
+        updatePrice();
+      });
+
+      modalAdditionalContainer.appendChild(checkbox);
+    });
+
+    document.getElementById('modal-product-instructions').value = ''; // Limpiar instrucciones
+    document.getElementById('modal-quantity').value = 1; // Reiniciar cantidad
+
+    document.getElementById('product-modal').style.display = 'flex';
+    updatePrice();
   }
-
-  // Limpiar el campo de instrucciones después de agregar al carrito
-  document.getElementById('modal-product-instructions').value = '';
-
-  document.getElementById('product-modal').style.display = 'flex'; // Mostrar modal centrado
-}
 }
 
 // FUNCIÓN PARA CERRAR EL MODAL
@@ -631,7 +584,6 @@ function addToCartFromModal() {
 
   // Si la tienda está en estado de "reserva"
   if (estadoTienda === "La tienda está cerrada, pero puedes hacer una reserva.") {
-    // Aquí permitimos agregar al carrito aunque la tienda esté cerrada
     alert("La tienda está cerrada, pero puedes hacer una reserva. ¡Agregando al carrito!");
   }
 
@@ -642,39 +594,63 @@ function addToCartFromModal() {
   const image = document.getElementById('modal-product-image').src; // Imagen del producto
   const price = parseInt(priceFormatted.replace(/\./g, '').replace('$', ''), 10); // Convertir el precio dinámico a un valor numérico
 
-  // Obtener las selecciones de los checkboxes
-  const selectedSize = Array.from(document.querySelectorAll('#modal-size-container input[type="checkbox"]'))
-    .filter(cb => cb.checked)
-    .map(cb => cb.value)
-    .join(', ');
+  // Verificar si hay campos vacíos en los checkboxes
+  const sizeCheckboxes = document.querySelectorAll('#modal-size-container input[type="checkbox"]');
+  const flavorCheckboxes = name === "Arma Tu Pizza" ? document.querySelectorAll('#modal-flavor-container input[type="checkbox"]') : [];
+  const borderCheckboxes = document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]');
+  const additionalCheckboxes = document.querySelectorAll('#modal-additional-container input[type="checkbox"]');
 
-  const selectedBorders = Array.from(document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]'))
-    .filter(cb => cb.checked)
-    .map(cb => cb.value)
-    .join(', ');
+  const isSizeSelected = Array.from(sizeCheckboxes).some(cb => cb.checked);
+  const isFlavorSelected = name === "Arma Tu Pizza" ? Array.from(flavorCheckboxes).some(cb => cb.checked) : true; // Verificar si hay sabores seleccionados solo para "Arma Tu Pizza"
+  const isFlavorValid = name === "Arma Tu Pizza" ? Array.from(flavorCheckboxes).filter(cb => cb.checked).length <= 2 : true;
 
-  const selectedFlavors = Array.from(document.querySelectorAll('#modal-flavor-container input[type="checkbox"]'))
-    .filter(cb => cb.checked)
-    .map(cb => cb.value)
-    .join(', ');
+  // Si algún campo está vacío o hay más de 2 sabores seleccionados, evitar añadir al carrito y hacer scroll al contenedor vacío
+  if (!isSizeSelected || !isFlavorSelected || !isFlavorValid) {
+    if (!isSizeSelected) {
+      const sizeContainer = document.getElementById('modal-size-container');
+      sizeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      sizeContainer.classList.add('highlight-error'); // Agregar clase para resaltar
+    } else if (!isFlavorSelected) {
+      const flavorContainer = document.getElementById('modal-flavor-container');
+      flavorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      flavorContainer.classList.add('highlight-error'); // Agregar clase para resaltar
+    } else if (!isFlavorValid) {
+      const flavorContainer = document.getElementById('modal-flavor-container');
+      flavorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      flavorContainer.classList.add('highlight-error'); // Agregar clase para resaltar
+    }
 
-  const selectedAdditionals = Array.from(document.querySelectorAll('#modal-additional-container input[type="checkbox"]'))
-    .filter(cb => cb.checked)
-    .map(cb => cb.value)
-    .join(', ');
+    // Eliminar la clase de error después de 2 segundos
+    setTimeout(() => {
+      document.querySelectorAll('.highlight-error').forEach(el => el.classList.remove('highlight-error'));
+    }, 2000);
 
-  // Crear un objeto con las selecciones
-  const selections = {
-    size: selectedSize || 'Ninguno',
-    borders: selectedBorders || 'Ninguno',
-    flavors: selectedFlavors || 'Ninguno',
-    additionals: selectedAdditionals || 'Ninguno',
+    return; // Salir de la función
+  }
+
+  // Recopilar los valores seleccionados de los checkboxes
+  const selectedSizes = Array.from(sizeCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+  const selectedFlavors = Array.from(flavorCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+  const selectedBorders = Array.from(borderCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+  const selectedAdditionals = Array.from(additionalCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+
+  // Crear el objeto del producto con los datos recopilados
+  const productToAdd = {
+    name,
+    price,
+    instructions,
+    quantity: newQuantity,
+    image,
+    selectedSizes,
+    selectedFlavors,
+    selectedBorders,
+    selectedAdditionals
   };
 
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // Agregar el producto al carrito con las selecciones
-  cart.push({ name, price, instructions, quantity: newQuantity, image, selections });
+  // Agregar el producto al carrito sin eliminar los existentes
+  cart.push(productToAdd);
 
   // Guardar el carrito en localStorage
   localStorage.setItem('cart', JSON.stringify(cart));
@@ -682,24 +658,28 @@ function addToCartFromModal() {
   // Actualizar el contador del carrito
   updateCartCount();
 
+  // MOSTRAR LA ANIMACIÓN DEL CARRITO EXPANDIÉNDOSE
+  const cartButton = document.getElementById('floating-cart');
+  cartButton.classList.add('expanded'); // Expande el botón
 
-  
+  // MOSTRAR LA NOTIFICACIÓN
+  showNotification(`${name} ha sido agregado al carrito.`);
 
-// MOSTRAR LA ANIMACIÓN DEL CARRITO EXPANDIÉNDOSE
-const cartButton = document.getElementById('floating-cart');
-cartButton.classList.add('expanded'); // Expande el botón
+  // DESPUÉS DE 3 SEGUNDOS, RESTAURAR EL TAMAÑO DEL CARRITO Y OCULTAR LA NOTIFICACIÓN
+  setTimeout(() => {
+    cartButton.classList.remove('expanded');
+    hideNotification();
+  }, 3000); // Mantener expandido por 3 segundos
 
-// MOSTRAR LA NOTIFICACIÓN
-showNotification(`${name} se añadió al carrito`);
+  closeModal(); // Cierra el modal después de agregar al carrito
 
-// DESPUÉS DE 3 SEGUNDOS, RESTAURAR EL TAMAÑO DEL CARRITO Y OCULTAR LA NOTIFICACIÓN
-setTimeout(() => {
-  cartButton.classList.remove('expanded');
-  hideNotification();
-}, 3000); // Mantener expandido por 3 segundos
+  // Obtener la categoría seleccionada antes de agregar al carrito
+  const selectedCategory = localStorage.getItem('selectedCategory');
 
-// Cerrar el modal después de que todo se ejecute
-closeModal();
+  // Después de agregar al carrito, volver a la misma categoría seleccionada
+  if (selectedCategory) {
+    displayProducts(selectedCategory); // Muestra los productos de la categoría guardada
+  }
 }
 
 
@@ -722,11 +702,8 @@ function hideNotification() {
 
 
 
-window.onload = function() {
-  displayProducts();
-  document.getElementById('btn-bienvenida').style.display = 'none'; // Oculta el botón al cargar
-};
-
+// MOSTRAR TODOS LOS PRODUCTOS AL CARGAR LA PÁGINA
+window.onload = function() {displayProducts();};
 
 
 
@@ -953,22 +930,3 @@ function updateCartCount() {
 
 // LLAMA A ESTA FUNCIÓN CUANDO LA PÁGINA TERMINE DE CARGAR
 document.addEventListener('DOMContentLoaded', updateCartCount);
-
-
-
-
-function mostrarPanelBienvenida() {
-  const panel = document.getElementById('welcome-panel');
-  const btn = document.getElementById('btn-bienvenida');
-  panel.classList.remove('hidden');
-  btn.style.display = 'none'; // Ocultar el botón mientras el panel esté abierto
-}
-
-
-function filtrarYOcultar(categoria) {
-  displayProducts(categoria);
-  const panel = document.getElementById('welcome-panel');
-  const btn = document.getElementById('btn-bienvenida');
-  panel.classList.add('hidden');
-  btn.style.display = 'block'; // Mostrar el botón cuando se cierra el panel
-}

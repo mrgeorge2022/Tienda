@@ -121,6 +121,53 @@ header nav button:hover {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
 }
 
+
+
+
+
+
+
+
+
+
+/* Estilo para el contenedor del contador y el botón */
+#cart-counter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilo para el contador */
+#cart-counter {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Texto oscuro */
+    margin: 0;
+}
+
+/* Estilo para el botón de limpiar carrito */
+#clear-cart-button {
+    background-color: transparent;
+    box-shadow: none;
+    color: #333; /* Texto blanco */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100px; /* Ancho fijo */
+}
+
+
+
+
+
+
+
+
+
 /* Carrito de compras */
 
 #contenedorproductos{
@@ -146,7 +193,6 @@ header nav button:hover {
 #cart-items h2 {
     font-size: 18px;
     color: #333;
-    margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
 }
@@ -163,27 +209,25 @@ header nav button:hover {
 }
 
 .cart-item {
-    height: 80px;
+    height: 60px;
     display: flex;
-    background-color: #fafafa;
-    border: 1px solid #ddd;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    padding: 0px;
     justify-content: space-between;
+    margin-top: 15px;
 }
+
+
 
 #contenedordeimagencarrito{
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 .cart-product-image {
     width: 80px; /* Ajusta el tamaño según prefieras */
     height: 50px; /* Mantén esta altura para un contenedor cuadrado */
     margin-right: 10px;
     overflow: hidden; /* Asegura que la imagen no se salga del contenedor */
-    border-radius: 8px; /* Bordes redondeados */
+
 }
 
 /* Estilos para la imagen dentro del contenedor */
@@ -194,14 +238,57 @@ header nav button:hover {
     display: block;
 }
 
-
-
-#basura{
-    position: relative;
-    width: 20px;/* Tamaño ajustado */
-    height: 20px;/* Tamaño ajustado */
+.product-details {
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+    display: none; /* Ocultar por defecto */
+    animation: slideDown 0.3s ease-out; /* Animación al mostrar */
 }
 
+.toggle-details-btn {
+    display: flex;
+    background-color: transparent;
+    box-shadow: none;
+    color: #000000;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 0px;
+    border-bottom: solid 2px #ddd;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 13px;
+    font-weight: lighter;
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+    align-items: center;
+}
+
+.arrow-icon {
+    width: auto;
+    height: 10px;
+    margin-left: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease-in-out; /* Suaviza la animación */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la flecha */
+}
+
+/* Rotación de la flecha al hacer clic */
+.arrow-icon.rotate {
+    transform: rotate(180deg);
+}
+
+
+
+#volveraproductos{
+    margin-top: 20px;
+    width: 70%;
+    font-size: 15px;
+    background-color: #00000070;
+    box-shadow: none;
+    
+}  
 
 /* Contenedor de acciones */
 .action-container {
@@ -215,15 +302,17 @@ header nav button:hover {
 /* Botón de basura */
 .action-container #basura {
     cursor: pointer;
-    width: 20px; /* Ajusta el tamaño del icono */
-    height: 20px;
+
     margin-bottom: auto; /* Empuja el subtotal hacia la parte inferior */
 }
 
-/* Subtotal en la parte inferior derecha */
-.action-container .subtotal-popup {
-margin-top: 30px;
+#basura{
+    top: 1px;
+    position: relative;
+    width: 20px;/* Tamaño ajustado */
+    height: 20px;/* Tamaño ajustado */
 }
+
 
 /* Alineación del texto dentro de la mini ventana */
 .action-container .subtotal-popup p {
@@ -231,23 +320,6 @@ margin-top: 30px;
     font-weight: bold; /* Hacer el texto en negrita */
 }
 
-
-
-/* Animación para el elemento que desaparece al darle clik en la imagen de basura*/
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translateX(20px);
-    }
-}
-
-.cart-item.fade-out {
-    animation: fadeOut 0.5s forwards;
-}
 
 
 
@@ -263,14 +335,14 @@ margin-top: 30px;
 }
 
 #nombre_precio_intrucciones p{
-    margin: 2px;
+    margin-bottom: 2px;
 }
 
 
 .cart-item p {
     max-width: 80%;
     max-height: 25px;
-    margin: 5px 0;
+
     font-size: 13px;
 }
 
@@ -290,6 +362,13 @@ margin-top: 30px;
     color: #fafafa;
 }
 
+
+/* Animación de desvanecimiento */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
 h4{
     margin-top: 20px;
     font-size: 15px;
@@ -304,7 +383,7 @@ h4{
     padding: 8px 5px; /* Espaciado interno */
     font-size: 16px; /* Tamaño de fuente */
     border: 2px solid #b9b9b9; /* Borde amarillo */
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 20px; /* Bordes redondeados */
     background-color: #ffffff; 
     color: #000000; /* Color de texto */
     transition: border-color 0.3s, background-color 0.3s; /* Transiciones suaves */
@@ -336,6 +415,12 @@ h4{
     background-color: #ffffff; /* Fondo más claro */
 }
 
+/* Clase para resaltar el select de opciones de pago */
+.highlight-error {
+    border: 2px solid red;
+    box-shadow: 0 0 5px red;
+}
+
 
 
 #metododepago_y_total{
@@ -362,17 +447,49 @@ h4{
 
 button {
     background-color: #ffc400;
+    box-shadow: 0 4px 12px #ffc4004d;
     color: white;
     border: none;
     padding: 12px 24px;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
     margin: 15px 0;
 }
+
+#btnConfirmar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FFC400, #FFB400); /* Amarillo cálido */
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 196, 0, 0.4);
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+#btnConfirmar img {
+    width: 24px;  /* Tamaño adecuado para el ícono */
+    height: 24px;
+    margin-right: 10px;  /* Espacio entre el ícono y el texto */
+    filter: brightness(0) invert(1);  /* Asegura que el ícono sea blanco si es oscuro */
+}
+
+#btnConfirmar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(255, 196, 0, 0.6);
+    background: linear-gradient(135deg, #FFB400, #FF9F00);
+}
+
 
 
 
@@ -406,26 +523,8 @@ button {
 }
 
 
-#motodomicilio{
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    filter: invert();
-
-}
 
 
-#botoncancelar {
-    margin-top: 30px;
-    width: 130px;
-    text-align: center;
-    font-size: 15px;
-    background-color: #00000070;
-}
-
-#botoncancelar:hover {
-    background-color: #ff0000;
-}
 
 .modal-content h2 {
     font-size: 26px;
@@ -434,6 +533,20 @@ button {
     font-weight: bold;
 }
 
+#botoncancelar {
+    margin-top: 30px;
+    width: 130px;
+    text-align: center;
+    font-size: 15px;
+    background-color: #00000070;
+    box-shadow: none;
+}
+
+#botoncancelar:hover {
+    background-color: #ff0000;
+}
+
+
 .modal button {
     margin: 5px;
     width: 90%;
@@ -441,13 +554,13 @@ button {
     background-color: #ffc400;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .modal button:hover {
-    background-color: #c29502;
+    transform: scale(1.03);
 }
 
 /* Animación de aparición del modal */
@@ -510,7 +623,7 @@ button {
     padding: 12px 15px;
     margin-top: 10px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 16px;
     box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
 }
@@ -560,14 +673,15 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Estilo para el botón de "¡Finalizar compra!" */
 #btnFinalizar {
-    background-color: #4CAF50; /* Verde */
+    background: linear-gradient(135deg, #4CAF50, #66BB6A); /* Degradado verde */
     color: white; /* Texto blanco */
     font-size: 16px;
     padding: 12px 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
     display: none; /* Se oculta inicialmente */
 }
 
@@ -614,7 +728,7 @@ h3{
     position: relative; /* Necesario para posicionar la X dentro de este contenedor */
 }
 
-/* Estilo de la "x" de cierre */
+/* Estilo de la "X" de cierre */
 .closefin {
     color: #333;
     font-size: 25px;
@@ -637,13 +751,12 @@ h3{
 .modal-content-fin p {
     font-size: 16px;
     color: #555;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-/* Botón de "Volver al inicio" */
+/* Botones dentro del modal */
 .modal-content-fin button {
-    width: 250px;
     background-color: #ffc400; 
     color: white;
     border: none;
@@ -651,16 +764,37 @@ h3{
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    margin: 0px;
+    margin: 5px 0; /* Espaciado vertical */
+    font-weight: normal;
+    width: 100%; /* Hacer que los botones ocupen todo el ancho */
+}
+
+/* Botones alineados en columna */
+.modal-content-fin {
+    display: flex;
+    flex-direction: column; /* Establecer los botones en columna */
+    align-items: center; /* Alinearlos al centro */
+}
+
+/* Estilo cuando se pasa el ratón sobre los botones */
+.modal-content-fin button:hover {
+    background-color: #c29502; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Estilo del botón de imprimir factura */
+#imprimirFacturaBtn {
+    width: 100%;
+    background-color: #afafaf;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
     font-weight: normal;
 }
 
-.modal-content-fin button:hover {
-    background-color: #c29502; 
+#imprimirFacturaBtn:hover {
+    background-color: #9c9c9c;
 }
-
-
-
-
-
 

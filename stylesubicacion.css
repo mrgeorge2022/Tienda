@@ -6,7 +6,9 @@ body {
     color: #333;
 }
 
-
+.hidden {
+    display: none !important;
+}
 /* Estilo del loader de bienvenida */
 .loader {
     position: fixed;
@@ -57,30 +59,31 @@ body {
 }
 
 .close {
+    position: absolute; /* Cambiar a posición absoluta para un posicionamiento más preciso */
     display: flex;
-    justify-content: flex-end;
+    top: 20px;
+    right: 25px; /* Cambiar de right a left para moverla a la izquierda */
+    justify-content: flex-start; /* Alinear el contenido a la izquierda */
     font-size: 40px;
     cursor: pointer;
-    margin-right: 20px;
-    margin-top: 20px;
     color: #aaa; /* Color del botón */
     transition: color 0.1s;
-}  
-
+}
 .close:hover {
     color: #ff0000; /* Color al pasar el ratón */
 }
 
 /* Estilo para el botón de "¡Finalizar compra!" */
 #btnFinalizar {
-    background-color: #4CAF50; /* Verde */
+    background: linear-gradient(135deg, #4CAF50, #66BB6A); /* Degradado verde */
     color: white; /* Texto blanco */
     font-size: 16px;
     padding: 12px 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
     display: none; /* Se oculta inicialmente */
 }
 
@@ -94,6 +97,7 @@ body {
 #Selecciona_tu_ubicacion{
     color: #ffffff;
     margin-bottom: 0PX;
+    margin-top: 50px;
 
 }
 
@@ -108,7 +112,7 @@ body {
 
 /* Estilo común para todos los inputs */
 #direccion, #Punto_de_referencia {
-    border: 1px solid #fff; /* Borde blanco cuando se selecciona */
+    border: 1px solid #ffc400; /* Borde blanco cuando se selecciona */
     background-color: #444; /* Fondo oscuro cuando se selecciona */
     color: #fff; /* Color de texto blanco */
     padding: 8px; /* Ajuste de padding */
@@ -131,7 +135,34 @@ body {
 }
 
 
+/* Estilo para la lista de sugerencias */
+#sugerencias {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #444;
+    color: #fff;
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+}
 
+/* Estilo para los elementos de la lista de sugerencias */
+#sugerencias li {
+    padding: 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+}
+
+/* Estilo para los elementos de la lista de sugerencias al pasar el cursor */
+#sugerencias li:hover {
+    background-color: #555; /* Fondo más oscuro al pasar el cursor */
+}
 
 
 h2 {
@@ -171,12 +202,14 @@ h3 {
     margin: 2px;
     font-size: 18px;
     color: #ffffff;
-    font-weight: bold;
+
 }
+
 
 #total-pago{
     border-top: solid 1px #fff;
     padding-top: 5px;
+    font-weight:bold ;
 }
 
 #total {
@@ -189,10 +222,32 @@ h3 {
 
 #direccion-container {
     display: flex;
-    margin: 5px;
-    text-align: center;
     justify-content: center;
+    align-items: center;
+    padding: 5px;
 }
+
+#miubucacion {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #4285F4, #73b4f9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#miubucacion img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1); /* Hace el icono blanco si es SVG oscuro */
+}
+
 
 
 
@@ -229,7 +284,7 @@ input[type="text"] {
 
 /* Estilo para la imagen dentro del input */
 .input-container input {
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 30px; /* Bordes redondeados */
     padding: 12px; /* Espaciado interno */
     font-size: 16px; /* Tamaño del texto */
     box-sizing: border-box; /* Asegura que el padding no desborde */
@@ -239,8 +294,8 @@ input[type="text"] {
 
 /* Estilo para la imagen del ícono dentro del input */
 .input-container img {
-    width: 20px; /* Ancho de la imagen */
-    height: 20px; /* Alto de la imagen */
+    width: 25px; /* Ancho de la imagen */
+    height: 25px; /* Alto de la imagen */
     position: absolute; /* Posiciona la imagen dentro del input */
     right: 10px; /* Coloca la imagen a la derecha del input */
     top: 50%; /* Centra verticalmente la imagen */
@@ -285,6 +340,7 @@ button {
     border: none;
     border-radius: 5px;
     background-color: #ffc400;
+    box-shadow: 0 4px 12px #ffc4004d;
     color: #000;
     cursor: pointer;
     margin: 5px;
@@ -296,25 +352,36 @@ button:hover {
 }
 
 #btnListo {
-    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+    color: white;
     border: none;
-    border-radius: 5px;
-    background-color: #ffc400;
-    color: #000;
-    cursor: pointer;
-    margin: 5px;
+    padding: 14px 28px;
+    border-radius: 50px;
     font-size: 16px;
     font-weight: bold;
-    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
 }
 
 #btnListo:hover {
-    background-color: #009708;
-    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, #43A047, #66BB6A);
 }
 
+#btnListo img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1); /* Hace el ícono blanco si es oscuro */
+}
+
+
 #map {
-    border: 1px solid #fffb00;
     border-radius: 8px;
     margin: 10px auto;
     height: 450px;
@@ -367,7 +434,7 @@ button:hover {
     padding: 12px 15px;
     margin-top: 10px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 16px;
     box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
 }
@@ -430,7 +497,7 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 12px 24px;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
@@ -493,34 +560,51 @@ input[type="number"]::-webkit-inner-spin-button {
 .modal-content-fin p {
     font-size: 16px;
     color: #555;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-/* Botón de "Volver al inicio" */
+/* Botones dentro del modal */
 .modal-content-fin button {
-    width: 250px;
-    background-color: #ffc400;
+    background-color: #ffc400; 
     color: white;
     border: none;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    margin: 0px;
+    margin: 5px 0; /* Espaciado vertical */
+    font-weight: normal;
+    width: 100%; /* Hacer que los botones ocupen todo el ancho */
 }
 
+/* Botones alineados en columna */
+.modal-content-fin {
+    display: flex;
+    flex-direction: column; /* Establecer los botones en columna */
+    align-items: center; /* Alinearlos al centro */
+}
+
+/* Estilo cuando se pasa el ratón sobre los botones */
 .modal-content-fin button:hover {
     background-color: #c29502; /* Azul más oscuro al pasar el ratón */
 }
 
-
-
-
-footer {
-    background-color: #333;
+/* Estilo del botón de imprimir factura */
+#imprimirFacturaBtn {
+    width: 100%;
+    background-color: #afafaf;
     color: white;
-    text-align: center;
-    padding: 5px;
-    font-size: 0.9rem
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    font-weight: normal;
 }
+
+#imprimirFacturaBtn:hover {
+    background-color: #9c9c9c;
+}
+
+

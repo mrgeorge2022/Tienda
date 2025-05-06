@@ -15,6 +15,14 @@ body {
 
 
 
+
+
+
+
+
+
+
+
 /* Estilo del loader de bienvenida */
 .loader {
     position: fixed;
@@ -64,27 +72,262 @@ body {
 
 
 
+/* ===== ENCABEZADO PRINCIPAL DE PIZZAS OCULTO===== */
+#headerestado{
+    display: none;
+}
 
 
 
 
-
-
-/* Encabezado del menú */
-header {
-    /*background-image: url('img/Mr.\ George\ foto.jpg');*/
+/* ===== ENCABEZADO PRINCIPAL ===== */
+#header {
+    background-color: rgba(0, 0, 0, 0.85);
+    background-blend-mode: darken;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(0, 0, 0, 0.8);
-    background-blend-mode: darken;
-    height: 100%;                /* Hace que el fondo ocupe toda la altura de la ventana */
     margin: 0;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  #encabezado {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    color: #fff;
+  }
+  
+  #logo {
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  #logo:hover {
+    transform: scale(1.05);
+  }
+  
+  #textoprincipal h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  #textoprincipal p {
+    margin-top: 5px;
+    font-size: 13px;
+    animation: fadeIn 1s forwards;
+  }
+  
+  /* ===== ESTADO DE LA TIENDA ===== */
+  #estado-tienda {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3px 8px;
+    border-radius: 12px;
+    max-width: 250px;
+    margin: 4px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  
+  #estado-tienda.abierto {
+    background-color: #27ae27;
+    color: #fff;
+  }
+  
+  #estado-tienda.reserva {
+    background-color: orange;
+    color: #fff;
+  }
+  
+  #estado-tienda.cerrado {
+    background-color: #ff0000;
+    color: #fff;
+  }
+  
+
+
+
+
+
+  /* ===== BOTÓN MENÚ PRINCIPAL ===== */
+  .btn-bienvenida {
+    position: fixed;
+    justify-content: space-between;
+    top: 15px;
+    left: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .btn-bienvenida img {
+    width: auto;
+    height: 30px;
+  }
+
+
+/* ===== PANEL DE BIENVENIDA ===== */
+#welcome-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+    overflow-y: auto;
+    backdrop-filter: blur(100px); /* Aplica el efecto borroso al fondo */
+    background-color: #00000080; /* Fondo más oscuro */
 }
+
+#welcome-panel.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+  
+#welcome-panel #header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    text-align: center;
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+  
+.category-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño flexible */
+    gap: 15px; /* Espaciado entre los botones */
+    justify-content: center; /* Centra los botones horizontalmente */
+    justify-items: center; /* Centra los elementos dentro de sus celdas */
+    margin: 20px 0; /* Espaciado superior e inferior */
+}
+
+/* Estilo de los botones */
+.category-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Imagen a la izquierda, texto a la derecha */
+    width: 300px;
+    height: 60px;
+    border: none;
+    background: #555; /* Fondo blanco con opacidad */
+    backdrop-filter: blur(10px); /* Filtro borroso */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    white-space: normal; /* Permite que el texto se ajuste en varias líneas */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Efecto hover con animación */
+.category-buttons button:hover {
+    transform: translateY(-3px); /* Eleva el botón ligeramente */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+}
+
+/* Animación de rebote */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* Posición inicial y final */
+    }
+    50% {
+        transform: translateY(-10px); /* Rebote hacia arriba */
+    }
+}
+
+/* Imagen dentro del botón */
+.button-image {
+    width: 40%; /* Ajusta el ancho de la imagen */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px 0 0 15px; /* Bordes redondeados solo en la izquierda */
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+    position: relative; /* Necesario para el pseudo-elemento */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Máscara para desvanecer la imagen */
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Máscara para navegadores compatibles */
+    -webkit-mask-size: 100% 100%; /* Asegura que la máscara cubra toda la imagen */
+    mask-size: 100% 100%;
+}
+
+
+/* Texto dentro del botón */
+.category-buttons button span {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* Texto oscuro para contraste */
+    padding: 0 20px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Evita que el texto se desborde en varias líneas */
+    overflow: hidden; /* Oculta el texto que exceda el espacio disponible */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+}
+
+@media (min-width: 1024px) {
+    .category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 200px;
+        padding-right: 200px;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .category-buttons button {
+        width: 400px;
+        height: 70px;
+        flex: 0 0 auto;
+    }
+}
+
+
+
+
+
+
+
+
 
 .floating-banner {
     position: fixed;
@@ -206,7 +449,25 @@ header {
 }
 
 
+#seccion-navegacion {
+    text-align: center;
+    margin: 20px 0;
+}
 
+#seccion-navegacion button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#seccion-navegacion button:hover {
+    background-color: #555;
+}
 
 #redessociales {
     display: flex;
@@ -238,50 +499,10 @@ header {
 
 
 
-/*horario*/
-/* Estilo general para el mensaje de estado */
-#estado-tienda {
-    font-size: 14px;              /* Tamaño de texto moderado */
-    font-weight: bold;             /* Texto en negrita para destacar */
-    text-align: center;            /* Centrar el texto */
-    padding: 1px ;            /* Espacio alrededor del texto */
-    border-radius: 12px;           /* Bordes redondeados */
-    max-width: 250px;              /* Ancho máximo del contenedor */
-    margin: 2px auto;             /* Centramos el contenedor */
-    transition: all 0.3s ease;     /* Transición suave de color */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    opacity: 0;                    /* Inicialmente invisible */
-    animation: fadeIn 1s forwards; /* Animación de aparición */
-}
-
-/* Estilo cuando la tienda está abierta */
-#estado-tienda.abierto {
-    background-color: #27ae27;     /* Fondo verde claro */
-    color: #fff;                /* Texto verde */
-    padding: 3px 5px;
-}
-
-/* Estilo cuando la tienda está cerrada */
-#estado-tienda.cerrado {
-    background-color: #ff0000;     /* Fondo rojo claro */
-    color: #fff;                /* Texto rojo */
-    padding: 3px 5px;
-}
-
-/* Estilo cuando la tienda está cerrada pero se puede reservar */
-#estado-tienda.reservar {
-    background-color: #ffa500;     /* Fondo naranja */
-    color: #fff;                /* Texto blanco */
-    padding: 3px 5px;
-}
 
 
 
-#textoprincipal p{
-    margin-top: 5px;
-    font-size: 12px;
-    animation: fadeIn 1s forwards; /* Animación de aparición */
-}
+
 
   /* Animación de aparición */
 @keyframes fadeIn {
@@ -337,6 +558,10 @@ header {
     margin: 20px 0;
     font-size: 16px;
     color: #fff;
+    display: flex;
+    flex-direction: column; /* Cambiado a columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
 }
 
 /* Estilo del checkbox y enlace */
@@ -407,18 +632,16 @@ header {
 /* Estilos para la notificación */
 .notification {
     position: absolute;
-    top: 10px;
-    left: 10px;
     background-color: #333; /* Color de fondo */
     color: white;
     padding: 5px 10px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    margin-right: 30px;
+    margin-right: 32px;
 }
 
 .notification.show {
@@ -426,22 +649,6 @@ header {
     visibility: visible;
 }
 
-#encabezado{
-   /*padding-left: 15px;*/
-    margin-top: 60px;
-    display: flex;
-    width: 100%;
-}
-
-#logo{
-    width: 80px;
-    height: 80px;
-    margin: 10px;
-}
-
-header h1 {
-    margin-top: 15px;
-}
 
 
 
@@ -476,11 +683,59 @@ header h1 {
 
 
 
+/* Estilo para la parte 'Comidas' o 'Pizzas' */
+.tiendaredirigir {
+    color: #ffffff; /* Cambia el color según lo que necesites */
+    font-weight: bold;
+    padding: 6px 20px;
+}
+
+.tiendaredirigirlista{
+    color: #ffc400;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilo para la parte 'Comidas' o 'Pizzas' */
+.tiendaredirigirpizzanav {
+    color: #ffc400; /* Cambia el color según lo que necesites */
+    font-weight: bold;
+    padding: 6px 20px;
+    cursor: pointer;
+}
+
+.tiendaredirigirpizzalist{
+    margin-left: 35px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tiendaredirigirlistapizza{
+    color: #fff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-size: 14px;
+    background-color: #fff2;
+}
+
+
+
 #navegadorylista{
     display: flex;
     justify-content: space-between;
     background-color: #333;
     margin: 5px;
+    margin-top: 50px;
     border-radius: 50px;
     align-items: center;
 }
@@ -542,25 +797,42 @@ nav ul li a.active {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Agrega una sombra para mayor énfasis */
 }
 
-/*solo para el li recomendado*/ 
-#recomendados {
-    color: #ffc400;
-    margin-left: 35px;
+
+
+/* Estilo para el enlace de "Recomendados" */
+#recomendadosbutton {
+    background-color: #ffc400;
+}
+
+#recomendadosbutton span {
+    color: #000000;
+
 }
 
 
-#recomendados.active{
+
+
+
+
+
+
+/*solo para el li recomendado pizzas*/ 
+#recomendadospizza {
+    color: #ffc400;
+}
+
+
+#recomendadospizza.active{
     color: #000000;
 }
 
-#recomendadoslist{
+#recomendadoslistpizza{
     color: #ffc400;
 }
 
 #recomendadoslist:hover {
 color: #333;
 }
-
 
 
 /* Estilo para el contenedor del dropdown fuera del nav */
@@ -673,7 +945,7 @@ color: #333;
     border-radius: 60px;
     box-shadow: 0 5px 20px #ffc400;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 10000;
     padding: 10px;
     overflow: hidden;
     width: 70px;
@@ -726,25 +998,35 @@ color: #333;
 #product-list {
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos de producto se envuelvan en varias filas */
-    gap: 20px; /* Espacio entre los productos */
+    gap: 15px; /* Espacio entre los productos */
     justify-content: center; /* Centra los productos en el contenedor */
-    padding: 20px; /* Espaciado alrededor del contenedor */
+    padding: 10px; /* Espaciado alrededor del contenedor */
+    margin-top: 60px;
 }
 
-/* Estilos para cada elemento de producto */
-.product-item {
-    background-color: #333; /* Fondo blanco para los productos */
-    border-radius: 10px; /* Bordes redondeados */
+
+#contenedorvacio {
+    position: relative; /* Esto es necesario para que el botón flotante esté dentro de este contenedor */
+    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
+    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
+    margin-bottom: 0; /* Espacio entre productos */
+    background-color: transparent; /* Fondo blanco o el color que prefieras */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    overflow: hidden; /* Asegura que los bordes se mantengan redondeados */
-    width: 320px; /* Ancho fijo para los productos */
-    padding: 15px; /* Espaciado interno */
-    text-align: center; /* Centra el texto dentro del producto */
-    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease
+}
+
+/* Estilos para el contenedor de cada producto */
+#product-item {
+    background-color: #444;
+    padding: 10px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
+    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
 }
 
 /* Efecto de hover en cada producto */
-.product-item:hover {
+#contenedorvacio:hover {
     transform: translateY(-5px); /* Levanta el producto ligeramente */
 }
 
@@ -802,18 +1084,45 @@ color: #333;
 
 }
 
+
+/* Estilo para el contenedor donde está el botón, sin generar espacio */
+#botondeagregarcontendor {
+    display: flex; /* Establece un contenedor flex */
+    justify-content: flex-end; /* Alinea los elementos al final (a la derecha) */
+}
+
+
+#add {
+    width: 30px; /* Ajusta el tamaño según lo necesites */
+    height: 20px;
+    object-fit: contain;
+}
+
+
 /* Estilo para el botón de ordenar */
 .product-item button {
-    background-color: #ffc400; /* Fondo naranja */
-    color: #000000; /* Texto blanco */
+    position: absolute;
+    width: 50px; /* Le subí a 50px para que el padding no deforme el círculo */
+    aspect-ratio: 1 / 1;
+    bottom: -10px;
+    right: -10px;
+    background-color: #ffc400;
+    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.4);
     border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 14px;
+    border-radius: 50%;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Efecto suave al hacer hover */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    /* Flex para centrar el contenido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+
+
 
 
 
@@ -838,11 +1147,13 @@ color: #333;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
+    max-height: 80%; /* Limita la altura máxima del modal */
     padding: 20px;
     text-align: center;
     box-shadow: 0 0px 100px #ffae00; /* Sombra alrededor del modal */
     animation: fadeIn 0.2s ease; /* Animación de entrada */
     position: relative; /* Necesario para posicionar elementos internos */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura */
 }
 
 /* Animación de entrada del modal */
@@ -899,7 +1210,7 @@ color: #333;
 /* Área de texto para las indicaciones */
 #modal-product-instructions {
     width: 100%;
-    height: 80px;
+    height: 60px;
     padding: 10px;
     margin: 15px 0;
     border: 1px solid #ddd;
@@ -915,6 +1226,130 @@ color: #333;
     border-color: #ffffff; 
     outline: none;
 }
+
+
+#Eligetamaño,
+#Eligeborde, 
+#Eligeadiccionales,
+#Eligesabores {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 20px;
+    text-align: center;
+    background-color: #ffc400; /* Fondo amarillo */
+    opacity: 0.8;
+    padding: 5px; /* Espaciado interno */
+}
+
+/* Estilo general para los contenedores */
+#modal-size-container,
+#modal-checkbox-container,
+#modal-additional-container,
+#modal-flavor-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ffffff50;
+  border-radius: 8px;
+}
+
+
+
+/* Títulos opcionales para las secciones */
+#modal-size-container::before,
+#modal-checkbox-container::before
+#modal-additional-container::before,
+#modal-flavor-container::before {
+  content: attr(data-title);
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Estilo para los elementos dentro de los contenedores */
+#modal-size-container label,
+#modal-checkbox-container label,
+#modal-additional-container label,
+#modal-flavor-container label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #ffffff;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#modal-size-container input[type="checkbox"],
+#modal-checkbox-container input[type="checkbox"],
+#modal-additional-container input[type="checkbox"],
+#modal-flavor-container input[type="checkbox"] {
+  appearance: none; /* Elimina el estilo predeterminado del checkbox */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+#modal-size-container input[type="checkbox"]:checked,
+#modal-checkbox-container input[type="checkbox"]:checked,
+#modal-additional-container input[type="checkbox"]:checked,
+#modal-flavor-container input[type="checkbox"]:checked {
+  background-color: #ffffff; /* Fondo verde al seleccionar */
+  border-color: #ffffff; /* Borde verde al seleccionar */
+  position: relative;
+}
+
+#modal-size-container input[type="checkbox"]:checked::after,
+#modal-checkbox-container input[type="checkbox"]:checked::after,
+#modal-additional-container input[type="checkbox"]:checked::after,
+#modal-flavor-container input[type="checkbox"]:checked::after {
+  content: '✔'; /* Símbolo de chulo */
+  color: rgb(0, 0, 0); /* Color del chulo */
+  font-size: 14px; /* Tamaño del chulo */
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centra el chulo dentro del checkbox */
+}
+
+#modal-size-container input[type="checkbox"]:hover,
+#modal-checkbox-container input[type="checkbox"]:hover
+#modal-additional-container input[type="checkbox"]:hover,
+#modal-flavor-container input[type="checkbox"]:hover {
+  border-color: #888; /* Color del borde al pasar el mouse */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo dedectar contenedor vacio si no se ha elegido chekbox */
+.highlight-error {
+    border: 2px solid red !important;
+    border-radius: 5px;
+    animation: shake 0.3s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+  }
 
 /* Botón de agregar al carrito */
 .modal-content button {
@@ -972,5 +1407,93 @@ color: #333;
     border-radius: 4px;
     background-color: #333;
     color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo general del footer */
+footer {
+    color: #fff; /* Texto blanco */
+    padding: 20px 15px; /* Espaciado interno */
+    text-align: center; /* Centra el contenido */
+    font-size: 14px;
+}
+
+/* Contenedor principal del footer */
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias filas */
+    justify-content: space-between; /* Espaciado entre los elementos */
+    align-items: center; /* Alinea los elementos verticalmente */
+    max-width: 1200px; /* Ancho máximo del footer */
+    margin: 0 auto; /* Centra el contenedor */
+    gap: 20px; /* Espaciado entre los elementos */
+}
+
+/* Logo del footer */
+.footer-logo img {
+    max-width: 150px; /* Tamaño máximo del logo */
+    height: auto;
+}
+
+/* Enlaces del footer */
+.footer-links nav {
+    display: flex;
+    flex-direction: column; /* Coloca los enlaces en una columna */
+    gap: 10px; /* Espaciado entre los enlaces */
+}
+
+.footer-links nav a {
+    color: #fff; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 14px;
+    transition: color 0.3s ease; /* Transición suave para el hover */
+}
+
+
+/* Redes sociales */
+.footer-social {
+    display: flex;
+    gap: 15px; /* Espaciado entre los iconos */
+    filter: invert(1) hue-rotate(180deg);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.footer-social a img {
+    width: 30px; /* Tamaño de los iconos */
+    height: 30px;
+    transition: transform 0.3s ease; /* Transición suave para el hover */
+}
+
+.footer-social a img:hover {
+    transform: scale(1.2); /* Agranda ligeramente el icono en hover */
+}
+
+
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* Coloca los elementos en una columna */
+        text-align: center; /* Centra el contenido */
+    }
+
+    .footer-links nav {
+        flex-direction: row; /* Cambia los enlaces a una fila */
+        justify-content: center;
+        gap: 15px; /* Espaciado entre los enlaces */
+    }
 }
 
