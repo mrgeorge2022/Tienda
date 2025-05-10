@@ -351,6 +351,15 @@ function displayProducts(category = '', searchQuery = '') {
       price: 5000, 
       description:'¡La frescura cítrica que te llena de energía!' 
     },
+    { 
+      id: 17, 
+      image: 'img/productos/mama.jpg', 
+      name: 'Combo Mamá', 
+      category: ['todos','ParaMamá'], 
+      price: 24000, 
+      description:'¡Celebra el dia de las madres con este combo!' 
+    },
+    
 
 ];
 
@@ -562,6 +571,14 @@ function openModal(productId) {
           price: 5000, 
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
+          { 
+      id: 17, 
+      image: 'img/productos/mama.jpg', 
+      name: 'Combo Mamá', 
+      category: ['todos','ParaMamá'], 
+      price: 24000, 
+      description:'¡Tu madre se merece todo por eso este combo trae lo necesario!' 
+    },
 ];
 
 
