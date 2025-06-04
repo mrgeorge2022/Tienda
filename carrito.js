@@ -370,7 +370,7 @@ document.getElementById('payment-modal').style.display = 'none'; // Ocultar el m
 
 
 // Función para abrir el modal de datos personales cuando se hace clic en "Recoger en Tienda"
-function abrirModaldatospersonales() {
+function abrirModaldatospersonales(esMesa = false) {
     // Recuperar los datos del localStorage
     const nombreGuardado = localStorage.getItem('nombre');
     const telefonoGuardado = localStorage.getItem('telefono');
@@ -383,6 +383,13 @@ function abrirModaldatospersonales() {
         document.getElementById('telefono').value = telefonoGuardado;
     }
 
+    // Mostrar u ocultar el input de mesa según la opción
+    document.getElementById('mesa').style.display = esMesa ? 'block' : 'none';
+
+    // Guardar el tipo de entrega en localStorage
+    localStorage.setItem('tipoEntrega', esMesa ? 'mesa' : 'tienda');
+
+    // Mostrar el modal
     document.getElementById('datospersonales').classList.add('active');
 }
 
@@ -408,10 +415,24 @@ function validarTelefono() {
     }
 }
 
-// Función para manejar la validación y enviar mensaje de WhatsApp si los datos son válidos
 function aceptarModaldatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
+    const tipoEntrega = localStorage.getItem('tipoEntrega') || 'tienda';
+
+    // Si es entrega en mesa, validar también el número de mesa
+    if (tipoEntrega === "mesa") {
+        const mesa = document.getElementById("mesa").value.trim();
+        if (!mesa) {
+            alert("Por favor, ingresa el número de mesa.");
+            // No habilitar el botón de finalizar compra
+            const btnFinalizar = document.getElementById('btnFinalizar');
+            btnFinalizar.style.display = 'none';
+            return;
+        } else {
+            localStorage.setItem('mesa', mesa);
+        }
+    }
 
     // Validar que ambos campos estén llenos y que el teléfono tenga 10 dígitos
     if (nombre && telefono.length === 10) {
@@ -435,8 +456,12 @@ function aceptarModaldatos() {
     } else {
         // Mostrar alerta si los campos no están completos o el teléfono no tiene 10 dígitos
         alert("Por favor, ingresa tu nombre y un teléfono válido de 10 dígitos.");
+        // No habilitar el botón de finalizar compra
+        const btnFinalizar = document.getElementById('btnFinalizar');
+        btnFinalizar.style.display = 'none';
     }
 }
+
 
 // Habilitar el botón de "Finalizar Compra"
 function habilitarBotonFinalizar() {
@@ -450,27 +475,34 @@ function habilitarBotonFinalizar() {
     monitorearCambios();
 }
 
-// Monitorear cambios en los campos de nombre y teléfono
+// Monitorear cambios en los campos de nombre, teléfono y mesa
 function monitorearCambios() {
     const nombreField = document.getElementById("nombre");
     const telefonoField = document.getElementById("telefono");
+    const mesaField = document.getElementById("mesa");
     const finalizarButton = document.getElementById("btnFinalizar");
     const aceptarButton = document.getElementById("aceptarmodal");
 
     // Detectar cambios en el campo de nombre
     nombreField.addEventListener("input", () => {
         if (nombreField.value.trim() !== nombreAceptado || telefonoField.value.trim() !== telefonoAceptado) {
-            finalizarButton.style.display = "none"; // Ocultar el botón de finalizar si los datos cambian
-            aceptarButton.style.display = "inline-block"; // Mostrar el botón de aceptar si los datos cambian
+            finalizarButton.style.display = "none";
+            aceptarButton.style.display = "inline-block";
         }
     });
 
     // Detectar cambios en el campo de teléfono
     telefonoField.addEventListener("input", () => {
         if (nombreField.value.trim() !== nombreAceptado || telefonoField.value.trim() !== telefonoAceptado) {
-            finalizarButton.style.display = "none"; // Ocultar el botón de finalizar si los datos cambian
-            aceptarButton.style.display = "inline-block"; // Mostrar el botón de aceptar si los datos cambian
+            finalizarButton.style.display = "none";
+            aceptarButton.style.display = "inline-block";
         }
+    });
+
+    // Detectar cambios en el campo de mesa
+    mesaField.addEventListener("input", () => {
+        finalizarButton.style.display = "none";
+        aceptarButton.style.display = "inline-block";
     });
 }
 
@@ -523,18 +555,21 @@ function generarNumeroFactura() {
 
 // Función para finalizar la compra
 function finalizarCompra() {
+
+    const tipoEntrega = localStorage.getItem('tipoEntrega') || 'tienda';
+    const mesa = localStorage.getItem('mesa') || "Sin número de mesa";
     const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
     let telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
     const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
-    
+
     // Formatear el número telefónico con el patrón 000 000 0000
     telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
 
     // Generar el número de factura único
     const numeroFactura = generarNumeroFactura();
-    
+
     // Guardar el número de factura en localStorage
     localStorage.setItem('numeroFactura', numeroFactura);
 
@@ -544,12 +579,8 @@ function finalizarCompra() {
     const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
     const anio = fechaActual.getFullYear();
     const fecha = `${dia}/${mes}/${anio}`;
-
     const hora = fechaActual.toLocaleTimeString('es-ES', { hour12: false }); // Formato 24 horas
 
-
-
-    
     // Crear el bloque de texto con los productos seleccionados en checkboxes
     let messageProducts = cartItems.map(item => {
         const selectedOptions = `
@@ -559,28 +590,41 @@ function finalizarCompra() {
             ${item.selectedAdditionals && item.selectedAdditionals.length > 0 ? `A: ${item.selectedAdditionals.join(', ')}` : ''}
         `.trim();
 
-
-
         return `*${item.name} - $${formatNumber(parseFloat(item.price) || 0)} x ${item.quantity} = $${formatNumber(parseFloat(item.price) * item.quantity)}*` +
             `${selectedOptions ? `\n   ${selectedOptions.replace(/\n\s+/g, '\n   ')}` : ''}` +
-           `${item.instructions ? `\n_Instrucciones: ${item.instructions}_` : '\n__'}`;
+            `${item.instructions ? `\n_Instrucciones: ${item.instructions}_` : '\n__'}`;
     }).join('\n');
 
-    // Generar el mensaje de WhatsApp para "Recoger en Tienda"
-    let mensaje = "*RECOGER EN TIENDA*\n\n";
-    mensaje += `*FACTURA Nº:* #${numeroFactura}\n\n`;
-    mensaje += `*FECHA:* ${fecha}\n`;
-    mensaje += `*HORA:* ${hora}\n\n`;
-    mensaje += "*DATOS DEL USUARIO:*\n";
-    mensaje += `*NOMBRE:* ${nombre}\n`;
-    mensaje += `*TELÉFONO:* ${telefono}\n\n`;
+    // Generar el mensaje de WhatsApp según el tipo de entrega
+    let mensaje = "";
+    if (tipoEntrega === "mesa") {
+
+        mensaje += `*EN MESA*\n\n`;
+        mensaje += `*FACTURA Nº:* #${numeroFactura}\n\n`;
+        mensaje += `*FECHA:* ${fecha}\n`;
+        mensaje += `*HORA:* ${hora}\n\n`;
+        mensaje += "*DATOS DEL USUARIO:*\n";
+        mensaje += `*NOMBRE:* ${nombre}\n`;
+        mensaje += `*TELÉFONO:* ${telefono}\n`;
+        mensaje += `*MESA:* ${mesa}\n\n`;
+    } else {
+        mensaje += "*RECOGER EN TIENDA*\n\n";
+        mensaje += `*FACTURA Nº:* #${numeroFactura}\n\n`;
+        mensaje += `*FECHA:* ${fecha}\n`;
+        mensaje += `*HORA:* ${hora}\n\n`;
+        mensaje += "*DATOS DEL USUARIO:*\n";
+        mensaje += `*NOMBRE:* ${nombre}\n`;
+        mensaje += `*TELÉFONO:* ${telefono}\n\n`;
+    }
     mensaje += "*PRODUCTOS SELECCIONADOS:*\n\n";
     mensaje += `${messageProducts}\n\n`;
     mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
-    mensaje += `MÉTODO DE PAGO: *${metodoPago}*\n\n`; 
+    mensaje += `MÉTODO DE PAGO: *${metodoPago}*\n\n`;
     mensaje += "*Ubicación de la tienda:*\n";
-    mensaje += "https://bit.ly/4f2GU5I\n\n\n";
+    mensaje += "https://goo.su/X4C1\n\n\n";
     mensaje += "*Envía tu pedido aqui ----->*";
+
+
 
     // Codificar el mensaje y abrir WhatsApp
     const encodedMessage = encodeURIComponent(mensaje);
@@ -592,9 +636,36 @@ function finalizarCompra() {
     // Mostrar el botón de imprimir en el modal
     const imprimirBtn = document.getElementById('imprimirFacturaBtn');
     imprimirBtn.style.display = 'inline-block';  // Mostrar el botón de imprimir factura
+
+const datos = recolectarDatosParaGoogleSheet(
+    tipoEntrega,      // "mesa" o "tienda"
+    numeroFactura,
+    fecha,
+    hora,
+    nombre,
+    telefono,
+    totalProductos,
+    metodoPago
+);
+console.log(datos); // <-- Aquí verás el objeto y debe incluir tipoEntrega
+enviarDatosAGoogleSheet(datos);
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Guardar el número de mesa en localStorage cuando el usuario lo escriba
+window.addEventListener('DOMContentLoaded', function() {
+    const mesaInput = document.getElementById('mesa');
+    if (mesaInput) {
+        mesaInput.addEventListener('input', function() {
+            localStorage.setItem('mesa', this.value);
+        });
+    }
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Mostrar el modal de finalización de compra
 function mostrarModalCarrito() {
@@ -659,6 +730,8 @@ function imprimirFactura() {
     // Recuperar el número de factura desde localStorage
     const numeroFactura = localStorage.getItem('numeroFactura') || "No disponible";  // Si no hay número, usar un valor predeterminado
     const horaCompra = localStorage.getItem('horaCompra') || "Hora no disponible"; // Hora exacta de la compra
+    const tipoEntrega = localStorage.getItem('tipoEntrega') || 'tienda';
+    const mesa = localStorage.getItem('mesa') || "Sin número de mesa";
 
     // Formatear el número telefónico con el patrón 000 000 0000
     telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
@@ -691,7 +764,7 @@ function imprimirFactura() {
 <strong>MR. GEORGE - SINCE 2022</strong>
 ------------------------------------------------------
 
-<strong>RECOGER EN TIENDA</strong>
+<strong>${tipoEntrega === "mesa" ? "ENTREGA EN MESA" : "RECOGER EN TIENDA"}</strong>
 
 <strong>FACTURA Nº:</strong> #${numeroFactura}
 <strong>FECHA:</strong> ${fecha}
@@ -700,6 +773,7 @@ function imprimirFactura() {
 <strong>DATOS DEL USUARIO:</strong>
 <strong>Nombre:</strong> ${nombre}
 <strong>Teléfono:</strong> ${telefono}
+${tipoEntrega === "mesa" ? `<strong>Mesa:</strong> ${mesa}` : ""}
 
 <strong>PRODUCTOS SELECCIONADOS:</strong>
 
@@ -754,9 +828,6 @@ function wrapText(text, maxLength) {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 

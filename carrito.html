@@ -62,7 +62,8 @@
     <div class="modal-content">
         <h2>Selecciona una opción de entrega</h2>
         <button onclick="window.location.href='ubicacion.html'">Domicilio</button>
-        <button onclick="abrirModaldatospersonales()">Recoger en tienda</button>
+        <button onclick="abrirModaldatospersonales(false)">Recoger En Tienda</button>
+        <!--<button onclick="abrirModaldatospersonales(true)">En Mesa</button>-->
         <button id="botoncancelar" onclick="closeModal()">Cancelar</button>
     </div>
 </div>
@@ -76,13 +77,13 @@
         <h3>Regálanos estos datos para entregar exitosamente tu pedido.</h3>
         <input type="text" id="nombre" placeholder="Nombre y apellido">
         <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+        <input type="number" id="mesa" placeholder="Numero de mesa" style="display:none;">
         <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
         <div id="direccion-container">
             <button id="btnFinalizar" style="display: none;" onclick="finalizarCompra()">Finalizar Compra</button>
         </div>
     </div>
 </div>
-
 
 <!-- Modal de finalización de compra -->
 <div id="compraFinalizadaModal" class="modalfin">
@@ -98,7 +99,7 @@
 
 
 
-
+    <script src="enviarGoogleSheet.js"></script>
     <script src="carrito.js"></script>
     <script src="./zinactivity/inactividad.js"></script> <!-- suiche on - off  -->
 

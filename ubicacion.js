@@ -107,7 +107,7 @@ const cartagenaCoords = [
 
 // Dibujar el polígono en el mapa
 const cartagenaPolygon = L.polygon(cartagenaCoords, {
-    color: 'none', // color de
+    color: 'none', // color RED 
     fillColor: 'none', // color de relleno
     fillOpacity: 0.1
 }).addTo(map);
@@ -605,16 +605,22 @@ function usarUbicacionActual() {
 // Función al dar clic en "¡Listo!"
 function habilitarModalDatosPersonales() {
     const direccion = document.getElementById("direccion").value; // Obtener la dirección ingresada
-    
-    if (direccion) {
-        // Si la dirección está llena, proceder a abrir el modal de datos personales
-        abrirModalDatosPersonales(); // Abre el modal de nombre y teléfono
-        // Guardar la dirección y las coordenadas en el localStorage
-        guardarDatos();  // Llamada a la función para guardar dirección y coordenadas
-    } else {
-        // Si la dirección no está llena, mostrar una alerta
+    const costoEnvio = parseFloat(localStorage.getItem('costoDomicilio') || 0);
+
+    if (!direccion) {
         alert("Por favor, busca tu dirección.");
+        return;
     }
+
+    if (!costoEnvio || isNaN(costoEnvio) || costoEnvio === 0) {
+        alert("Por favor, selecciona una ubicación válida en el mapa para calcular el costo de envío.");
+        return;
+    }
+
+    // Si la dirección y el costo de envío están listos, proceder a abrir el modal de datos personales
+    abrirModalDatosPersonales(); // Abre el modal de nombre y teléfono
+    // Guardar la dirección y las coordenadas en el localStorage
+    guardarDatos();  // Llamada a la función para guardar dirección y coordenadas
 }
 
 // Función para abrir el modal de datos personales cuando se hace clic en "¡Listo!"
@@ -914,9 +920,9 @@ ${googleMapsLink}
 *Envía tu pedido aqui ----->*`;
 
 
-
     const encodedMessage = encodeURIComponent(whatsappMessage);
     window.open(`https://wa.me/3022666530?text=${encodedMessage}`, '_blank');
+    
 
     // Mostrar el modal tras finalizar la compra
     mostrarModalFin();
@@ -924,6 +930,31 @@ ${googleMapsLink}
     // Mostrar el botón de imprimir en el modal
     const imprimirBtn = document.getElementById('imprimirFacturaBtn');
     imprimirBtn.style.display = 'inline-block';  // Mostrar el botón de imprimir factura
+
+
+
+// RECOLECTAR Y ENVIAR LOS DATOS A GOOGLE SHEETS
+const datos = recolectarDatosParaGoogleSheet(
+    "domicilio",           // tipoEntrega
+    numeroFactura,         // numeroFactura
+    fecha,                 // fecha
+    hora,                  // hora
+    nombre,                // nombre
+    telefono,              // telefono
+    totalProductos,        // totalProductos
+    metodoPago             // metodoPago
+);
+
+// Sobrescribe/añade los campos que necesitas
+datos.direccion = ubicacion;
+datos.puntoReferencia = puntoDeReferencia;
+datos.costoDomicilio = costoDomicilio;
+datos.totalPagar = totalFinal;
+datos.ubicacionGoogleMaps = googleMapsLink;
+
+console.log(datos); // <-- Aquí verás el objeto formateado
+enviarDatosAGoogleSheet(datos);
+
 }
 
 
