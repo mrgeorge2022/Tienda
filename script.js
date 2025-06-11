@@ -351,6 +351,30 @@ function displayProducts(category = '', searchQuery = '') {
       price: 5000, 
       description:'¡La frescura cítrica que te llena de energía!' 
     },
+    { 
+      id: 17, 
+      image: 'img/productos/sodamaracuya.jpg', 
+      name: 'Soda de Maracuyá', 
+      category: ['todos','bebidas'], 
+      price: 8000, 
+      description:'¡Siente el refresco tropical en cada burbuja!' 
+    },
+        { 
+      id: 18, 
+      image: 'img/productos/sodafresa.jpg', 
+      name: 'Soda de Fresa', 
+      category: ['todos','bebidas'], 
+      price: 8000, 
+      description:'¡Un estallido de frescura en cada sorbo!' 
+    },
+        { 
+      id: 19, 
+      image: 'img/productos/michelada.jpg', 
+      name: 'Michelada', 
+      category: ['todos','bebidas'], 
+      price: 10000, 
+      description:'¡La michelada perfecta! Refrescante, picante y llena de sabor!' 
+    },
 
     
 
@@ -564,6 +588,30 @@ function openModal(productId) {
           price: 5000, 
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
+          { 
+      id: 17, 
+      image: 'img/productos/sodamaracuya.jpg', 
+      name: 'Soda de Maracuyá', 
+      category: ['todos','bebidas'], 
+      price: 8000, 
+      description:'Sumérgete en la frescura tropical de nuestra soda de maracuyá. Un sabor exótico, refrescante y burbujeante, ideal para disfrutar en cualquier momento del día.' 
+    },
+        { 
+      id: 18, 
+      image: 'img/productos/sodafresa.jpg', 
+      name: 'Soda de Fresa', 
+      category: ['todos','bebidas'], 
+      price: 8000, 
+      description:'Refresca tu día con nuestra soda de fresa: el balance perfecto entre dulzura y frescura en cada sorbo. ¡Una explosión de sabor frutal que te conquistará.' 
+    },
+        { 
+      id: 19, 
+      image: 'img/productos/michelada.jpg', 
+      name: 'Michelada', 
+      category: ['todos','bebidas'], 
+      price: 10000, 
+      description:'Vive el sabor auténtico de una michelada bien preparada: cerveza, limón y un toque picante que transforma cualquier momento en una experiencia refrescante y llena de sabor.' 
+    },
 ];
 
 
