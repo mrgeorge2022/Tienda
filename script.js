@@ -227,7 +227,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/express.jpg', 
       name: 'Express', 
       category: ['todos','perros','recomendados'], 
-      price: 15000, 
+      price:  17000, 
       description: '¡Rapidez, sabor y calidad en cada mordisco!' 
     },
     { 
@@ -235,7 +235,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/mister.jpg', 
       name: 'Mister', 
       category: ['todos','perros'], 
-      price: 10000, 
+      price: 11000, 
       description: '¡El sabor artesanal, en su máxima expresión!' 
     },
     { 
@@ -243,7 +243,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/royal.jpg', 
       name: 'Royal', 
       category: ['todos','perros'], 
-      price: 14000, 
+      price: 15000, 
       description: '¡Un bocado real, lleno de sabor y frescura!' 
     },
     { 
@@ -251,7 +251,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/rancher.jpg', 
       name: 'Rancher', 
       category: ['todos','perros'], 
-      price: 16000, 
+      price: 18000, 
       description: '¡Irresistible y lleno de pasión, el mejor perro de la casa!' 
     },
     { 
@@ -284,7 +284,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/papasfrancesas.jpg', 
       name: 'Papas a la Francesa', 
       category: ['todos','acompañantes','recomendados'], 
-      price: 5000, 
+      price: 6000, 
       description: '¡Delicias de papas junto con paprika!' 
     },
     { 
@@ -308,7 +308,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/golosa.jpg', 
       name: 'La Golosa', 
       category: ['todos','picadas','recomendados'], 
-      price: 25000, 
+      price: 28000, 
       description: '¡Un festín de sabores que te hará volver por más!' 
     },
     { 
@@ -316,7 +316,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/atrevida.jpg', 
       name: 'La Atrevida', 
       category: ['todos','picadas','recomendados'], 
-      price: 32000, 
+      price: 35000, 
       description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
     },
     { 
@@ -324,7 +324,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/limon.jpg', 
       name: 'Limonada', 
       category: ['todos','bebidas','recomendados'], 
-      price: 5000, 
+      price: 7000, 
       description: '¡Frescura que te llena de vida en cada sorbo!' 
     },
     { 
@@ -332,7 +332,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/mora.jpg', 
       name: 'Mora En Leche', 
       category: ['todos','bebidas'], 
-      price: 6000, 
+      price: 8000, 
       description: '¡El sabor que acaricia tus sentidos!' 
     },
     { 
@@ -340,7 +340,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/maracuya.jpg', 
       name: 'Maracuyá', 
       category: ['todos','bebidas','recomendados'],
-      price: 5000, 
+      price: 7000, 
       description: '¡Pura pasión en cada gota!' 
     },
     { 
@@ -348,7 +348,7 @@ function displayProducts(category = '', searchQuery = '') {
       image: 'img/productos/lulo.jpg', 
       name: 'Lulo', 
       category: ['todos','bebidas'], 
-      price: 5000, 
+      price: 7000, 
       description:'¡La frescura cítrica que te llena de energía!' 
     },
     { 
@@ -464,7 +464,7 @@ function openModal(productId) {
       image: 'img/productos/express.jpg', 
       name: 'Express', 
       category: 'perros', 
-      price: 15000, 
+      price: 17000, 
       description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
     },
     { 
@@ -472,7 +472,7 @@ function openModal(productId) {
       image: 'img/productos/mister.jpg', 
       name: 'Mister', 
       category: 'perros', 
-      price: 10000, 
+      price: 11000, 
       description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
   },
   { 
@@ -480,7 +480,7 @@ function openModal(productId) {
       image: 'img/productos/royal.jpg', 
       name: 'Royal', 
       category: 'perros', 
-      price: 14000, 
+      price: 15000, 
       description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
   },
   { 
@@ -488,7 +488,7 @@ function openModal(productId) {
       image: 'img/productos/rancher.jpg', 
       name: 'Rancher', 
       category: 'perros', 
-      price: 16000, 
+      price: 18000, 
       description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
   },
       {
@@ -521,7 +521,7 @@ function openModal(productId) {
         image: 'img/productos/papasfrancesas.jpg', 
         name: 'Papas a la Francesa', 
         category: ['todos','acompañantes'], 
-        price: 5000, 
+        price: 6000, 
         description: '¡Delicias de papas junto con paprika!' 
       },
       { 
@@ -545,7 +545,7 @@ function openModal(productId) {
           image: 'img/productos/golosa.jpg', 
           name: 'La Golosa', 
           category: 'picadas', 
-          price: 25000, 
+          price: 28000, 
           description: 'Chorizo costeño, cerdo jugoso y pechuga de pollo, acompañados de queso mozzarella, maíz tierno, salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco y un toque especial de salsa de maíz. ¡Un festín irresistible!' 
       },
       { 
@@ -553,7 +553,7 @@ function openModal(productId) {
           image: 'img/productos/atrevida.jpg', 
           name: 'La Atrevida', 
           category: 'picadas', 
-          price: 32000,  
+          price: 35000,  
           description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
       },
       {
@@ -561,7 +561,7 @@ function openModal(productId) {
           image: 'img/productos/limon.jpg', 
           name: 'Limonada', 
           category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
+          price: 7000, 
           description: 'Nuestra limonada combina zumo de limones frescos, el toque justo de dulzura y abundante hielo para ofrecerte una bebida naturalmente refrescante y llena de sabor. ¡Perfecta para cualquier momento del día!' 
       },
       { 
@@ -569,7 +569,7 @@ function openModal(productId) {
           image: 'img/productos/mora.jpg', 
           name: 'Mora En Leche', 
           category: ['todos','bebidas'], 
-          price: 6000, 
+          price: 8000, 
           description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
       },
       { 
@@ -577,7 +577,7 @@ function openModal(productId) {
           image: 'img/productos/maracuya.jpg', 
           name: 'Maracuyá', 
           category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
+          price: 7000, 
           description:'Nuestra bebida de maracuyá combina el intenso sabor tropical de su pulpa con la frescura justa para ofrecerte una experiencia deliciosa y revitalizante. Ideal para los amantes de lo exótico. ¡Perfecta para     cualquier ocasión!' 
       },
       { 
@@ -585,7 +585,7 @@ function openModal(productId) {
           image: 'img/productos/lulo.jpg', 
           name: 'Lulo', 
           category: ['todos','bebidas','recomendados'], 
-          price: 5000, 
+          price: 7000, 
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
           { 
