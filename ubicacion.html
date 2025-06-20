@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Domicilio</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+    <link rel="stylesheet" href="stylesubicacion.css"> <!--cambiar luego-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+</head>
+
+<body>
+
+<!-- Animación de carga con una imagen giratoria y texto
+<div id="welcome-loader" class="loader" style="display: flex;">
+    <img src="img/icono_tienda.png" alt="Cargando..." class="loader-image">
+    <p id="welcome-text">Cargando...</p>
+</div>-->
+
+<header>
+    <div id="cerrar">
+        <span class="close" onclick="window.location.href='carrito.html'">×</span>
+    </div>
+    <h2 id="Selecciona_tu_ubicacion">Selecciona tu ubicación:</h2>
+</header>
+
+    <section class="input-container" style="position: relative;">
+        <input type="text" id="direccion" placeholder="Buscar tu dirección" required oninput="mostrarSugerencias()">
+        <img src="img/iconos/delete.svg" alt="Borrar texto" onclick="borrarTexto('direccion')">
+        <ul id="sugerencias"></ul>
+    </section>
+    
+    <section class="input-container">
+        <input id="Punto_de_referencia" type="text" placeholder="Punto de referencia (Opcional)">
+        <img src="img/iconos/delete.svg" alt="Borrar texto" onclick="borrarTexto('Punto_de_referencia')">
+    </section>
+
+    <!-- Mapa de Google Maps -->
+    <div id="map"></div>
+
+    <div id="direccion-container">
+        <button id="miubucacion" onclick="usarUbicacionActual()"><img src="img/iconos/location.svg" alt="location">Mi ubicación actual</button>
+    </div>
+
+    <!-- Carrito de compras -->
+    <section id="carrito">
+        <h3>Tu pedido</h3>
+        <div id="productos_seleccionados">
+            <p id="costo-productos">Productos: $0</p>
+            <p id="costo-envio">Domicilio: $ 0</p>
+            <p id="total-pago">TOTAL: $0</p>
+        </div>
+    </section>
+
+    <!-- Botón ¡Listo! -->
+    <div id="direccion-container">
+        <button id="btnListo" onclick="habilitarModalDatosPersonales()"><img src="img/iconos/check.svg" alt="check">¡Listo!</button>
+    </div>
+
+    <!-- Modal de datos personales -->
+    <div class="modaldedatospersonales" id="datospersonales">
+        <div class="modaldatosubicacion">
+            <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
+            <h2>¡Estas a un paso de completar tu pedido!</h2>
+            <h4>Regálanos estos datos para entregar exitosamente tu pedido.</h4>
+            <input type="text" id="nombre" placeholder="Nombre y apellido">
+            <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+            <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
+
+            <div id="direccion-container">
+                <button id="btnFinalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="compraFinalizadaModal" class="modalfin">
+        <div class="modal-content-fin">
+            <span class="closefin">&times;</span>
+            <h2>¡Compra finalizada!</h2>
+            <p>Gracias por tu compra.
+                <br>Revisa tu WhatsApp
+            </p>
+            <button id="imprimirFacturaBtn" onclick="imprimirFactura()" style="display:none;">Imprimir factura</button>
+            <button id="volverIniciofin">Volver al inicio</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="enviarGoogleSheet.js"></script>
+    <script src="ubicacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="./zinactivity/inactividad.js"></script> <!-- suiche on - off  -->
+</body>
+
+</html>

@@ -1,0 +1,1499 @@
+/* Reset básico para eliminar márgenes y rellenos por defecto */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo y estilo básico del body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo del loader de bienvenida */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333; /* Fondo oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column; /* Alinea el texto y la imagen en una columna */
+    text-align: center; /* Centra el texto */
+}
+
+/* Estilo para la imagen */
+.loader-image {
+    width: 100px; /* Ajusta el tamaño de la imagen */
+    height: 100px;
+    animation: pulse 1.5s ease-in-out infinite; /* Animación de palpitar */
+    margin-bottom: 15px; /* Espacio entre la imagen y el texto */
+}
+
+/* Animación de palpitar (escala hacia arriba y hacia abajo) */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Tamaño original */
+    }
+    50% {
+        transform: scale(1.2); /* Aumenta el tamaño */
+    }
+    100% {
+        transform: scale(1); /* Vuelve al tamaño original */
+    }
+}
+
+/* Estilo para el texto */
+#welcome-text {
+    font-size: 18px;
+    color: #fff; /* Color blanco para el texto */
+    animation: fadeInText 6s ease-out; /* Animación para que el texto aparezca con efecto */
+}
+
+
+
+
+
+
+/* ===== ENCABEZADO PRINCIPAL DE PIZZAS OCULTO===== */
+#headerestado{
+    display: none;
+}
+
+
+
+
+/* ===== ENCABEZADO PRINCIPAL ===== */
+#header {
+    background-color: rgba(0, 0, 0, 0.85);
+    background-blend-mode: darken;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  #encabezado {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    color: #fff;
+  }
+  
+  #logo {
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  #logo:hover {
+    transform: scale(1.05);
+  }
+  
+  #textoprincipal h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  #textoprincipal p {
+    margin-top: 5px;
+    font-size: 13px;
+    animation: fadeIn 1s forwards;
+  }
+  
+  /* ===== ESTADO DE LA TIENDA ===== */
+  #estado-tienda {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3px 8px;
+    border-radius: 12px;
+    max-width: 250px;
+    margin: 4px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  
+  #estado-tienda.abierto {
+    background-color: #27ae27;
+    color: #fff;
+  }
+  
+  #estado-tienda.reserva {
+    background-color: orange;
+    color: #fff;
+  }
+  
+  #estado-tienda.cerrado {
+    background-color: #ff0000;
+    color: #fff;
+  }
+  
+
+
+
+
+
+  /* ===== BOTÓN MENÚ PRINCIPAL ===== */
+  .btn-bienvenida {
+    position: fixed;
+    justify-content: space-between;
+    top: 15px;
+    left: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .btn-bienvenida img {
+    width: auto;
+    height: 30px;
+  }
+
+
+/* ===== PANEL DE BIENVENIDA ===== */
+#welcome-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+    overflow-y: auto;
+    backdrop-filter: blur(100px); /* Aplica el efecto borroso al fondo */
+    background-color: #00000080; /* Fondo más oscuro */
+}
+
+#welcome-panel.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+  
+#welcome-panel #header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    text-align: center;
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+  
+.category-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño flexible */
+    gap: 15px; /* Espaciado entre los botones */
+    justify-content: center; /* Centra los botones horizontalmente */
+    justify-items: center; /* Centra los elementos dentro de sus celdas */
+    margin: 20px 0; /* Espaciado superior e inferior */
+}
+
+/* Estilo de los botones */
+.category-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Imagen a la izquierda, texto a la derecha */
+    width: 300px;
+    height: 60px;
+    border: none;
+    background: #555; /* Fondo blanco con opacidad */
+    backdrop-filter: blur(10px); /* Filtro borroso */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    white-space: normal; /* Permite que el texto se ajuste en varias líneas */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Efecto hover con animación */
+.category-buttons button:hover {
+    transform: translateY(-3px); /* Eleva el botón ligeramente */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+}
+
+/* Animación de rebote */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* Posición inicial y final */
+    }
+    50% {
+        transform: translateY(-10px); /* Rebote hacia arriba */
+    }
+}
+
+/* Imagen dentro del botón */
+.button-image {
+    width: 40%; /* Ajusta el ancho de la imagen */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px 0 0 15px; /* Bordes redondeados solo en la izquierda */
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+    position: relative; /* Necesario para el pseudo-elemento */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Máscara para desvanecer la imagen */
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Máscara para navegadores compatibles */
+    -webkit-mask-size: 100% 100%; /* Asegura que la máscara cubra toda la imagen */
+    mask-size: 100% 100%;
+}
+
+
+/* Texto dentro del botón */
+.category-buttons button span {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* Texto oscuro para contraste */
+    padding: 0 20px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Evita que el texto se desborde en varias líneas */
+    overflow: hidden; /* Oculta el texto que exceda el espacio disponible */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+}
+
+@media (min-width: 1024px) {
+    .category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 200px;
+        padding-right: 200px;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .category-buttons button {
+        width: 400px;
+        height: 70px;
+        flex: 0 0 auto;
+    }
+}
+
+
+
+
+
+
+
+
+
+.floating-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #222;
+    color: #fff;
+    display: flex;
+    justify-content: center; /* Centra el logotipo */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+}
+
+#logobarra {
+    justify-content: center;
+}
+
+#logobarra img{
+    width: 110px;
+    height: auto;
+}
+
+#qrcontenedor {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en una columna */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-top: 25px;
+    color: #999;
+}
+
+#qrtienda {
+    width: 100px;
+    height: auto;
+    filter: invert(50%) brightness(100%); /* Cambio de color a blanco */
+}
+
+
+#scrollTopButton {
+    height: 45px;
+    width: 45px;
+    display: none;
+    position: fixed;
+    bottom: 130px;
+    right: 32px;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 0px;
+    cursor: pointer;
+    border-radius: 82%;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 2px 50px #ffc400;
+}
+
+#scrollTopButton:hover {
+    background-color: #222;
+}
+
+#volverarribaimg{
+    width: 25px;
+    
+}
+
+#anuncios {
+    width: 100%;
+    margin: 0;
+    height: 200px; /* Altura máxima del contenedor */
+    overflow: hidden; /* Recorta cualquier contenido que sobrepase la altura */
+    position: relative; /* Necesario para posicionar el texto sobre la imagen */
+  }
+  
+  /* Estilo base para las imágenes */
+  #anuncios img {
+    width: 100%;
+    height: 200px; /* Asegura que la imagen no sobrepase la altura del contenedor */
+    object-fit: cover; /* Mantiene la proporción de la imagen */
+    position: absolute; /* Necesario para animar la imagen sobre el contenedor */
+    top: 0;
+    left: 0;
+    opacity: 0; /* Por defecto, las imágenes están ocultas */
+    transition: opacity 1s ease-in-out; /* Transición de opacidad para desvanecimiento */
+    z-index: 0; /* Asegura que las imágenes estén debajo de la capa negra */
+  }
+  
+  /* Imagen activa (visible) */
+  #anuncios img.active {
+    opacity: 1;
+  }
+  
+  /* Capa negra semi-transparente sobre las imágenes */
+  #anuncios::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*background-color: rgba(0, 0, 0, 0.5); /* Capa negra con opacidad */
+    z-index: 1; /* Se coloca encima de las imágenes */
+  }
+
+/* Texto sobre la imagen */
+#anuncios p {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrado absoluto */
+    font-size: 15px;
+    color: #FFF;
+    z-index: 2; /* Asegura que el texto esté encima de la capa negra */
+}
+
+
+#seccion-navegacion {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#seccion-navegacion button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#seccion-navegacion button:hover {
+    background-color: #555;
+}
+
+#redessociales {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#logoredes {
+    width: 20px;
+    height: 20px;
+    filter: invert(1) hue-rotate(180deg);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+#logoredes:hover {
+    transform: scale(1.2);
+    filter: invert(0.8) hue-rotate(360deg);
+}
+
+#direcciontienda{
+    color: #999;
+}
+
+.telefono {
+    color: inherit;          /* Toma el color del texto circundante */
+    text-decoration: none;    /* Quita el subrayado */
+    color: #999;  /* Un color llamativo pero suave, como un tono anaranjado */
+}
+
+
+
+
+
+
+
+
+  /* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Estilo para el input de búsqueda */
+
+#buscador{
+    display: flex;
+    justify-content: right;
+    margin: 10px;
+}
+
+#search-input {
+    color: #fff;
+    width: 100%; /* Asegura que el campo de búsqueda ocupe todo el ancho disponible */
+    max-width: 500px; /* Limita el ancho máximo del input */
+    padding: 5px 15px; /* Espaciado interno para hacerlo más cómodo */
+    font-size: 16px; /* Tamaño de texto cómodo para leer */
+    border: 2px solid #ccc; /* Borde gris claro */
+    border-radius: 25px; /* Bordes redondeados */
+    background-color: #333; /* Fondo suave para el input */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves para los efectos de focus */
+    outline: none; /* Elimina el contorno por defecto */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total del input */
+}
+
+/* Estilo cuando el input está enfocado (focus) */
+#search-input:focus {
+    border-color: #ffc400; /* Cambia el color del borde cuando se enfoca */
+    box-shadow: 0 0 8px #ffc400; /* Agrega una sombra verde suave */
+}
+
+/* Estilo cuando el input tiene texto (opcional) */
+#search-input:not(:placeholder-shown) {
+    border-color: #8e8e8e; /* Cambia el color del borde cuando hay texto en el campo */
+}
+
+
+#direcciontienda{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+
+}
+
+
+/* Estilo del contenedor de términos y condiciones */
+.terms-container {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column; /* Cambiado a columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
+}
+
+/* Estilo del checkbox y enlace */
+.terms-label {
+    align-items: center;
+}
+
+.link {
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.terms-link:hover {
+    text-decoration: underline;
+}
+
+
+#fotofinalcontenedor {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente si es necesario */
+    width: 100%; /* Establece una altura mínima para el contenedor (puedes ajustarla según tus necesidades) */
+}
+
+#fotofinal {
+    width: 200px;
+    height: auto;
+}
+
+
+.creatutienda{
+    text-align: center;
+    padding-bottom: 100px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.creatutienda-label{
+    align-items: center; 
+}
+
+/* Estilo del botón */
+#confirmButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed; /* Aparece desactivado inicialmente */
+}
+
+#confirmButton:enabled {
+    background-color: #28a745;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+/* Estilos para la notificación */
+.notification {
+    position: absolute;
+    background-color: #333; /* Color de fondo */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    margin-right: 32px;
+}
+
+.notification.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+
+
+
+
+
+
+/* Responsividad */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .product-item {
+        padding: 10px;
+    }
+
+    .product-item h3 {
+        font-size: 1rem;
+    }
+
+    .product-item p {
+        font-size: 0.9rem;
+    }
+
+    .product-item button {
+        font-size: 0.9rem;
+    }
+}
+
+
+
+/* Estilo para la parte 'Comidas' o 'Pizzas' */
+.tiendaredirigir {
+    color: #ffffff; /* Cambia el color según lo que necesites */
+    font-weight: bold;
+    padding: 6px 20px;
+}
+
+.tiendaredirigirlista{
+    color: #ffc400;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilo para la parte 'Comidas' o 'Pizzas' */
+.tiendaredirigirpizzanav {
+    color: #ffc400; /* Cambia el color según lo que necesites */
+    font-weight: bold;
+    padding: 6px 20px;
+    cursor: pointer;
+}
+
+.tiendaredirigirpizzalist{
+    margin-left: 35px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tiendaredirigirlistapizza{
+    color: #fff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-size: 14px;
+    background-color: #fff2;
+}
+
+
+
+#navegadorylista{
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    margin: 5px;
+    margin-top: 50px;
+    border-radius: 50px;
+    align-items: center;
+}
+
+
+/* Estilos para barra de categorias */
+nav {
+    margin-top: 10px;
+    margin: 0px;
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 50px; /* Bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    overflow-x: auto; /* Activa el desplazamiento horizontal cuando es necesario */
+    white-space: nowrap; /* Evita que los elementos se desborden en varias líneas */
+    display: flex; /* Activamos Flexbox */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Alinea los elementos verticalmente */
+    max-height: 40px; /* Limita la altura del nav para evitar el desplazamiento vertical */
+    overflow-y: hidden; /* Bloquea el desplazamiento vertical */
+}
+
+/* Estilos para la lista de categorías */
+nav ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    margin: 0;
+    padding: 0;
+    display: inline-flex; /* Usamos flex en línea para mantener los elementos en una fila */
+    gap: 10px; /* Espaciado entre los elementos */
+}
+
+/* Estilos para los elementos de la lista */
+nav ul li {
+    display: inline-block;
+}
+
+/* Estilos para los enlaces */
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover */
+nav ul li a:hover {
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+/* Estilo para el enlace activo */
+nav ul li a.active {
+    background-color: #ffc400; /* Color de fondo cuando está seleccionado */
+    color: #333; /* Cambia el color del texto cuando está activo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Agrega una sombra para mayor énfasis */
+}
+
+
+
+/* Estilo para el enlace de "Recomendados" */
+#recomendadosbutton {
+    background-color: #ffc400;
+}
+
+#recomendadosbutton span {
+    color: #000000;
+
+}
+
+
+
+
+
+
+
+
+/*solo para el li recomendado pizzas*/ 
+#recomendadospizza {
+    color: #ffc400;
+}
+
+
+#recomendadospizza.active{
+    color: #000000;
+}
+
+#recomendadoslistpizza{
+    color: #ffc400;
+}
+
+#recomendadoslist:hover {
+color: #333;
+}
+
+
+/* Estilo para el contenedor del dropdown fuera del nav */
+.dropdown-container {
+    position: absolute;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-left: 0px;
+    z-index: 1;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-color: #555;
+    width: 40px;
+    height: 39px;
+}
+
+/* Estilo para el enlace de "Categorías" */
+.custom-dropdown-toggle {
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    align-items: center;
+    padding: 6px 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+/* Efecto hover para el enlace de "Categorías" */
+.custom-dropdown-toggle:hover {
+    color: #ffc400;
+}
+
+
+/* Submenú oculto por defecto */
+.custom-dropdown-menu {
+    display: none;  /* Inicialmente oculto */
+    position: absolute;
+    top: 100%;  /* Coloca el submenú justo debajo del enlace */
+    left: 0;
+    background-color: #333;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 150px;  /* Asegura que el submenú tenga un ancho suficiente */
+}
+
+/* Mostrar el submenú cuando se activa la clase "open" */
+.custom-dropdown-menu.open {
+    display: block;  /* Muestra el submenú */
+}
+
+/* Estilo para los enlaces dentro del submenú */
+.custom-dropdown-menu a {
+    color: #fff;
+    padding: 8px 15px;
+    display: block;  /* Hace que los enlaces se apilen verticalmente */
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efecto hover para los ítems del submenú */
+.custom-dropdown-menu a:hover {
+    background-color: #ffc400;
+    color: #333;
+}
+
+
+
+
+
+
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    nav {
+        padding: 10px 10px; /* Reducir el padding en pantallas pequeñas */
+        overflow-y: hidden; /* Evita el desplazamiento vertical */
+    }
+
+    nav ul {
+        display: flex; /* Usar flex para mantener las categorías en una fila */
+        overflow-x: auto; /* Habilitar desplazamiento horizontal si el contenido es más largo que el contenedor */
+        -webkit-overflow-scrolling: touch; /* Habilitar desplazamiento suave en iOS */
+        gap: 10px; /* Espacio entre las categorías */
+        margin-top: 5px;
+        padding-bottom: 10px; /* Espacio inferior para evitar que se corte el scroll */
+    }
+
+    nav ul li {
+        padding-top: 6px;
+        display: inline-block; /* Los elementos siguen estando en una fila */
+        white-space: nowrap; /* Evitar que las categorías se rompan en varias líneas */
+    }
+}
+
+
+
+
+/* Estilo para el botón del carrito flotante */
+#floating-cart {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    background-color: #333;
+    border: none;
+    border-radius: 60px;
+    box-shadow: 0 5px 20px #ffc400;
+    cursor: pointer;
+    z-index: 10000;
+    padding: 10px;
+    overflow: hidden;
+    width: 70px;
+    height: 70px;
+    transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#floating-cart.expanded {
+    width: 220px;
+    height: 60px;
+}
+
+/* Efecto de hover en el carrito */
+#floating-cart:hover {
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño del carrito */
+    box-shadow: 0 5px 30px #ffc400;
+}
+
+/* Estilo para la imagen del carrito */
+#cart-icon {
+        filter: invert(100%) brightness(100%); /*cambio de color a blanco*/
+        width: 30px;
+        height: 30px;
+    }
+
+
+/* Contador de productos en el carrito */
+#cart-count {
+    display: none; /* Oculta el contador inicialmente */
+    position: absolute;
+    top: 10px; /* Ajusta para centrar sobre el botón */
+    right: 10px; /* Ajusta para centrar sobre el botón */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1200; /* Mayor que el #floating-cart */
+}
+
+/* Estilos para el contenedor de la lista de productos */
+#product-list {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos de producto se envuelvan en varias filas */
+    gap: 15px; /* Espacio entre los productos */
+    justify-content: center; /* Centra los productos en el contenedor */
+    padding: 10px; /* Espaciado alrededor del contenedor */
+    margin-top: 60px;
+}
+
+
+#contenedorvacio {
+    position: relative; /* Esto es necesario para que el botón flotante esté dentro de este contenedor */
+    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
+    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
+    margin-bottom: 0; /* Espacio entre productos */
+    background-color: transparent; /* Fondo blanco o el color que prefieras */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease
+}
+
+/* Estilos para el contenedor de cada producto */
+#product-item {
+    background-color: #444;
+    padding: 10px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
+    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
+}
+
+/* Efecto de hover en cada producto */
+#contenedorvacio:hover {
+    transform: translateY(-5px); /* Levanta el producto ligeramente */
+}
+
+/* Estilos para la imagen del producto */
+.product-image {
+    width: 100%; /* Ajuste completo al ancho del contenedor */
+    height: 200px; /* Altura fija para un tamaño uniforme */
+    object-fit: cover; /* Recorta la imagen para llenar el contenedor */
+    border-radius: 8px; /* Bordes redondeados en la imagen */
+    margin-bottom: 10px; /* Espacio debajo de la imagen */
+}
+
+
+/* Estilos para el nombre del producto */
+.product-item h3 {
+    font-size: 18px;
+    color: #fff;
+    margin: 10px 0 5px; /* Espaciado superior e inferior */
+    font-weight: bold;
+}
+
+/* Estilos para la descripción del producto */
+.product-item p {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px; /* Espacio debajo de la descripción */
+}
+
+/* Estilo para el precio del producto */
+.product-item p strong {
+    font-size: 16px;
+    color: #fff; /* Color naranja para el precio */
+}
+
+
+#contenedorcontadorcarrito{
+    position: relative;
+    display: inline-block;
+}
+
+.product-quantity{
+    position: absolute;
+    top: -10px; /* Ajusta según sea necesario */
+    right: -10px; /* Ajusta según sea necesario */
+    background-color: red; /* Fondo para destacar el contador */
+    color: white; /* Color del texto */
+    font-size: 12px; /* Tamaño del texto */
+    font-weight: bold; /* Resaltar texto */
+    border-radius: 50%; /* Forma circular */
+    padding: 5px; /* Espaciado interno */
+    min-width: 20px; /* Asegura un tamaño mínimo */
+    height: 60%;
+    text-align: center; /* Centra el texto */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+
+}
+
+
+/* Estilo para el contenedor donde está el botón, sin generar espacio */
+#botondeagregarcontendor {
+    display: flex; /* Establece un contenedor flex */
+    justify-content: flex-end; /* Alinea los elementos al final (a la derecha) */
+}
+
+
+#add {
+    width: 30px; /* Ajusta el tamaño según lo necesites */
+    height: 20px;
+    object-fit: contain;
+}
+
+
+/* Estilo para el botón de ordenar */
+.product-item button {
+    position: absolute;
+    width: 50px; /* Le subí a 50px para que el padding no deforme el círculo */
+    aspect-ratio: 1 / 1;
+    bottom: -10px;
+    right: -10px;
+    background-color: #ffc400;
+    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.4);
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    /* Flex para centrar el contenido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+/* Estilos generales el modal de producto unico */
+.modal {
+    display: none; /* Oculta el modal por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1000; /* Se asegura de estar al frente */
+    backdrop-filter: blur(5px); /* Aplica el desenfoque al fondo */
+}
+
+.modal-content {
+    background-color: #222;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80%; /* Limita la altura máxima del modal */
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0px 100px #ffae00; /* Sombra alrededor del modal */
+    animation: fadeIn 0.2s ease; /* Animación de entrada */
+    position: relative; /* Necesario para posicionar elementos internos */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura */
+}
+
+/* Animación de entrada del modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icono de cierre */
+.modal .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 40px;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.modal .close:hover {
+    color: #ff0000;
+}
+
+/* Título del producto */
+.modal-content h2 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+/* Imagen del producto en el modal */
+.modal-product-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Descripción y precio */
+.modal-content p {
+    font-size: 14px;
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+/* Precio del producto */
+.modal-content p strong {
+    font-size: 18px;
+    color: #ffffff; /* Color naranja para destacar el precio */
+}
+
+/* Área de texto para las indicaciones */
+#modal-product-instructions {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+    background-color: #444;
+    color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+#modal-product-instructions:focus {
+    border-color: #ffffff; 
+    outline: none;
+}
+
+
+#Eligetamaño,
+#Eligeborde, 
+#Eligeadiccionales,
+#Eligesabores {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 20px;
+    text-align: center;
+    background-color: #ffc400; /* Fondo amarillo */
+    opacity: 0.8;
+    padding: 5px; /* Espaciado interno */
+}
+
+/* Estilo general para los contenedores */
+#modal-size-container,
+#modal-checkbox-container,
+#modal-additional-container,
+#modal-flavor-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ffffff50;
+  border-radius: 8px;
+}
+
+
+
+/* Títulos opcionales para las secciones */
+#modal-size-container::before,
+#modal-checkbox-container::before
+#modal-additional-container::before,
+#modal-flavor-container::before {
+  content: attr(data-title);
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Estilo para los elementos dentro de los contenedores */
+#modal-size-container label,
+#modal-checkbox-container label,
+#modal-additional-container label,
+#modal-flavor-container label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #ffffff;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#modal-size-container input[type="checkbox"],
+#modal-checkbox-container input[type="checkbox"],
+#modal-additional-container input[type="checkbox"],
+#modal-flavor-container input[type="checkbox"] {
+  appearance: none; /* Elimina el estilo predeterminado del checkbox */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+#modal-size-container input[type="checkbox"]:checked,
+#modal-checkbox-container input[type="checkbox"]:checked,
+#modal-additional-container input[type="checkbox"]:checked,
+#modal-flavor-container input[type="checkbox"]:checked {
+  background-color: #ffffff; /* Fondo verde al seleccionar */
+  border-color: #ffffff; /* Borde verde al seleccionar */
+  position: relative;
+}
+
+#modal-size-container input[type="checkbox"]:checked::after,
+#modal-checkbox-container input[type="checkbox"]:checked::after,
+#modal-additional-container input[type="checkbox"]:checked::after,
+#modal-flavor-container input[type="checkbox"]:checked::after {
+  content: '✔'; /* Símbolo de chulo */
+  color: rgb(0, 0, 0); /* Color del chulo */
+  font-size: 14px; /* Tamaño del chulo */
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centra el chulo dentro del checkbox */
+}
+
+#modal-size-container input[type="checkbox"]:hover,
+#modal-checkbox-container input[type="checkbox"]:hover
+#modal-additional-container input[type="checkbox"]:hover,
+#modal-flavor-container input[type="checkbox"]:hover {
+  border-color: #888; /* Color del borde al pasar el mouse */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo dedectar contenedor vacio si no se ha elegido chekbox */
+.highlight-error {
+    border: 2px solid red !important;
+    border-radius: 5px;
+    animation: shake 0.3s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+  }
+
+/* Botón de agregar al carrito */
+.modal-content button {
+    background-color: #ffc400;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 500px) {
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal .close {
+        top: 10px;
+        right: 15px;
+    }
+}
+
+.quantity-control {
+    justify-content: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre el input y los botones */
+}
+
+.quantity-control button {
+    width: 30px; /* Ajusta el ancho del botón */
+    height: 39px; /* Ajusta la altura del botón */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px; /* Tamaño de la fuente del símbolo */
+    font-weight: bold; /* Hace que el símbolo se vea más definido */
+    background-color: #666;
+    cursor: pointer;
+    border-radius: 50%; /* Ajusta la redondez del botón */
+}
+
+.quantity-control input {
+    width: 60px; /* Ajusta el ancho del campo de cantidad */
+    height: 40px;
+    text-align: center; /* Centra el texto del campo de cantidad */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo general del footer */
+footer {
+    color: #fff; /* Texto blanco */
+    padding: 20px 15px; /* Espaciado interno */
+    text-align: center; /* Centra el contenido */
+    font-size: 14px;
+}
+
+/* Contenedor principal del footer */
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias filas */
+    justify-content: space-between; /* Espaciado entre los elementos */
+    align-items: center; /* Alinea los elementos verticalmente */
+    max-width: 1200px; /* Ancho máximo del footer */
+    margin: 0 auto; /* Centra el contenedor */
+    gap: 20px; /* Espaciado entre los elementos */
+}
+
+/* Logo del footer */
+.footer-logo img {
+    max-width: 150px; /* Tamaño máximo del logo */
+    height: auto;
+}
+
+/* Enlaces del footer */
+.footer-links nav {
+    display: flex;
+    flex-direction: column; /* Coloca los enlaces en una columna */
+    gap: 10px; /* Espaciado entre los enlaces */
+}
+
+.footer-links nav a {
+    color: #fff; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 14px;
+    transition: color 0.3s ease; /* Transición suave para el hover */
+}
+
+
+/* Redes sociales */
+.footer-social {
+    display: flex;
+    gap: 15px; /* Espaciado entre los iconos */
+    filter: invert(1) hue-rotate(180deg);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.footer-social a img {
+    width: 30px; /* Tamaño de los iconos */
+    height: 30px;
+    transition: transform 0.3s ease; /* Transición suave para el hover */
+}
+
+.footer-social a img:hover {
+    transform: scale(1.2); /* Agranda ligeramente el icono en hover */
+}
+
+
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* Coloca los elementos en una columna */
+        text-align: center; /* Centra el contenido */
+    }
+
+    .footer-links nav {
+        flex-direction: row; /* Cambia los enlaces a una fila */
+        justify-content: center;
+        gap: 15px; /* Espaciado entre los enlaces */
+    }
+}
+

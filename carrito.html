@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="stylecarrito.css">
+    <title>Carrito de Compras</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+</head>
+
+<body>
+
+<!-- Animación de carga con una imagen giratoria y texto
+<div id="welcome-loader" class="loader" style="display: flex;">
+    <img src="img/icono_tienda.png" alt="Cargando..." class="loader-image">
+    <p id="welcome-text">Cargando...</p>
+</div>-->
+
+    <header>
+        <div id="encabezado">
+            <h1>Carrito de compras</h1>
+            <nav>
+                <span class="close" onclick="window.location.href='index.html'">×</span>
+            </nav>
+        </div>
+    </header>
+
+    <section id="cart-items">
+        <h2>Productos seleccionados:</h2>
+
+        <div id="cart-counter-container">
+            <p id="cart-counter"></p>
+            <button id="clear-cart-button" onclick="clearCart()">Borrar todo</button>
+        </div>
+
+        <!-- Los productos se agregarán dinámicamente aquí -->
+        <div id="cart-items-list"></div>
+
+        <h4>Metódo de pago*</h4>
+
+        <div id="metododepago_y_total">
+            <select id="opcionesPago">
+                <option value="" disabled selected>Seleccionar</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Efectivo/Transferencia">Efectivo/Transferencia</option>
+            </select>
+            <p id="cart-total"></p>
+        </div>
+
+        <button id="btnConfirmar" onclick="openModal()">
+            <img src="img/iconos/checkconfirmar.svg" alt=""> ¡Confirmar pedido!
+        </button>
+        
+    </section>
+
+
+
+<!-- Modal de opciones de entrega -->
+<div id="payment-modal" class="modal">
+    <div class="modal-content">
+        <h2>Selecciona una opción de entrega</h2>
+        <button onclick="window.location.href='ubicacion.html'">Domicilio</button>
+        <button onclick="abrirModaldatospersonales(false)">Recoger En Tienda</button>
+        <button onclick="abrirModaldatospersonales(true)">En Mesa</button>
+        <button id="botoncancelar" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+
+
+<!-- Modal de datos personales -->
+<div class="modaldedatospersonales" id="datospersonales">
+    <div class="modaldatos">
+        <span class="cerrarModal" onclick="cerrarModaldatospersonales()">×</span>
+        <h2>¡Estas a un paso de completar tu pedido!</h2>
+        <h3>Regálanos estos datos para entregar exitosamente tu pedido.</h3>
+        <input type="text" id="nombre" placeholder="Nombre y apellido">
+        <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+        <input type="number" id="mesa" placeholder="Numero de mesa" style="display:none;">
+        <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
+        <div id="direccion-container">
+            <button id="btnFinalizar" style="display: none;" onclick="finalizarCompra()">Finalizar Compra</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de finalización de compra -->
+<div id="compraFinalizadaModal" class="modalfin">
+    <div class="modal-content-fin">
+        <span id="closeModal" class="closefin">&times;</span>
+        <h2>¡Compra finalizada!</h2>
+        <p>Gracias por tu compra.<br>Revisa tu WhatsApp</p>
+        <!-- Botón de volver al inicio -->
+        <button id="imprimirFacturaBtn" onclick="imprimirFactura()" style="display:none;">Imprimir factura</button>
+        <button onclick="volverAlInicio()">Volver al inicio</button>
+    </div>
+</div>
+
+
+
+    <script src="enviarGoogleSheet.js"></script>
+    <script src="carrito.js"></script>
+    <script src="./zinactivity/inactividad.js"></script> <!-- suiche on - off  -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <title>Mr. George</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+</head>
+
+<body>
+
+<!-- Animación de carga con una imagen giratoria y texto
+<div id="welcome-loader" class="loader" style="display: flex;">
+    <img src="img/icono_tienda.png" alt="Cargando..." class="loader-image">
+    <p id="welcome-text">Cargando...</p>
+</div>-->
+
+
+  <div id="welcome-panel" class="welcome-panel">
+  
+    <!-- Header dentro del panel -->
+    <header id="header">
+      <div id="encabezado">
+        <!-- Logo -->
+        <img id="logo" src="img/iconos/icono_tienda.png" alt="Mr. George"
+          onclick="window.location.href='index.html'">
+  
+        <div id="textoprincipal">
+          <h1>Mr. George</h1>
+          <div id="estado-tienda"></div>
+          <p id="horario-tienda"></p>
+        </div>
+      </div>
+    </header>
+  
+<!-- Botones de categoría -->
+<div class="category-buttons">
+    <button onclick="filtrarYOcultar('recomendados')" id="recomendadosbutton">
+        <!--<div class="button-image" style="background-image: url('img/recomendados.jpg');"></div>-->
+        <span>¡Recomendados!</span>
+    <button onclick="filtrarYOcultar('perros')">
+        <div class="button-image" style="background-image: url('img/productos/express.jpg');"></div>
+        <span>Perros</span>
+    </button>
+    <button onclick="filtrarYOcultar('hamburguesas')">
+        <div class="button-image" style="background-image: url('img/productos/LaBestia.jpg');"></div>
+        <span>Hamburguesas</span>
+    </button>
+    <!--<button onclick="window.location.href='indexpizza.html'">
+        <div class="button-image" style="background-image: url('img/productos/pizzapepperoni.jpg');"></div>
+        <span>Pizzas</span>-->
+    </button>
+    <button onclick="filtrarYOcultar('acompañantes')">
+        <div class="button-image" style="background-image: url('img/productos/papasfrancesas.jpg');"></div>
+        <span>Acompañantes</span>
+    </button>
+    <button onclick="filtrarYOcultar('salchipapas')">
+        <div class="button-image" style="background-image: url('img/productos/LaSalchichera.jpg');"></div>
+        <span>Salchipapas</span>
+    </button>
+    <button onclick="filtrarYOcultar('picadas')">
+        <div class="button-image" style="background-image: url('img/productos/atrevida.jpg');"></div>
+        <span>Picadas</span>
+    </button>
+    <button onclick="filtrarYOcultar('bebidas')">
+        <div class="button-image" style="background-image: url('img/productos/sodamaracuya.jpg');"></div>
+        <span>Bebidas</span>
+    </button>
+
+</div>
+  
+<div id="redessociales">
+    <a href="https://api.whatsapp.com/message/RR4ZENOC2S25D1?autoload=1&app_absent=0">
+        <img src="img/redes/whatsapp.png" alt="Whatsapp" id="logoredes">
+    </a>
+
+    <a href="https://www.instagram.com/mr_ge0rge/">
+        <img src="img/redes/instagram.png" alt="Instagram" id="logoredes">
+    </a>
+
+    <a href="https://www.facebook.com/MISTERGE0RGE">
+        <img src="img/redes/facebook.png" alt="Facebook" id="logoredes">
+    </a>
+</div>
+
+<div id="qrcontenedor">
+    <img src="img/iconos/qrtienda.png" alt="qrtienda" id="qrtienda">
+    <p>QR tienda</p>
+</div>
+
+<div id="direcciontienda">
+    <p><strong>Sedes</strong><br>
+        Mr. George Cartagena, Bolivar<br>
+        San fernando, Cl 5, Cra 81 f 05<br>
+        <span class="telefono">(+57) 302 266 6530</span>
+</div>
+
+
+<div class="terms-container">
+    <p>Políticas</p>
+    <label class="terms-label">
+        <a href="terms.html" target="_blank" class="link">Términos y Condiciones</a>
+    </label>
+    <label class="Privacity-label">
+        <a href="privacity.html" target="_blank" class="link">Políticas de Privacidad</a>
+    </label>
+</div>
+
+
+<div id="fotofinalcontenedor">
+    <img src="img/logo.png" alt="Mr George" id="fotofinal">
+</div>
+
+<div class="creatutienda" id="creatutiendaclon">
+    <label class="creatutienda-label">
+        Crea tu tienda<a href="https://wa.me/573022666530?text=%C2%A1Hola!%20Quiero%20crear%20mi%20tienda"
+            target="_blank" class="link">Aquí</a>
+    </label>
+</div>
+
+</div>
+  
+
+
+      <div class="floating-banner">
+        <button onclick="mostrarPanelBienvenida()" id="btn-bienvenida" class="btn-bienvenida">
+            <img src="img/iconos/back.png" alt="atras" id="btn-atras">
+        </button>
+          
+        <div id="logobarra">
+            <img src="img/logo.png" alt="Mr. George">
+        </div>
+    </div>
+
+    <button id="floating-cart" onclick="window.location.href='carrito.html'">
+        <img src="img/iconos/carrito.png" alt="Carrito" id="cart-icon">
+        <span id="cart-count">0</span> <!-- Contador para mostrar la cantidad de productos -->
+        <div id="notification" class="notification"></div>
+    </button>
+    </div>
+
+    <button id="scrollTopButton">
+        <img src="img/iconos/top.png" alt="volver arriba" id="volverarribaimg">
+    </button>
+
+
+
+
+    </div>
+
+    <section id="product-list">
+        <!-- Los productos se mostrarán aquí dinámicamente -->
+    </section>
+
+    <!-- Modal para ver detalles del producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-product-name"></h2>
+            <img id="modal-product-image" src="" alt="Imagen del Producto" class="modal-product-image">
+            <p id="modal-product-description"></p>
+
+
+            <p><strong>$<span id="modal-product-price"></span></strong></p>
+            <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
+
+
+            <div class="quantity-control">
+                <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
+            
+                <input type="text" id="modal-quantity" value="1" oninput="updateTotalPrice()">
+            
+                <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
+            </div>
+            
+            <!-- Botón de agregar al carrito, se actualiza con el precio total -->
+            <button id="add-to-cart-button" onclick="addToCartFromModal()">Agregar al carrito</button>
+            
+        </div>
+    </div>
+    </div>
+
+
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="img/logo.png" alt="Mr. George Logo">
+            </div>
+            <div id="redesclon"></div>
+        </div>
+    </footer>
+
+    <div id="creatutiendaclonado"></div>
+
+
+
+    <script>
+        // Clonar el div con redes sociales
+        const redes = document.getElementById("redessociales");
+        const clon = redes.cloneNode(true); // true = clonar también los hijos
+        document.getElementById("redesclon").appendChild(clon);
+
+        // Clonar "Crea tu tienda"
+        const tienda = document.getElementById("creatutiendaclon");
+        const clonTienda = tienda.cloneNode(true);
+        document.getElementById("creatutiendaclonado").appendChild(clonTienda);
+    </script>
+
+      
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="./zinactivity/inactividad.js"></script> <!-- suiche on - off  -->
+
+</body>
+
+</html>

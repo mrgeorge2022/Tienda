@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <title>Mr. George</title>
+    <link rel="icon" type="image/png" href="icono_tienda_inicio.png">
+</head>
+
+<body>
+
+<!-- Animación de carga con una imagen giratoria y texto
+<div id="welcome-loader" class="loader" style="display: flex;">
+    <img src="img/icono_tienda.png" alt="Cargando..." class="loader-image">
+    <p id="welcome-text">Cargando...</p>
+</div>-->
+
+<button onclick="window.location.href='index.html'" id="btn-bienvenida" class="btn-bienvenida">
+    <img src="img/iconos/atras.png" alt="atras" id="btn-atras">
+</button>
+
+    <header id="headerestado">
+        <div id="encabezado">
+            <!-- Logo -->
+            <img id="logo" src="img/iconos/icono_tienda.png" alt="Mr. George"
+                onclick="window.location.href='index.html'">
+
+            <div id="textoprincipal">
+                <h1>Mr. George</h1>
+                <div id="estado-tienda">
+                </div>
+                <p id="horario-tienda"></p>
+    </header>
+
+    <div class="floating-banner">
+        <button onclick="window.location.href='index.html'" id="btn-bienvenida" class="btn-bienvenida">
+            <img src="img/iconos/atras.png" alt="atras" id="btn-atras">
+        </button>
+        <div id="logobarra">
+            <img src="img/logo.png" alt="Mr. George">
+        </div>
+
+    </div>
+
+
+
+    <button id="floating-cart" onclick="window.location.href='carrito.html'">
+        <img src="img/iconos/carrito.png" alt="Carrito" id="cart-icon">
+        <span id="cart-count">0</span> <!-- Contador para mostrar la cantidad de productos -->
+        <div id="notification" class="notification"></div>
+    </button>
+    </div>
+
+    <button id="scrollTopButton">
+        <img src="img/iconos/volverarriba.png" alt="volver arriba" id="volverarribaimg">
+    </button>
+
+
+
+
+
+
+
+    <section id="product-list">
+        <!-- Los productos se mostrarán aquí dinámicamente -->
+    </section>
+
+    <!-- Modal para ver detalles del producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-product-name"></h2>
+            <img id="modal-product-image" src="" alt="Imagen del Producto" class="modal-product-image">
+            <p id="modal-product-description"></p>
+
+
+            
+            <p id="Eligetamaño"> Elige Tamaño:</p>
+            <div id="modal-size-container"></div>
+
+            <p id="Eligesabores">Sabores (Maximo 2 opciones)</p>
+            <div id="modal-flavor-container"></div>
+
+            <p id="Eligeborde">Borde (Opcional)</p>
+            <div id="modal-checkbox-container"></div>
+            
+            <p id="Eligeadiccionales">Adicionales (Maximo 2 opciones)</p>
+            <div id="modal-additional-container" data-title="Adicionales"></div>
+
+            <p><strong>$<span id="modal-product-price"></span></strong></p>
+            <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
+
+
+            <div class="quantity-control">
+                <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
+            
+                <input type="text" id="modal-quantity" value="1" oninput="updateTotalPrice()">
+            
+                <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
+            </div>
+            
+            <!-- Botón de agregar al carrito, se actualiza con el precio total -->
+            <button id="add-to-cart-button" onclick="addToCartFromModal()">Agregar al carrito</button>
+            
+        </div>
+    </div>
+    </div>
+
+
+
+    <script src="enviarGoogleSheet.js"></script>
+    <script src="scriptpizza.js"></script>
+    <script src="./zinactivity/inactividad.js"></script> <!-- suiche on - off  -->
+
+</body>
+
+</html>
