@@ -415,6 +415,12 @@ function validarTelefono() {
     }
 }
 
+// Validación para que el input de mesa solo acepte números y máximo 2 dígitos
+const inputMesa = document.getElementById('mesa');
+inputMesa.addEventListener('input', () => {
+    inputMesa.value = inputMesa.value.replace(/[^0-9]/g, '').slice(0, 2);
+});
+
 function aceptarModaldatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
@@ -424,7 +430,7 @@ function aceptarModaldatos() {
     if (tipoEntrega === "mesa") {
         const mesa = document.getElementById("mesa").value.trim();
         if (!mesa) {
-            alert("Por favor, ingresa el número de mesa.");
+            alert("Por favor, llena todos los campos.");
             // No habilitar el botón de finalizar compra
             const btnFinalizar = document.getElementById('btnFinalizar');
             btnFinalizar.style.display = 'none';

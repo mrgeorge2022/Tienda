@@ -8,8 +8,33 @@
 /* Fondo y estilo básico del body */
 body {
     font-family: Arial, sans-serif;
-    background-color: #111;
+    background-color: #222;
     color: #333;
+    background-image: url('img/fondobody.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: inherit;
+    background-size: inherit;
+    background-repeat: inherit;
+    background-position: inherit;
+    filter: blur(4px); /* Ajusta el valor para más o menos desenfoque */
+    opacity: 0.8;      /* Opcional: baja la opacidad para un efecto más suave */
+    pointer-events: none;
 }
 
 
@@ -335,7 +360,7 @@ body {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #222;
+    background-color: #333;
     color: #fff;
     display: flex;
     justify-content: center; /* Centra el logotipo */
@@ -1106,8 +1131,7 @@ color: #333;
     aspect-ratio: 1 / 1;
     bottom: -10px;
     right: -10px;
-    background-color: #ffc400;
-    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.4);
+    background-color: #000;
     border: none;
     border-radius: 50%;
     font-size: 20px;

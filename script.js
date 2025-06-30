@@ -226,7 +226,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 1, 
       image: 'img/productos/express.jpg', 
       name: 'Express', 
-      category: ['todos','perros','recomendados'], 
+      category: ['todos','perros'], 
       price:  17000, 
       description: '¡Rapidez, sabor y calidad en cada mordisco!' 
     },
@@ -250,7 +250,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 4, 
       image: 'img/productos/rancher.jpg', 
       name: 'Rancher', 
-      category: ['todos','perros'], 
+      category: ['todos','perros','recomendados'], 
       price: 18000, 
       description: '¡Irresistible y lleno de pasión, el mejor perro de la casa!' 
     },
@@ -283,7 +283,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 8, 
       image: 'img/productos/papasfrancesas.jpg', 
       name: 'Papas a la Francesa', 
-      category: ['todos','acompañantes','recomendados'], 
+      category: ['todos','acompañantes'], 
       price: 6000, 
       description: '¡Delicias de papas junto con paprika!' 
     },
@@ -339,7 +339,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 15, 
       image: 'img/productos/maracuya.jpg', 
       name: 'Maracuyá', 
-      category: ['todos','bebidas','recomendados'],
+      category: ['todos','bebidas'],
       price: 7000, 
       description: '¡Pura pasión en cada gota!' 
     },
@@ -355,7 +355,7 @@ function displayProducts(category = '', searchQuery = '') {
       id: 17, 
       image: 'img/productos/sodamaracuya.jpg', 
       name: 'Soda de Maracuyá', 
-      category: ['todos','bebidas'], 
+      category: ['todos','bebidas','recomendados'], 
       price: 8000, 
       description:'¡Siente el refresco tropical en cada burbuja!' 
     },
@@ -419,7 +419,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
   </div>
 
   <div id="botondeagregarcontendor">
-    <button onclick="event.stopPropagation(); openModal(${product.id})"><img src="img/iconos/add.svg" alt="add" id="add"></button>
+    <button onclick="event.stopPropagation(); openModal(${product.id})"><img src="img/iconos/add.png" alt="add" id="add"></button>
  </div>
 </div>
 

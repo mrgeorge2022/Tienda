@@ -263,19 +263,19 @@ function actualizarRuta(lat, lon) {
 
 // Función para calcular el costo del envío basado en la distancia
 function calcularCostoEnvio(distance) {
-    const costoPorKm = 1653; // Costo por kilómetro
+    const costoPorKm = 4000; // Costo por kilómetro (antes era 1630)
     const distanceKm = distance / 1000; // Convertir metros a kilómetros
     let costoEnvio = Math.round(costoPorKm * distanceKm);
 
     // Aplicar límites de costo
     if (costoEnvio < 3000) {
         costoEnvio = 3000;
-    } else if (costoEnvio > 20000) {
-        costoEnvio = 20000;
+    } else if (costoEnvio > 25000) {
+        costoEnvio = 25000;
     }
 
     // Redondear a miles
-    costoEnvio = Math.round(costoEnvio / 1000) * 1000;
+    //costoEnvio = Math.round(costoEnvio / 1000) * 1000;
 
     return costoEnvio;
 }
@@ -475,6 +475,28 @@ function filtrarBarrios() {
     const sugerencias = document.getElementById("sugerencias");
     sugerencias.innerHTML = "";
 
+    // Detectar si el input es un par de coordenadas
+    const coordRegex = /^(-?\d+(\.\d+)?)[,\s]+(-?\d+(\.\d+)?)/;
+    const match = input.match(coordRegex);
+    if (match) {
+        const lat = parseFloat(match[1]);
+        const lon = parseFloat(match[3]);
+        if (!isNaN(lat) && !isNaN(lon)) {
+            sugerencias.style.display = "none";
+            // Mueve el marcador y busca el barrio más cercano
+            if (cartagenaPolygon.getBounds().contains([lat, lon])) {
+                marker.setLatLng([lat, lon]);
+                map.setView([lat, lon], 15);
+                actualizarInputConBarrioCercano(lat, lon, function(barrio) {
+                    marker.setPopupContent(`Barrio: ${barrio}<br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`).openPopup();
+                    actualizarRuta(lat, lon);
+                });
+            } else {
+                alert("El marcador no puede salir del área de Cartagena.");
+            }
+            return;
+        }
+    }
     if (input.length === 0) {
         sugerencias.style.display = "none";
         return;
