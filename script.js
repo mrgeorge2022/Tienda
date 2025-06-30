@@ -363,21 +363,90 @@ function displayProducts(category = '', searchQuery = '') {
       id: 18, 
       image: 'img/productos/sodafresa.jpg', 
       name: 'Soda de Fresa', 
-      category: ['todos','bebidas'], 
+      category: ['todos','bebidas','recomendados'], 
       price: 8000, 
       description:'¡Un estallido de frescura en cada sorbo!' 
     },
         { 
       id: 19, 
-      image: 'img/productos/michelada.jpg', 
-      name: 'Michelada', 
+      image: 'img/productos/sodasandia.jpg', 
+      name: 'Soda de Sandía', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 8000, 
+      description:'¡La soda de sandía perfecta! Refrescante, dulce y llena de sabor!' 
+    },
+    { 
+      id: 20, 
+      image: 'img/productos/coronamichelada.jpg', 
+      name: 'Michelada Corona', 
       category: ['todos','bebidas'], 
       price: 10000, 
       description:'¡La michelada perfecta! Refrescante, picante y llena de sabor!' 
     },
-
-    
-
+    { 
+      id: 21, 
+      image: 'img/productos/cocacola400.jpg', 
+      name: 'Coca-Cola 400ml', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 4000, 
+      description:'Coca-Cola 400ml', 
+    },
+    { 
+      id: 22, 
+      image: 'img/productos/kolaroman400.jpg', 
+      name: 'Kola Román 400ml', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 4000, 
+      description:'Kola Román 400ml', 
+    },
+    { 
+      id: 23, 
+      image: 'img/productos/manzana400.jpg', 
+      name: 'Manzana 400ml', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 3000, 
+      description:'Manzana 400ml', 
+    },
+    { 
+      id: 24, 
+      image: 'img/productos/uva400.jpg', 
+      name: 'Uva 400ml', 
+      category: ['todos','bebidas'], 
+      price: 3000, 
+      description:'Uva 400ml', 
+    },
+    { 
+      id: 25, 
+      image: 'img/productos/colombiana400.jpg', 
+      name: 'Colombiana 400ml', 
+      category: ['todos','bebidas'], 
+      price: 3000, 
+      description:'Colombiana 400ml', 
+    },
+    { 
+      id: 26, 
+      image: 'img/productos/mora500.jpg', 
+      name: 'Hit Mora 500ml', 
+      category: ['todos','bebidas','recomendados'], 
+      price: 4500, 
+      description:'Hit Mora 500ml', 
+    },
+    { 
+      id: 27, 
+      image: 'img/productos/naranjapiña500.jpg', 
+      name: 'Hit Naranja Piña 500ml', 
+      category: ['todos','bebidas'], 
+      price: 4500, 
+      description:'Hit Naranja Piña 500ml', 
+    },
+    { 
+      id: 28, 
+      image: 'img/productos/tropical500.jpg', 
+      name: 'Hit Tropical 500ml', 
+      category: ['todos','bebidas'], 
+      price: 4500, 
+      description:'Hit Tropical 500ml', 
+    },
 ];
 
 
@@ -606,11 +675,83 @@ function openModal(productId) {
     },
         { 
       id: 19, 
-      image: 'img/productos/michelada.jpg', 
-      name: 'Michelada', 
+      image: 'img/productos/sodasandia.jpg', 
+      name: 'Soda de Sandía', 
+      category: ['todos','bebidas'], 
+      price: 8000, 
+      description:'Disfruta de nuestra soda de sandía, una explosión de frescura y sabor frutal en cada sorbo. Ideal para refrescarte en cualquier momento del día.' 
+    },
+    { 
+      id: 20, 
+      image: 'img/productos/coronamichelada.jpg', 
+      name: 'Michelada Corona', 
       category: ['todos','bebidas'], 
       price: 10000, 
-      description:'Vive el sabor auténtico de una michelada bien preparada: cerveza, limón y un toque picante que transforma cualquier momento en una experiencia refrescante y llena de sabor.' 
+      description:'¡Vive el sabor auténtico de una michelada bien preparada: cerveza, limón y un toque picante que transforma cualquier momento en una experiencia refrescante y llena de sabor!' 
+    },
+    { 
+      id: 21, 
+      image: 'img/productos/cocacola400.jpg', 
+      name: 'Coca-Cola 400ml', 
+      category: ['todos','bebidas'], 
+      price: 4000, 
+      description:'Coca-Cola 400ml', 
+    },
+    { 
+      id: 22, 
+      image: 'img/productos/kolaroman400.jpg', 
+      name: 'Kola Román 400ml', 
+      category: ['todos','bebidas'], 
+      price: 4000, 
+      description:'Kola Román 400ml', 
+    },
+    { 
+      id: 23, 
+      image: 'img/productos/manzana400.jpg', 
+      name: 'Manzana 400ml', 
+      category: ['todos','bebidas'], 
+      price: 3000, 
+      description:'Manzana 400ml', 
+    },
+    { 
+      id: 24, 
+      image: 'img/productos/uva400.jpg', 
+      name: 'Uva 400ml', 
+      category: ['todos','bebidas'], 
+      price: 3000, 
+      description:'Uva 400ml', 
+    },
+    { 
+      id: 25, 
+      image: 'img/productos/colombiana400.jpg', 
+      name: 'Colombiana 400ml', 
+      category: ['todos','bebidas'], 
+      price: 3000, 
+      description:'Colombiana 400ml', 
+    },
+    { 
+      id: 26, 
+      image: 'img/productos/mora500.jpg', 
+      name: 'Hit Mora 500ml', 
+      category: ['todos','bebidas'], 
+      price: 4500, 
+      description:'Hit Mora 500ml', 
+    },
+    { 
+      id: 27, 
+      image: 'img/productos/naranjapiña500.jpg', 
+      name: 'Hit Naranja Piña 500ml', 
+      category: ['todos','bebidas'], 
+      price: 4500, 
+      description:'Hit Naranja Piña 500ml', 
+    },
+    { 
+      id: 28, 
+      image: 'img/productos/tropical500.jpg', 
+      name: 'Hit Tropical 500ml', 
+      category: ['todos','bebidas'], 
+      price: 4500, 
+      description:'Hit Tropical 500ml', 
     },
 ];
 
