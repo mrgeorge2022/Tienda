@@ -263,7 +263,7 @@ function actualizarRuta(lat, lon) {
 
 // Función para calcular el costo del envío basado en la distancia
 function calcularCostoEnvio(distance) {
-    const costoPorKm = 4000; // Costo por kilómetro (antes era 1630)
+    const costoPorKm = 2000; // Costo por kilómetro (antes era 1630)
     const distanceKm = distance / 1000; // Convertir metros a kilómetros
     let costoEnvio = Math.round(costoPorKm * distanceKm);
 
