@@ -275,7 +275,7 @@ function calcularCostoEnvio(distance) {
     }
 
     // Redondear a miles
-    //costoEnvio = Math.round(costoEnvio / 1000) * 1000;
+    costoEnvio = Math.round(costoEnvio / 1000) * 1000;
 
     return costoEnvio;
 }
