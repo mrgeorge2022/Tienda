@@ -919,7 +919,19 @@ window.onload = function() {
 };
 
 
+// BORRAr LOCALSTORAGE LUEGO DE UN DÍA
+(function() {
+  const now = Date.now();
+  const lastClear = localStorage.getItem('lastClearTimestamp');
+  const oneDay = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
 
+  if (!lastClear) {
+    localStorage.setItem('lastClearTimestamp', now);
+  } else if (now - parseInt(lastClear, 10) > oneDay) {
+    localStorage.clear();
+    localStorage.setItem('lastClearTimestamp', now);
+  }
+})();
 
 
 
