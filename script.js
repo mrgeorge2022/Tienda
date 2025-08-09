@@ -102,8 +102,6 @@ document.addEventListener('wheel', (event) => {
 
 
 
-
-
 // Asegúrate de que el botón esté oculto al cargar la página
 window.addEventListener("load", function () {
   const scrollTopButton = document.getElementById("scrollTopButton");

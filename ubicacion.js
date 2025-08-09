@@ -274,11 +274,40 @@ function calcularCostoEnvio(distance) {
         costoEnvio = 25000;
     }
 
+
+
+        // 📌 Aumento del 20% después de las 22:00
+    const ahora = new Date();
+    const horaActual = ahora.getHours();
+    if (horaActual >= 22) {
+        costoEnvio = Math.round(costoEnvio * 1.2);
+    }
+
     // Redondear a miles
     costoEnvio = Math.round(costoEnvio / 1000) * 1000;
 
     return costoEnvio;
 }
+
+
+// notificacion alerta recargo
+function mostrarAvisoRecargo() {
+    const aviso = document.getElementById("aviso-recargo");
+    const horaActual = new Date().getHours();
+
+    if (horaActual >= 22) {
+        aviso.style.display = "block"; // Mostrar aviso
+    } else {
+        aviso.style.display = "none";  // Ocultar aviso
+    }
+}
+
+// Llamar la función al cargar la página
+mostrarAvisoRecargo();
+
+
+
+
 
 // Función para formatear números como moneda en pesos colombianos
 function formatCurrency(value) {

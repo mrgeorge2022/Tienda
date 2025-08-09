@@ -40,6 +40,12 @@ body::before {
 
 
 
+/* Clase para bloquear scroll del body */
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
 
 
 
