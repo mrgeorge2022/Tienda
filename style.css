@@ -976,7 +976,7 @@ color: #333;
     border-radius: 60px;
     box-shadow: 0 5px 20px #ffc400;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 1000;
     padding: 10px;
     overflow: hidden;
     width: 70px;
@@ -1218,7 +1218,7 @@ color: #333;
 /* Imagen del producto en el modal */
 .modal-product-image {
     width: 100%;
-    max-height: 200px;
+    max-height: 220px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;

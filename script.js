@@ -357,30 +357,7 @@ function displayProducts(category = '', searchQuery = '') {
       price: 8000, 
       description:'¡Siente el refresco tropical en cada burbuja!' 
     },
-        { 
-      id: 18, 
-      image: 'img/productos/sodafresa.jpg', 
-      name: 'Soda de Fresa', 
-      category: ['todos','bebidas','recomendados'], 
-      price: 8000, 
-      description:'¡Un estallido de frescura en cada sorbo!' 
-    },
-        { 
-      id: 19, 
-      image: 'img/productos/sodasandia.jpg', 
-      name: 'Soda de Sandía', 
-      category: ['todos','bebidas','recomendados'], 
-      price: 8000, 
-      description:'¡La soda de sandía perfecta! Refrescante, dulce y llena de sabor!' 
-    },
-    { 
-      id: 20, 
-      image: 'img/productos/coronamichelada.jpg', 
-      name: 'Michelada Corona', 
-      category: ['todos','bebidas'], 
-      price: 10000, 
-      description:'¡La michelada perfecta! Refrescante, picante y llena de sabor!' 
-    },
+
     { 
       id: 21, 
       image: 'img/productos/cocacola400.jpg', 
@@ -444,6 +421,14 @@ function displayProducts(category = '', searchQuery = '') {
       category: ['todos','bebidas'], 
       price: 4500, 
       description:'Hit Tropical 500ml', 
+    },
+    { 
+      id: 29, 
+      image: 'img/productos/quesomozzarella.jpg', 
+      name: 'Queso Mozzarella', 
+      category: ['todos','acompañantes'], 
+      price: 6000, 
+      description:'Adicion de Queso Mozzarella', 
     },
 ];
 
@@ -663,30 +648,7 @@ function openModal(productId) {
       price: 8000, 
       description:'Sumérgete en la frescura tropical de nuestra soda de maracuyá. Un sabor exótico, refrescante y burbujeante, ideal para disfrutar en cualquier momento del día.' 
     },
-        { 
-      id: 18, 
-      image: 'img/productos/sodafresa.jpg', 
-      name: 'Soda de Fresa', 
-      category: ['todos','bebidas'], 
-      price: 8000, 
-      description:'Refresca tu día con nuestra soda de fresa: el balance perfecto entre dulzura y frescura en cada sorbo. ¡Una explosión de sabor frutal que te conquistará.' 
-    },
-        { 
-      id: 19, 
-      image: 'img/productos/sodasandia.jpg', 
-      name: 'Soda de Sandía', 
-      category: ['todos','bebidas'], 
-      price: 8000, 
-      description:'Disfruta de nuestra soda de sandía, una explosión de frescura y sabor frutal en cada sorbo. Ideal para refrescarte en cualquier momento del día.' 
-    },
-    { 
-      id: 20, 
-      image: 'img/productos/coronamichelada.jpg', 
-      name: 'Michelada Corona', 
-      category: ['todos','bebidas'], 
-      price: 10000, 
-      description:'¡Vive el sabor auténtico de una michelada bien preparada: cerveza, limón y un toque picante que transforma cualquier momento en una experiencia refrescante y llena de sabor!' 
-    },
+        
     { 
       id: 21, 
       image: 'img/productos/cocacola400.jpg', 
@@ -750,6 +712,14 @@ function openModal(productId) {
       category: ['todos','bebidas'], 
       price: 4500, 
       description:'Hit Tropical 500ml', 
+    },
+    { 
+      id: 29, 
+      image: 'img/productos/quesomozzarella.jpg', 
+      name: 'Queso Mozzarella', 
+      category: ['todos','acompañantes'], 
+      price: 6000, 
+      description:'Adicion de Queso Mozzarella', 
     },
 ];
 
