@@ -263,7 +263,7 @@ function actualizarRuta(lat, lon) {
 
 // Función para calcular el costo del envío basado en la distancia
 function calcularCostoEnvio(distance) {
-    const costoPorKm = 2000; // Costo por kilómetro (antes era 1630)
+    const costoPorKm = 2500; // Costo por kilómetro en pesos colombianos
     const distanceKm = distance / 1000; // Convertir metros a kilómetros
     let costoEnvio = Math.round(costoPorKm * distanceKm);
 
@@ -283,8 +283,8 @@ function calcularCostoEnvio(distance) {
         costoEnvio = Math.round(costoEnvio * 1.2);
     }
 
-    // Redondear a miles
-    costoEnvio = Math.round(costoEnvio / 1000) * 1000;
+    // Redondear al múltiplo de 100 más cercano
+    costoEnvio = Math.round(costoEnvio / 100) * 100;
 
     return costoEnvio;
 }
