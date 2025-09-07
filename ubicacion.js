@@ -393,7 +393,7 @@ const barriosCartagena = [
     { "nombre": "EL POZON", "lat": 10.4058351, "lon": -75.4559939 },
     { "nombre": "EL PRADO", "lat": 10.3995144, "lon": -75.5187062 },
     { "nombre": "EL RECREO", "lat": 10.3872453, "lon": -75.4731004 },
-    { "nombre": "EL REPOSO", "lat": 10.3699058, "lon": -75.4833955 },
+    { "nombre": "EL REPOSO", "lat": 10.3731723, "lon": -75.4884171 },
     { "nombre": "EL RUBI", "lat": 10.3922534, "lon": -75.4866898 },
     { "nombre": "EL SOCORRO", "lat": 10.3826749, "lon": -75.4805847 },
     { "nombre": "ESCALLON VILLA", "lat": 10.4033999, "lon": -75.4975375 },
