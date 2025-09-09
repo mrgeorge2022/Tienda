@@ -72,7 +72,13 @@
             <h2>¡Estas a un paso de completar tu pedido!</h2>
             <h4>Regálanos estos datos para entregar exitosamente tu pedido.</h4>
             <input type="text" id="nombre" placeholder="Nombre y apellido">
-            <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
+<input type="text"
+       id="telefono"
+       placeholder="Número telefónico"
+       oninput="validarTelefono()"
+       onkeypress="return filtrarTeclaTelefono(event)"
+       autocomplete="tel">
+
             <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
 
             <div id="direccion-container">

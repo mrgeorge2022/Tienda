@@ -28,7 +28,7 @@ window.addEventListener('load', function() {
 
 
 // EVITAR CLICK DERECHO EN TODA LA PÁGINA
-document.addEventListener('contextmenu', (e) => e.preventDefault());
+//document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 // RESTRINGIR TODOS LOS TIPOS DE ZOOM EN MÓVILES
 if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -406,66 +406,135 @@ inputNombre.addEventListener('input', () => {
     inputNombre.value = inputNombre.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
 });
 
-// Validación de teléfono (máximo 10 dígitos)
+
+
+function filtrarTeclaTelefono(e) {
+    const char = e.key;
+    const input = e.target;
+
+    // Permitir teclas especiales y navegación
+    if (
+        e.ctrlKey || e.metaKey ||
+        ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)
+    ) {
+        return true;
+    }
+
+    // Permitir un solo "+" al inicio
+    if (char === '+') {
+        return input.selectionStart === 0 && !input.value.includes('+');
+    }
+
+    // Permitir solo números
+    return /\d/.test(char);
+}
+
+
+
+// Validar teléfono según prefijo
 function validarTelefono() {
     const telefono = document.getElementById("telefono");
-    telefono.value = telefono.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
-    if (telefono.value.length > 10) {
-        telefono.value = telefono.value.substring(0, 10); // Limitar a 10 caracteres
+    let valor = telefono.value.trim();
+
+    const tieneMas = valor.startsWith("+");
+    let soloNumeros = valor.replace(/\D/g, '');
+
+    if (tieneMas) {
+        // Si tiene '+', dejar como está (sin recortar)
+        telefono.value = valor;
+    } else {
+        // Sin '+', limitar a 10 dígitos
+        if (soloNumeros.length > 10) {
+            soloNumeros = soloNumeros.slice(0, 10);
+        }
+        telefono.value = soloNumeros;
     }
 }
 
-// Validación para que el input de mesa solo acepte números y máximo 2 dígitos
+// Validación input mesa (solo números y máximo 2 dígitos)
 const inputMesa = document.getElementById('mesa');
 inputMesa.addEventListener('input', () => {
     inputMesa.value = inputMesa.value.replace(/[^0-9]/g, '').slice(0, 2);
 });
 
+// Función para manejar la validación y habilitar el botón "Finalizar Compra"
 function aceptarModaldatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
     const tipoEntrega = localStorage.getItem('tipoEntrega') || 'tienda';
 
-    // Si es entrega en mesa, validar también el número de mesa
+    // Validar número de mesa si el tipo de entrega es mesa
     if (tipoEntrega === "mesa") {
         const mesa = document.getElementById("mesa").value.trim();
         if (!mesa) {
-            alert("Por favor, llena todos los campos.");
-            // No habilitar el botón de finalizar compra
-            const btnFinalizar = document.getElementById('btnFinalizar');
-            btnFinalizar.style.display = 'none';
+            mostrarError("Por favor, ingresa el número de mesa.");
+            ocultarBtnFinalizar();
             return;
         } else {
             localStorage.setItem('mesa', mesa);
         }
     }
 
-    // Validar que ambos campos estén llenos y que el teléfono tenga 10 dígitos
-    if (nombre && telefono.length === 10) {
-        // Guardar datos en localStorage
-        localStorage.setItem('nombre', nombre);
-        localStorage.setItem('telefono', telefono);
-
-        // Guardar los datos aceptados para compararlos más tarde
-        nombreAceptado = nombre;
-        telefonoAceptado = telefono;
-
-        // Cambiar el botón de "Aceptar" por "Finalizar Compra"
-        const btnAceptar = document.getElementById('aceptarmodal');
-        const btnFinalizar = document.getElementById('btnFinalizar');
-
-        btnAceptar.style.display = 'none'; // Ocultar el botón de "Aceptar"
-        btnFinalizar.style.display = 'inline-block'; // Mostrar el botón de "Finalizar Compra"
-        
-        // Habilitar el botón de "Finalizar compra" solo si los campos están completos
-        habilitarBotonFinalizar();
-    } else {
-        // Mostrar alerta si los campos no están completos o el teléfono no tiene 10 dígitos
-        alert("Por favor, ingresa tu nombre y un teléfono válido de 10 dígitos.");
-        // No habilitar el botón de finalizar compra
-        const btnFinalizar = document.getElementById('btnFinalizar');
-        btnFinalizar.style.display = 'none';
+    // Validar campos nombre y teléfono
+    if (!nombre || !telefono) {
+        mostrarError("Por favor, ingresa tu nombre y un teléfono válido.");
+        ocultarBtnFinalizar();
+        return;
     }
+
+    if (telefono.startsWith("+")) {
+        if (telefono.length < 4) {
+            mostrarError("Por favor, ingresa un teléfono válido con prefijo internacional.");
+            ocultarBtnFinalizar();
+            return;
+        }
+    } else {
+        const soloNumeros = telefono.replace(/\D/g, '');
+        if (soloNumeros.length !== 10) {
+            mostrarError("Por favor, ingresa un teléfono válido de 10 dígitos.");
+            ocultarBtnFinalizar();
+            return;
+        }
+    }
+
+    // Guardar datos en localStorage
+    localStorage.setItem('nombre', nombre);
+    localStorage.setItem('telefono', telefono);
+
+    // Guardar datos aceptados
+    nombreAceptado = nombre;
+    telefonoAceptado = telefono;
+
+    // Cambiar botones
+    const btnAceptar = document.getElementById('aceptarmodal');
+    const btnFinalizar = document.getElementById('btnFinalizar');
+
+    btnAceptar.style.display = 'none';
+    btnFinalizar.style.display = 'inline-block';
+
+    habilitarBotonFinalizar();
+}
+
+// Función para mostrar errores menos invasivos
+function mostrarError(mensaje) {
+    const errorDiv = document.getElementById("errorTelefono");
+    if (!errorDiv) {
+        alert(mensaje);
+        return;
+    }
+    errorDiv.textContent = mensaje;
+    errorDiv.style.display = "block";
+
+    setTimeout(() => {
+        errorDiv.style.display = "none";
+        errorDiv.textContent = "";
+    }, 5000);
+}
+
+// Función para ocultar botón finalizar
+function ocultarBtnFinalizar() {
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    btnFinalizar.style.display = 'none';
 }
 
 
@@ -569,9 +638,11 @@ function finalizarCompra() {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';  // Por defecto 'No seleccionado' si no hay valor
     const totalProductos = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
+    const observaciones = document.getElementById('observaciones').value || "";
+    localStorage.setItem('observaciones', observaciones);
 
-    // Formatear el número telefónico con el patrón 000 000 0000
-    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
+
 
     // Generar el número de factura único
     const numeroFactura = generarNumeroFactura();
@@ -601,6 +672,7 @@ function finalizarCompra() {
             `${item.instructions ? `\n_Instrucciones: ${item.instructions}_` : '\n__'}`;
     }).join('\n');
 
+
     // Generar el mensaje de WhatsApp según el tipo de entrega
     let mensaje = "";
     if (tipoEntrega === "mesa") {
@@ -626,11 +698,14 @@ function finalizarCompra() {
     mensaje += `${messageProducts}\n\n`;
     mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
     mensaje += `MÉTODO DE PAGO: *${metodoPago}*\n\n`;
+
+    // Aquí ya no hay if, siempre se añade observaciones (aunque estén vacías)
+    mensaje += `*OBSERVACIONES:*\n_${observaciones.trim()}_\n\n`;
+
     mensaje += "*Ubicación de la tienda:*\n";
     mensaje += "https://goo.su/X4C1\n\n\n";
+
     mensaje += "*Envía tu pedido aqui ----->*";
-
-
 
     // Codificar el mensaje y abrir WhatsApp
     const encodedMessage = encodeURIComponent(mensaje);
@@ -638,6 +713,7 @@ function finalizarCompra() {
 
     // Mostrar el modal tras finalizar la compra
     mostrarModalCarrito();
+
 
     // Mostrar el botón de imprimir en el modal
     const imprimirBtn = document.getElementById('imprimirFacturaBtn');
@@ -651,13 +727,26 @@ const datos = recolectarDatosParaGoogleSheet(
     nombre,
     telefono,
     totalProductos,
-    metodoPago
+    metodoPago,
+    observaciones // Añadimos observaciones aquí
 );
-console.log(datos); // <-- Aquí verás el objeto y debe incluir tipoEntrega
+
+
+console.log(datos); // <-- Aquí verás el objeto formateado
+
 enviarDatosAGoogleSheet(datos);
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Guardar las observaciones en localStorage cuando el usuario las escriba
+document.addEventListener('DOMContentLoaded', () => {
+    const observacionesInput = document.getElementById('observaciones');
+    if (observacionesInput) {
+        observacionesInput.addEventListener('input', () => {
+            localStorage.setItem('observaciones', observacionesInput.value);
+        });
+    }
+});
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -739,8 +828,7 @@ function imprimirFactura() {
     const tipoEntrega = localStorage.getItem('tipoEntrega') || 'tienda';
     const mesa = localStorage.getItem('mesa') || "Sin número de mesa";
 
-    // Formatear el número telefónico con el patrón 000 000 0000
-    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
 
     // Obtener la fecha y hora actuales
     const fechaActual = new Date();
@@ -787,7 +875,10 @@ ${messageProducts}
 
 <strong>TOTAL A PAGAR:</strong> $${formatNumber(totalProductos)}
 <strong>MÉTODO DE PAGO:</strong> ${metodoPago}
-    
+
+<strong>OBSERVACIONES:</strong>
+${wrapText(localStorage.getItem('observaciones') || "", 40)}
+
 ------------------------------------------------------
 <strong>¡Gracias por tu compra!</strong>
 ------------------------------------------------------

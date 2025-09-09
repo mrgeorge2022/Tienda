@@ -49,6 +49,12 @@
             <p id="cart-total"></p>
         </div>
 
+
+        <div class="observaciones">
+    <label for="observaciones">Observaciones (Opcional):</label>
+    <textarea id="observaciones" name="observaciones" rows="2" cols="50" placeholder="Escribe aquí un mensaje opcional..."></textarea>
+</div>
+
         <button id="btnConfirmar" onclick="openModal()">
             <img src="img/iconos/checkconfirmar.svg" alt=""> ¡Confirmar pedido!
         </button>
@@ -76,8 +82,13 @@
         <h2>¡Estas a un paso de completar tu pedido!</h2>
         <h3>Regálanos estos datos para entregar exitosamente tu pedido.</h3>
         <input type="text" id="nombre" placeholder="Nombre y apellido">
-        <input type="number" id="telefono" placeholder="Número telefónico" oninput="validarTelefono()">
-        <input type="number" id="mesa" placeholder="Numero de mesa" style="display:none;">
+        <input type="text"
+                id="telefono"
+                placeholder="Número telefónico"
+                oninput="validarTelefono()"
+                onkeydown="return filtrarTeclaTelefono(event)"
+                autocomplete="tel">
+       <input type="number" id="mesa" placeholder="Numero de mesa" style="display:none;">
         <button id="aceptarmodal" onclick="aceptarModaldatos()">Aceptar</button>
         <div id="direccion-container">
             <button id="btnFinalizar" style="display: none;" onclick="finalizarCompra()">Finalizar Compra</button>

@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
 
 
 // EVITAR CLICK DERECHO EN TODA LA PÁGINA
-document.addEventListener('contextmenu', (e) => e.preventDefault());
+//document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 // RESTRINGIR TODOS LOS TIPOS DE ZOOM EN MÓVILES
 if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -504,32 +504,33 @@ function filtrarBarrios() {
     const sugerencias = document.getElementById("sugerencias");
     sugerencias.innerHTML = "";
 
-    // Detectar si el input es un par de coordenadas
-    const coordRegex = /^(-?\d+(\.\d+)?)[,\s]+(-?\d+(\.\d+)?)/;
-    const match = input.match(coordRegex);
-    if (match) {
-        const lat = parseFloat(match[1]);
-        const lon = parseFloat(match[3]);
-        if (!isNaN(lat) && !isNaN(lon)) {
-            sugerencias.style.display = "none";
-            // Mueve el marcador y busca el barrio más cercano
-            if (cartagenaPolygon.getBounds().contains([lat, lon])) {
-                marker.setLatLng([lat, lon]);
-                map.setView([lat, lon], 15);
-                actualizarInputConBarrioCercano(lat, lon, function(barrio) {
-                    marker.setPopupContent(`Barrio: ${barrio}<br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`).openPopup();
-                    actualizarRuta(lat, lon);
-                });
-            } else {
-                alert("El marcador no puede salir del área de Cartagena.");
-            }
-            return;
-        }
-    }
-    if (input.length === 0) {
+// Detectar si el input es un par de coordenadas (opcionalmente con paréntesis)
+const coordRegex = /^\s*\(?\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*\)?\s*$/;
+const match = input.match(coordRegex);
+
+if (match) {
+    const lat = parseFloat(match[1]);
+    const lon = parseFloat(match[3]);
+    if (!isNaN(lat) && !isNaN(lon)) {
         sugerencias.style.display = "none";
+        // Mueve el marcador y busca el barrio más cercano
+        if (cartagenaPolygon.getBounds().contains([lat, lon])) {
+            marker.setLatLng([lat, lon]);
+            map.setView([lat, lon], 15);
+            actualizarInputConBarrioCercano(lat, lon, function(barrio) {
+                marker.setPopupContent(`Barrio: ${barrio}<br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`).openPopup();
+                actualizarRuta(lat, lon);
+            });
+        } else {
+            alert("El marcador no puede salir del área de Cartagena.");
+        }
         return;
     }
+}
+if (input.length === 0) {
+    sugerencias.style.display = "none";
+    return;
+}
 
     const fragment = document.createDocumentFragment();
     barriosCartagena.forEach(barrio => {
@@ -708,49 +709,121 @@ inputNombre.addEventListener('input', () => {
     inputNombre.value = inputNombre.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
 });
 
-// Validación de teléfono (máximo 10 dígitos)
+
+function filtrarTeclaTelefono(e) {
+    const char = e.key;
+    const input = e.target;
+
+    // Permitir teclas especiales y navegación
+    if (
+        e.ctrlKey || e.metaKey ||
+        ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)
+    ) {
+        return true;
+    }
+
+    // Permitir un solo "+" al inicio
+    if (char === '+') {
+        return input.selectionStart === 0 && !input.value.includes('+');
+    }
+
+    // Permitir solo números
+    return /\d/.test(char);
+}
+
 function validarTelefono() {
     const telefono = document.getElementById("telefono");
-    telefono.value = telefono.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
-    if (telefono.value.length > 10) {
-        telefono.value = telefono.value.substring(0, 10); // Limitar a 10 caracteres
+    let valor = telefono.value.trim();
+
+    const tieneMas = valor.startsWith("+");
+    let soloNumeros = valor.replace(/\D/g, '');
+
+    if (tieneMas) {
+        // Permitir + y cualquier cantidad de dígitos después (sin formatear)
+        telefono.value = valor;
+    } else {
+        // Sin +: limitar a 10 dígitos, sin formatear
+        if (soloNumeros.length > 10) {
+            soloNumeros = soloNumeros.slice(0, 10);
+        }
+        telefono.value = soloNumeros;
     }
 }
 
-// Función para manejar la validación y habilitar el botón "Finalizar Compra" si los datos son válidos
+
+
+
+
+
+
+
+
 function aceptarModaldatos() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
 
-    // Validar que ambos campos estén llenos y que el teléfono tenga 10 dígitos
-    if (nombre && telefono.length === 10) {
-        // Guardar datos en localStorage
-        localStorage.setItem('nombre', nombre);
-        localStorage.setItem('telefono', telefono);
-
-        // Guardar los datos aceptados para compararlos más tarde
-        nombreAceptado = nombre;
-        telefonoAceptado = telefono;
-
-        // Cambiar el botón de "Aceptar" por "Finalizar Compra"
-        const btnAceptar = document.getElementById('aceptarmodal');
-        const btnFinalizar = document.getElementById('btnFinalizar');
-
-        btnAceptar.style.display = 'none'; // Ocultar el botón de "Aceptar"
-        btnFinalizar.style.display = 'inline-block'; // Mostrar el botón de "Finalizar Compra"
-        
-        // Habilitar el botón de "Finalizar compra" solo si los campos están completos
-        habilitarBotonFinalizar();
-    } else {
-        // Mostrar alerta si los campos no están completos o el teléfono no tiene 10 dígitos
-        alert("Por favor, ingresa tu nombre y un teléfono válido de 10 dígitos.");
+    // Validar que ambos campos estén llenos
+    if (!nombre || !telefono) {
+        mostrarError("Por favor, ingresa tu nombre y un teléfono válido.");
+        return;
     }
+
+    // Validar teléfono
+    if (telefono.startsWith("+")) {
+        // Si tiene +, dejamos pasar cualquier longitud (pero no vacío)
+        if (telefono.length < 4) { // mínimo +X y un número
+            mostrarError("Por favor, ingresa un teléfono válido con prefijo internacional.");
+            return;
+        }
+    } else {
+        // Si no tiene +, debe tener exactamente 10 dígitos (sin espacios)
+        const soloNumeros = telefono.replace(/\D/g, '');
+        if (soloNumeros.length !== 10) {
+            mostrarError("Por favor, ingresa un teléfono válido de 10 dígitos.");
+            return;
+        }
+    }
+
+    // Guardar datos en localStorage
+    localStorage.setItem('nombre', nombre);
+    localStorage.setItem('telefono', telefono);
+
+    // Guardar los datos aceptados para compararlos más tarde
+    nombreAceptado = nombre;
+    telefonoAceptado = telefono;
+
+    // Cambiar el botón de "Aceptar" por "Finalizar Compra"
+    const btnAceptar = document.getElementById('aceptarmodal');
+    const btnFinalizar = document.getElementById('btnFinalizar');
+
+    btnAceptar.style.display = 'none'; // Ocultar el botón de "Aceptar"
+    btnFinalizar.style.display = 'inline-block'; // Mostrar el botón de "Finalizar Compra"
+    
+    // Habilitar el botón de "Finalizar compra" solo si los campos están completos
+    habilitarBotonFinalizar();
+}
+
+// Función para mostrar error menos invasivo (puedes adaptarla o usar alert)
+function mostrarError(mensaje) {
+    const errorDiv = document.getElementById("errorTelefono");
+    if (!errorDiv) {
+        alert(mensaje); // fallback si no existe el div
+        return;
+    }
+    errorDiv.textContent = mensaje;
+    errorDiv.style.display = "block";
+
+    setTimeout(() => {
+        errorDiv.style.display = "none";
+        errorDiv.textContent = "";
+    }, 5000);
 }
 
 // Función para borrar el contenido de un campo de texto
 function borrarTexto(campoId) {
     document.getElementById(campoId).value = '';
 }
+
 
 
 
@@ -908,7 +981,7 @@ function finalizarCompra() {
 
     const metodoPago = localStorage.getItem('metodoPago') || 'No seleccionado';
     const ubicacion = localStorage.getItem('ubicacion') || document.getElementById('direccion').value || "Ubicación no disponible";
-    const puntoDeReferencia = document.getElementById('Punto_de_referencia').value || "No proporcionado";
+    const puntoDeReferencia = document.getElementById('Punto_de_referencia').value || "";
 
     // Obtener las coordenadas de latitud y longitud
     const latitud = localStorage.getItem('latitud');
@@ -926,8 +999,9 @@ function finalizarCompra() {
     const nombre = localStorage.getItem('nombre') || "Nombre no proporcionado";
     let telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
 
-    // Formatear el número telefónico con el patrón 000 000 0000
-    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
+    const observaciones = localStorage.getItem('observaciones') || "";
+
 
 
         // Generar el número de factura único
@@ -950,7 +1024,6 @@ function finalizarCompra() {
 *TELÉFONO:* ${telefono}
 
 *DIRECCIÓN:* ${ubicacion}
-
 *PUNTO DE REFERENCIA:* ${puntoDeReferencia}
 
 *PRODUCTOS SELECCIONADOS:*
@@ -963,9 +1036,11 @@ COSTO DE DOMICILIO: $${formatNumber(costoDomicilio)}
 *TOTAL A PAGAR: $${formatNumber(totalFinal)}*
 MÉTODO DE PAGO: *${metodoPago}*
 
+*OBSERVACIONES:*
+_${observaciones}_
+
 *Ubicación en Google Maps:*
 ${googleMapsLink}
-
 
 
 *Envía tu pedido aqui ----->*`;
@@ -1002,6 +1077,8 @@ datos.puntoReferencia = puntoDeReferencia;
 datos.costoDomicilio = costoDomicilio;
 datos.totalPagar = totalFinal;
 datos.ubicacionGoogleMaps = googleMapsLink;
+datos.observaciones = observaciones;
+
 
 console.log(datos); // <-- Aquí verás el objeto formateado
 enviarDatosAGoogleSheet(datos);
@@ -1073,8 +1150,7 @@ function imprimirFactura() {
     const numeroFactura = localStorage.getItem('numeroFactura') || "No disponible"; // Si no hay número, usar un valor predeterminado
     const horaCompra = localStorage.getItem('horaCompra') || "Hora no disponible"; // Hora exacta de la compra
 
-    // Formatear el número telefónico con el patrón 000 000 0000
-    telefono = telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
 
     // Obtener la fecha actual
     const fechaActual = new Date();
@@ -1133,6 +1209,9 @@ ${messageProducts}
 
 <strong>TOTAL A PAGAR:</strong> $${formatNumber(totalFinal)}
 <strong>MÉTODO DE PAGO:</strong> ${metodoPago}
+
+<strong>OBSERVACIONES:</strong>
+${wrapText(localStorage.getItem('observaciones') || "", 40)}
 
 ------------------------------------------------------
 <strong>¡Gracias por tu compra!</strong>

@@ -6,7 +6,8 @@ function recolectarDatosParaGoogleSheet(
     nombre,
     telefono,
     totalProductos,
-    metodoPago
+    metodoPago,
+    observaciones // ✅ AÑADIDO COMO PARÁMETRO
 ) {
     let productosArray = [];
     try {
@@ -14,6 +15,7 @@ function recolectarDatosParaGoogleSheet(
     } catch (e) {
         productosArray = [];
     }
+
     const productosFormateados = productosArray.map(item => {
         let size = "";
         let flavors = "";
@@ -37,7 +39,9 @@ function recolectarDatosParaGoogleSheet(
         return `${item.name} x${item.quantity} ($${item.price})  ${size}  ${flavors}  ${borders}  ${additionals}  ${instrucciones}`;
     }).join('\n');
 
-    // Construir el objeto base
+    // ✅ Si observaciones no vino como parámetro, úsalo desde localStorage como respaldo
+    const obsFinal = observaciones || localStorage.getItem('observaciones') || "";
+
     const datos = {
         tipoEntrega: tipoEntrega,
         numeroFactura: numeroFactura,
@@ -52,7 +56,8 @@ function recolectarDatosParaGoogleSheet(
         costoDomicilio: "",
         totalPagar: totalProductos,
         metodoPago: metodoPago,
-        ubicacionGoogleMaps: ""
+        ubicacionGoogleMaps: "",
+        observaciones: obsFinal // ✅ ASEGURADO
     };
 
     // Solo agrega mesa si el tipo de entrega es literalmente "mesa"
@@ -64,7 +69,7 @@ function recolectarDatosParaGoogleSheet(
 }
 
 function enviarDatosAGoogleSheet(datos) {
-    fetch('https://script.google.com/macros/s/AKfycbw8cwXF-qdSTjv-6hHTUmDiFvGHoOqTHdVQF9O-58zngNGZxw_dRkN1bZxBZ-sjduLJ/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: {
