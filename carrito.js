@@ -673,6 +673,10 @@ function finalizarCompra() {
     }).join('\n');
 
 
+// Calcular propina voluntaria (10% del total)
+let propina = Math.round(totalProductos * 0.10);
+let totalConPropina = totalProductos + propina
+
     // Generar el mensaje de WhatsApp según el tipo de entrega
     let mensaje = "";
     if (tipoEntrega === "mesa") {
@@ -698,6 +702,9 @@ function finalizarCompra() {
     mensaje += `${messageProducts}\n\n`;
     mensaje += `*TOTAL A PAGAR: $${formatNumber(totalProductos)}*\n`;
     mensaje += `MÉTODO DE PAGO: *${metodoPago}*\n\n`;
+
+    mensaje += `*PROPINA VOLUNTARIA (10%): $${formatNumber(propina)}*\n`;
+    mensaje += `*TOTAL CON PROPINA: $${formatNumber(totalConPropina)}*\n\n`;
 
     // Aquí ya no hay if, siempre se añade observaciones (aunque estén vacías)
     mensaje += `*OBSERVACIONES:*\n_${observaciones.trim()}_\n\n`;
@@ -852,6 +859,10 @@ function imprimirFactura() {
                `${item.instructions ? `\nInstrucciones: ${wrapText(item.instructions, 38)}` : '\n__'}`;
     }).join('\n');
     
+    // Calcular propina voluntaria (10% del total)
+    let propina = Math.round(totalProductos * 0.10);
+    let totalConPropina = totalProductos + propina;
+
     // Generar el mensaje de la factura con el número de factura
     let facturaTexto = `
 ------------------------------------------------------
@@ -875,6 +886,9 @@ ${messageProducts}
 
 <strong>TOTAL A PAGAR:</strong> $${formatNumber(totalProductos)}
 <strong>MÉTODO DE PAGO:</strong> ${metodoPago}
+
+<strong>PROPINA VOLUNTARIA:</strong> $${formatNumber(propina)}
+<strong>TOTAL CON PROPINA:</strong> $${formatNumber(totalConPropina)}
 
 <strong>OBSERVACIONES:</strong>
 ${wrapText(localStorage.getItem('observaciones') || "", 40)}

@@ -37,6 +37,95 @@ body::before {
     pointer-events: none;
 }
 
+/*/////////////////////////////////////////////////////////// */
+/* ANUNCIO MODAL FLYER PROMOCIONAL */
+
+/* Modal general */
+.promo-modal {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Contenido */
+.promo-modal-content {
+  position: relative;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 90%;   /* evita que se vea gigante en pantallas grandes */
+  box-sizing: border-box;
+}
+
+/* Botón de cierre */
+.promo-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 28px;
+  color: rgb(131, 131, 131);
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px 10px;
+  z-index: 10;
+}
+
+/* Contador en la esquina inferior derecha de la imagen */
+#promoCountdownContainer {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 10;
+}
+
+/* Imagen */
+.promo-flyer-img {
+  width: 100%;
+  max-width: 600px;  /* más ancho en pantallas grandes */
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  position: relative;
+}
+
+/* Media queries para pantallas grandes */
+@media (min-width: 1024px) {
+  .promo-modal-content {
+    max-width: 70%;  /* ocupa menos del total de la pantalla */
+  }
+
+  .promo-flyer-img {
+    max-width: 500px; /* más ancho para escritorio */
+    height: auto;
+  }
+
+  #promoCountdownContainer {
+    font-size: 18px; /* contador más grande */
+    padding: 8px 12px;
+  }
+}
+
+
+/*/////////////////////////////////////////////*/
+
+
 
 
 
@@ -273,7 +362,7 @@ body::before {
     cursor: pointer;
     padding: 0;
     overflow: hidden;
-    border-radius: 15px;
+    border-radius: 30px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
     white-space: normal; /* Permite que el texto se ajuste en varias líneas */
@@ -696,7 +785,7 @@ body::before {
     }
 
     .product-item {
-        padding: 10px;
+        padding: 0px;
     }
 
     .product-item h3 {
@@ -1025,72 +1114,132 @@ color: #333;
     z-index: 1200; /* Mayor que el #floating-cart */
 }
 
-/* Estilos para el contenedor de la lista de productos */
+
+/* 🔹 Contenedor de la lista */
 #product-list {
-    display: flex;
-    flex-wrap: wrap; /* Permite que los elementos de producto se envuelvan en varias filas */
-    gap: 15px; /* Espacio entre los productos */
-    justify-content: center; /* Centra los productos en el contenedor */
-    padding: 10px; /* Espaciado alrededor del contenedor */
-    margin-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr; /* móvil: 1 columna */
+  gap: 15px;
+  padding: 20px;
+  margin-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 🔹 A partir de pantallas grandes → 3 columnas */
+@media (min-width: 992px) {
+  #product-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 
+
+
+/* 🔹 Card del producto */
 #contenedorvacio {
-    position: relative; /* Esto es necesario para que el botón flotante esté dentro de este contenedor */
-    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
-    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
-    margin-bottom: 0; /* Espacio entre productos */
-    background-color: transparent; /* Fondo blanco o el color que prefieras */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #444;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  width: 100%;       /* 🔹 ocupa todo el ancho en móvil */
+  min-height: 100px; /* altura mínima */
+  box-sizing: border-box;
 }
 
-/* Estilos para el contenedor de cada producto */
+
+
+/* 🔹 Bloque imagen + texto */
 #product-item {
-    background-color: #444;
-    padding: 10px; /* Espaciado interno */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
-    width: 300px; /* Ajusta el ancho según el tamaño de tus productos */
-    height: 330px; /* Ajusta la altura según el tamaño de tus productos */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
 }
 
-/* Efecto de hover en cada producto */
-#contenedorvacio:hover {
-    transform: translateY(-5px); /* Levanta el producto ligeramente */
-}
-
-/* Estilos para la imagen del producto */
+/* 🔹 Imagen */
 .product-image {
-    width: 100%; /* Ajuste completo al ancho del contenedor */
-    height: 200px; /* Altura fija para un tamaño uniforme */
-    object-fit: cover; /* Recorta la imagen para llenar el contenedor */
-    border-radius: 8px; /* Bordes redondeados en la imagen */
-    margin-bottom: 10px; /* Espacio debajo de la imagen */
+  width: 85px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* 🔹 Texto */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Aplica multiline truncation */
+.product-info h3,
+.product-info p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* máximo 2 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-info h3 {
+  font-size: 15px;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.product-info p {
+  font-size: 13px;
+  margin: 0 0 4px 0;
+  opacity: 0.85;
+}
+
+.product-info strong {
+  font-size: 14px;
+  color: #ffd369;
+  font-weight: 700;
 }
 
 
-/* Estilos para el nombre del producto */
-.product-item h3 {
-    font-size: 18px;
-    color: #fff;
-    margin: 10px 0 5px; /* Espaciado superior e inferior */
-    font-weight: bold;
+/* 🔹 Botón + */
+#botondeagregarcontendor {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
 }
 
-/* Estilos para la descripción del producto */
-.product-item p {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px; /* Espacio debajo de la descripción */
+#botondeagregarcontendor button {
+  background: #000;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/* Estilo para el precio del producto */
-.product-item p strong {
-    font-size: 16px;
-    color: #fff; /* Color naranja para el precio */
+
+
+#botondeagregarcontendor img {
+  width: 20px;
+  height: 20px;
 }
+
+
+
 
 
 #contenedorcontadorcarrito{
@@ -1130,26 +1279,6 @@ color: #333;
 }
 
 
-/* Estilo para el botón de ordenar */
-.product-item button {
-    position: absolute;
-    width: 50px; /* Le subí a 50px para que el padding no deforme el círculo */
-    aspect-ratio: 1 / 1;
-    bottom: -10px;
-    right: -10px;
-    background-color: #000;
-    border: none;
-    border-radius: 50%;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-
-    /* Flex para centrar el contenido */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 
 
@@ -1234,7 +1363,7 @@ color: #333;
 /* Precio del producto */
 .modal-content p strong {
     font-size: 18px;
-    color: #ffffff; /* Color naranja para destacar el precio */
+    color: #ffd369; /* Color naranja para destacar el precio */
 }
 
 /* Área de texto para las indicaciones */

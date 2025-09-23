@@ -12,8 +12,40 @@ window.addEventListener('load', function() {
 
 
 
+//ANUNCIOS MODAL FLYER
+// Mostrar modal automáticamente al cargar
+window.addEventListener("load", () => {
+  const modal = document.getElementById("promoFlyerModal");
+  const closeBtn = document.querySelector(".promo-close-btn");
+  const contador = document.getElementById("promoCountdown");
 
+  let segundos = 4;
+  modal.style.display = "flex";
 
+  const timer = setInterval(() => {
+    segundos--;
+    contador.textContent = segundos;
+    if (segundos <= 0) {
+      clearInterval(timer);
+      modal.style.display = "none";
+    }
+  }, 1000);
+
+  // Cerrar con botón
+  closeBtn.onclick = () => {
+    clearInterval(timer);
+    modal.style.display = "none";
+  };
+
+  // Cerrar al hacer clic fuera
+  window.onclick = (e) => {
+    if (e.target === modal) {
+      clearInterval(timer);
+      modal.style.display = "none";
+    }
+  };
+});
+//////////////////////////////////////////////////////////
 
 
 
@@ -465,9 +497,11 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 <div id="contenedorvacio">
   <div id="product-item">
     <img src="${product.image}" alt="${product.name}" class="product-image">
-    <h3>${product.name}</h3>
-    <p>${product.description}</p>
-    <p><strong>$${formatNumber(product.price)}</strong></p>
+    <div class="product-info">
+      <h3>${product.name}</h3>
+      <p>${product.description}</p>
+      <p><strong>$${formatNumber(product.price)}</strong></p>
+    </div>
   </div>
 
   <div id="botondeagregarcontendor">
@@ -506,44 +540,42 @@ function activateCategoryLink(category) {
 
 
 
-
-
 // FUNCIÓN PARA ABRIR EL MODAL CON LOS DETALLES DEL PRODUCTO
 function openModal(productId) {
-  const products = [
-    { 
-      id: 1, 
-      image: 'img/productos/express.jpg', 
-      name: 'Express', 
-      category: 'perros', 
-      price: 17000, 
-      description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
-    },
-    { 
-      id: 2, 
-      image: 'img/productos/mister.jpg', 
-      name: 'Mister', 
-      category: 'perros', 
-      price: 11000, 
-      description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
-  },
-  { 
-      id: 3, 
-      image: 'img/productos/royal.jpg', 
-      name: 'Royal', 
-      category: 'perros', 
-      price: 15000, 
-      description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
-  },
-  { 
-      id:4, 
-      image: 'img/productos/rancher.jpg', 
-      name: 'Rancher', 
-      category: 'perros', 
-      price: 18000, 
-      description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
-  },
-      {
+    const products = [
+        { 
+          id: 1, 
+          image: 'img/productos/express.jpg', 
+          name: 'Express', 
+          category: 'perros', 
+          price: 17000, 
+          description: 'Un pan artesanal relleno de chorizo Express Parisienne y tocineta ahumada, realzado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito y salsa de maíz dulce. ¡Todo cubierto con queso mozzarella y maíz tierno!' 
+        },
+        { 
+          id: 2, 
+          image: 'img/productos/mister.jpg', 
+          name: 'Mister', 
+          category: 'perros', 
+          price: 11000, 
+          description: 'El auténtico pan artesanal con una salchicha premium Cunit extra larga, acompañada de queso costeño artesanal, cebolla caramelizada gourmet, salsa fresca de cilantro y un toque especial de crema parrillera.' 
+      },
+      { 
+          id: 3, 
+          image: 'img/productos/royal.jpg', 
+          name: 'Royal', 
+          category: 'perros', 
+          price: 15000, 
+          description: 'Pan artesanal coronado con salchicha Cunit Jumbo, salsa de cilantro, trozos frescos de aguacate, salsa crema parrilla y una combinación de queso mozzarella y maíz tierno. ¡Una delicia real!' 
+      },
+      { 
+          id:4, 
+          image: 'img/productos/rancher.jpg', 
+          name: 'Rancher', 
+          category: 'perros', 
+          price: 18000, 
+          description: 'Pan artesanal con salchicha ranchera y crujientes tiras de tocineta ahumada, combinado con salsa de cilantro, salsa crema parrilla, plátano amarillo frito, salsa de maíz dulce y una capa de queso mozzarella con maíz tierno. ¡Irresistible!' 
+      },
+          {
           id: 5, 
           image: 'img/productos/LaCosteña.jpg', 
           name: 'La Costeña', 
@@ -937,7 +969,7 @@ function validateQuantityInput() {
 
 
 
-
+///////////////////////////////////////////////////////////////////////////
 const horariosTienda = [
   { dia: 0, horaApertura: 18, horaCierre: 24 },  // Domingo
   { dia: 1, horaApertura: 18, horaCierre: 24},  // Lunes 
@@ -947,6 +979,13 @@ const horariosTienda = [
   { dia: 5, horaApertura: 18, horaCierre: 24 },  // Viernes
   { dia: 6, horaApertura: 18, horaCierre: 24 },  // Sábado
 ];
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
 
 // FUNCIÓN PARA VERIFICAR SI LA TIENDA ESTÁ ABIERTA
 function estaAbierta() {

@@ -1000,6 +1000,10 @@ function finalizarCompra() {
     let telefono = localStorage.getItem('telefono') || "Teléfono no proporcionado";
 
 
+    // Calcular propina voluntaria (10% del total)
+let propina = Math.round(totalFinal * 0.10);
+let totalConPropina = totalFinal + propina
+
     const observaciones = localStorage.getItem('observaciones') || "";
 
 
@@ -1035,6 +1039,9 @@ COSTO DE DOMICILIO: $${formatNumber(costoDomicilio)}
 
 *TOTAL A PAGAR: $${formatNumber(totalFinal)}*
 MÉTODO DE PAGO: *${metodoPago}*
+
+*PROPINA VOLUNTARIA (10%): $${formatNumber(propina)}*
+*TOTAL CON PROPINA: $${formatNumber(totalConPropina)}*
 
 *OBSERVACIONES:*
 _${observaciones}_
@@ -1177,8 +1184,9 @@ function imprimirFactura() {
     const ubicacion = localStorage.getItem('ubicacion') || document.getElementById('direccion').value || "Ubicación no disponible";
     const puntoDeReferencia = document.getElementById('Punto_de_referencia').value || "No proporcionado";
 
-
-
+    // Calcular propina voluntaria (10% del total)
+let propina = Math.round(totalFinal * 0.10);
+let totalConPropina = totalFinal + propina;
 
     // Generar el mensaje de la factura con el número de factura y domicilio
     let facturaTexto = `
@@ -1209,6 +1217,9 @@ ${messageProducts}
 
 <strong>TOTAL A PAGAR:</strong> $${formatNumber(totalFinal)}
 <strong>MÉTODO DE PAGO:</strong> ${metodoPago}
+
+<strong>PROPINA VOLUNTARIA (10%):</strong> $${formatNumber(propina)}
+<strong>TOTAL CON PROPINA:</strong> $${formatNumber(totalConPropina)}
 
 <strong>OBSERVACIONES:</strong>
 ${wrapText(localStorage.getItem('observaciones') || "", 40)}

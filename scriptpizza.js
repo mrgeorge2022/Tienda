@@ -261,12 +261,14 @@ productElement.innerHTML = `
 <div id="contenedorvacio">
   <div id="product-item">
     <img src="${product.image}" alt="${product.name}" class="product-image">
+    <div class="product-info">
     <h3>${product.name}</h3>
     <p>${product.description}</p>
+    </div>
   </div>
 
   <div id="botondeagregarcontendor">
-    <button onclick="event.stopPropagation(); openModal(${product.id})"><img src="img/iconos/add.svg" alt="add" id="add"></button>
+    <button onclick="event.stopPropagation(); openModal(${product.id})"><img src="img/iconos/add.png" alt="add" id="add"></button>
  </div>
 </div>
 
@@ -744,15 +746,20 @@ function validateQuantityInput() {
 
 
 
+
+///////////////////////////////////////////////////////////////////////////
 const horariosTienda = [
   { dia: 0, horaApertura: 18, horaCierre: 24 },  // Domingo
-  { dia: 1, horaApertura: 18, horaCierre: 24 },  // Lunes
+  { dia: 1, horaApertura: 18, horaCierre: 24},  // Lunes 
   { dia: 2, horaApertura: 18, horaCierre: 24 },  // Martes
-  { dia: 3, horaApertura: 18, horaCierre: 24 },  // Miércoles - cerrado
-  { dia: 4, horaApertura: 18, horaCierre: 24 },  // Jueves
+  { dia: 3, horaApertura: null, horaCierre: null},  // Miércoles - cerrdado
+  { dia: 4, horaApertura: 18, horaCierre: 24 },  // Jueves 
   { dia: 5, horaApertura: 18, horaCierre: 24 },  // Viernes
   { dia: 6, horaApertura: 18, horaCierre: 24 },  // Sábado
 ];
+/////////////////////////////////////////////////////////////////////////////
+
+
 
 // FUNCIÓN PARA VERIFICAR SI LA TIENDA ESTÁ ABIERTA
 function estaAbierta() {
