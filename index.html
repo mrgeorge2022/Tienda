@@ -54,6 +54,13 @@
     <button onclick="filtrarYOcultar('recomendados')" id="recomendadosbutton">
         <!--<div class="button-image" style="background-image: url('img/recomendados.jpg');"></div>-->
         <span>¡Recomendados!</span>
+
+    <!-- <button onclick="window.location.href='indexalmuerzo.html'">
+        <div class="button-image" style="background-image: url('img/productos/armatualmuerzo.jpg');"></div>
+        <span>Almuerzos</span>
+    </button>-->
+
+
     <button onclick="filtrarYOcultar('perros')">
         <div class="button-image" style="background-image: url('img/productos/express.jpg');"></div>
         <span>Perros</span>
@@ -65,8 +72,9 @@
 
     <!--<button onclick="window.location.href='indexpizza.html'">
         <div class="button-image" style="background-image: url('img/productos/pizzapepperoni.jpg');"></div>
-        <span>Pizzas</span>-->
-    </button>
+        <span>Pizzas</span>
+    </button>-->
+    
     <button onclick="filtrarYOcultar('salchipapas')">
         <div class="button-image" style="background-image: url('img/productos/Choripapazo.jpg');"></div>
         <span>Salchipapas</span>
@@ -168,33 +176,37 @@
         <!-- Los productos se mostrarán aquí dinámicamente -->
     </section>
 
-    <!-- Modal para ver detalles del producto -->
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modal-product-name"></h2>
-            <img id="modal-product-image" src="" alt="Imagen del Producto" class="modal-product-image">
-            <p id="modal-product-description"></p>
+<!-- Modal para ver detalles del producto -->
+<div id="product-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modal-product-name"></h2>
+    <img id="modal-product-image" src="" alt="Imagen del Producto" class="modal-product-image">
+    <p id="modal-product-description"></p>
 
 
-            <p><strong>$<span id="modal-product-price"></span></strong></p>
-            <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
+    <textarea id="modal-product-instructions" placeholder="Añade tus indicaciones..."></textarea>
 
+    <!-- Contenedor de cantidad + botón juntos -->
+    <div class="quantity-control">
+      <div class="counter">
+        <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
+        <input type="text" id="modal-quantity" value="1" oninput="updateTotalPrice()">
+        <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
+      </div>
 
-            <div class="quantity-control">
-                <button type="button" id="decrement" onclick="changeQuantity(-1)">-</button>
-            
-                <input type="text" id="modal-quantity" value="1" oninput="updateTotalPrice()">
-            
-                <button type="button" id="increment" onclick="changeQuantity(1)">+</button>
-            </div>
-            
-            <!-- Botón de agregar al carrito, se actualiza con el precio total -->
-            <button id="add-to-cart-button" onclick="addToCartFromModal()">Agregar al carrito</button>
-            
-        </div>
+      <!-- Botón a la derecha -->
+<button id="add-to-cart-button" onclick="addToCartFromModal()">
+  Agregar 
+  <span class="price">
+    $<span id="modal-product-price"></span>
+  </span>
+</button>
     </div>
-    </div>
+    
+  </div>
+</div>
+
 
 
 

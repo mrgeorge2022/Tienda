@@ -209,33 +209,22 @@ document.querySelectorAll('nav ul li a').forEach(link => {
 
 let cart = []; // Este arreglo almacenará los productos del carrito con su cantidad
 
+// ===============================
+// FUNCIÓN PARA MOSTRAR PRODUCTOS
+// ===============================
 function displayProducts(category = '', searchQuery = '') {
   const products = [
-    { 
-      id: 18, 
-      image: 'img/productos/armatupizza.jpg', 
-      name: 'Arma Tu Pizza', 
-      category: ['todos', 'armatupizza'], 
-      description: '¡Crea tu pizza con los ingredientes que prefieras!' 
-    },
-    { 
-      id: 19, 
-      image: 'img/productos/pizzamargarita.jpg', 
-      name: 'Pizza Margarita', 
-      category: ['todos', 'Gourmet', 'recomendados'], 
-      description: '¡La clásica pizza Margarita con queso mozzarella y albahaca fresca!' 
-    },
-    { 
-      id: 20, 
-      image: 'img/productos/pizzapepperoni.jpg', 
-      name: 'Pizza Pepperoni', 
-      category: ['todos', 'Dulces'], 
-      description: '¡Deliciosa pizza con pepperoni y queso mozzarella!' 
-    },
+{ 
+  id: 30, 
+  image: 'img/productos/armatualmuerzo.jpg', 
+  name: 'Arma tu Almuerzo', 
+  category: ['todos', 'almuerzo'], 
+  description: 'Arma tu almuerzo con proteína, acompañante, grano, ensalada y sopa.' 
+},
+
   ];
 
   const filteredProducts = products.filter(p => {
-    // Filtrar por categoría si es proporcionada
     const matchesCategory = category ? p.category.includes(category) : true;
     const matchesSearchQuery = searchQuery ? p.name.toLowerCase().includes(searchQuery.toLowerCase()) : true;
     return matchesCategory && matchesSearchQuery;
@@ -244,313 +233,188 @@ function displayProducts(category = '', searchQuery = '') {
   const productList = document.getElementById('product-list');
   productList.innerHTML = '';
 
-  // Recuperar cantidad de producto seleccionado desde el carrito desde localStorage
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  // Mostrar los productos filtrados
   filteredProducts.forEach(product => {
     const productElement = document.createElement('div');
     productElement.classList.add('product-item');
     productElement.id = `product-${product.id}`;
 
-    productElement.onclick = function() {
-      openModal(product.id); // Llama a la función openModal con el ID del producto
-  };
+    productElement.onclick = function () {
+      openModal(product.id);
+    };
 
-productElement.innerHTML = `
-<div id="contenedorvacio">
-  <div id="product-item">
-    <img src="${product.image}" alt="${product.name}" class="product-image">
-    <div class="product-info">
-    <h3>${product.name}</h3>
-    <p>${product.description}</p>
-    </div>
-  </div>
-
-  <div id="botondeagregarcontendor">
-    <button onclick="event.stopPropagation(); openModal(${product.id})"><img src="img/iconos/add.png" alt="add" id="add"></button>
- </div>
-</div>
-
-`;
-
-// Agregar el producto al contenedor de la lista
-productList.appendChild(productElement);
+    productElement.innerHTML = `
+      <div id="contenedorvacio">
+        <div id="product-item">
+          <img src="${product.image}" alt="${product.name}" class="product-image">
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+          </div>
+        </div>
+        <div id="botondeagregarcontendor">
+          <button onclick="event.stopPropagation(); openModal(${product.id})">
+            <img src="img/iconos/add.png" alt="add" id="add">
+          </button>
+        </div>
+      </div>`;
+    productList.appendChild(productElement);
   });
 }
 
-
-
-// Función para activar el enlace de la categoría seleccionada en el listado 
-function activateCategoryLink(category) {
-  // Primero, eliminamos la clase 'active' de todos los enlaces
-  const allLinks = document.querySelectorAll('nav ul li a, .custom-dropdown-menu a');
-  allLinks.forEach(link => {
-    link.classList.remove('active');
-  });
-
-  // Luego, agregamos la clase 'active' al enlace seleccionado
-  const selectedLink = document.querySelector(`a[href*="${category}"]`);
-  if (selectedLink) {
-    selectedLink.classList.add('active');
-  }
-
-  // Filtrar los productos según la categoría seleccionada
-  displayProducts(category);
-
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCIÓN PARA ABRIR EL MODAL CON LOS DETALLES DEL PRODUCTO
+// ===============================
+// FUNCIÓN PARA ABRIR EL MODAL
+// ===============================
 function openModal(productId) {
   const products = [
-    {
-      id: 18,
-      image: 'img/productos/armatupizza.jpg',
-      name: 'Arma Tu Pizza',
-      category: ['todos', 'armatupizza'],
-      price: 0,
-      description: '¡Crea tu pizza con los ingredientes que prefieras!',
-      flavorOptions: [
-        { name: 'Jamón', price: 5000 },
-        { name: 'Queso', price: 4000 },
-        { name: 'Pepperoni', price: 6000 },
-        { name: 'Champiñones', price: 4500 },
-        { name: 'Tocineta', price: 7000 },
-        { name: 'Pollo', price: 6500 },
-        { name: 'Vegetales', price: 3000 },
+{
+  id: 30,
+  image: 'img/productos/armatualmuerzo.jpg',
+  name: 'Arma tu Almuerzo',
+  category: ['todos', 'almuerzo'],
+  price: 0,
+  description: 'Arma tu almuerzo con proteína, acompañante, grano, ensalada y sopa.',
+  proteinaOptions: [
+    { name: 'Pollo', price: 8000 },
+    { name: 'Carne', price: 9000 },
+    { name: 'Pescado', price: 9500 }
+  ],
+  acompananteOptions: [
+    { name: 'Papa frita', price: 3000 },
+    { name: 'Yuca al vapor', price: 2500 },
+    { name: 'Patacón', price: 2000 }
+  ],
+  granoOptions: [
+    { name: 'Arroz blanco', price: 2000 },
+    { name: 'Fríjoles', price: 2500 }
+  ],
+  ensaladaOptions: [
+    { name: 'Ensalada fresca', price: 2000 },
+    { name: 'Ensalada rusa', price: 2500 }
+  ],
+  sopaOptions: [
+    { name: 'Sopa de pollo', price: 3000 },
+    { name: 'Sopa de verduras', price: 2500 }
+  ]
+}
 
-      ],
-      checkboxOptions: [
-        { name: 'Borde Queso', price: 10000 },
-        { name: 'Borde Queso y Bocadillo', price: 15000 }
-      ],
-      sizeOptions: [
-        { size: 'Pequeña x6', price: 10000 },
-        { size: 'Mediana x8', price: 20000 },
-        { size: 'Familiar x12', price: 50000 }
-      ],
-      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
-    },
-    { 
-      id: 19, 
-      image: 'img/productos/pizzamargarita.jpg', 
-      name: 'Pizza Margarita', 
-      category: ['todos', 'Gourmet', 'recomendados'], 
-      price: 0, 
-      description: '¡La tradicional pizza Margarita con queso mozzarella y albahaca fresca!',
-      checkboxOptions: [
-        { name: 'Borde Queso', price: 10000 },
-        { name: 'Borde Queso y Bocadillo', price: 15000 }
-      ],
-      sizeOptions: [
-        { size: 'Pequeña x6', price: 10000 },
-        { size: 'Mediana x8', price: 20000 },
-        { size: 'Familiar x12', price: 50000 }
-      ],
-      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
-    },
-    { 
-      id: 20, 
-      image: 'img/productos/pizzapepperoni.jpg', 
-      name: 'Pizza Pepperoni', 
-      category: ['todos', 'Dulces'], 
-      price: 0, 
-      description: '¡Deliciosa pizza con pepperoni y queso mozzarella!',
-      checkboxOptions: [
-        { name: 'Extra pepperoni', price: 12000 },
-        { name: 'Sin queso', price: 0 },
-        { name: 'Masa gruesa', price: 5000 }
-      ],
-      sizeOptions: [
-        { size: 'Pequeña x6', price: 12000 },
-        { size: 'Mediana x8', price: 22000 },
-        { size: 'Familiar x12', price: 52000 }
-      ],
-      additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
-    },
   ];
 
   const product = products.find(p => p.id === productId);
-  if (product) {
-    document.getElementById('modal-product-name').innerText = product.name;
-    document.getElementById('modal-product-image').src = product.image;
-    document.getElementById('modal-product-description').innerText = product.description;
+  if (!product) return;
 
-    let dynamicPrice = 0;
+  document.getElementById('modal-product-name').innerText = product.name;
+  document.getElementById('modal-product-image').src = product.image;
+  document.getElementById('modal-product-description').innerText = product.description;
 
-    const updatePrice = () => {
-      const sizeCheckboxes = document.querySelectorAll('#modal-size-container input[type="checkbox"]');
-      const borderCheckboxes = document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]');
-      const additionalCheckboxes = document.querySelectorAll('#modal-additional-container input[type="checkbox"]');
-      const flavorCheckboxes = document.querySelectorAll('#modal-flavor-container input[type="checkbox"]');
-      const quantityInput = document.getElementById('modal-quantity');
-      const totalPriceElement = document.getElementById('modal-product-price');
+  let dynamicPrice = 0;
 
-      dynamicPrice = 0;
+  // ===============================
+  // FUNCIÓN PARA ACTUALIZAR PRECIO
+  // ===============================
+  const updatePrice = () => {
+    dynamicPrice = 0;
 
-      sizeCheckboxes.forEach(cb => {
-        if (cb.checked) {
-          const sizeOption = product.sizeOptions.find(option => option.size === cb.value);
-          if (sizeOption) dynamicPrice += sizeOption.price;
-        }
-      });
-
-      borderCheckboxes.forEach(cb => {
-        if (cb.checked) {
-          const borderOption = product.checkboxOptions.find(option => option.name === cb.value);
-          if (borderOption) dynamicPrice += borderOption.price;
-        }
-      });
-
-      flavorCheckboxes.forEach(cb => {
-        if (cb.checked) {
-          const flavorOption = product.flavorOptions.find(option => option.name === cb.value);
-          if (flavorOption) dynamicPrice += flavorOption.price;
-        }
-      });
-
-      additionalCheckboxes.forEach(cb => {
-        if (cb.checked) {
-          dynamicPrice += 0;
-        }
-      });
-
-      const quantity = parseInt(quantityInput.value, 10) || 1;
-      const totalPrice = dynamicPrice * quantity;
-
-      totalPriceElement.innerText = `${formatNumber(totalPrice)}`;
-    };
-
-    document.getElementById('modal-quantity').addEventListener('input', updatePrice);
-
+    // Proteína
     document.querySelectorAll('#modal-size-container input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', updatePrice);
+      if (cb.checked) {
+        const opt = product.proteinaOptions.find(o => o.name === cb.value);
+        if (opt) dynamicPrice += opt.price;
+      }
     });
-    document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', updatePrice);
-    });
-    document.querySelectorAll('#modal-additional-container input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', updatePrice);
-    });
+
+    // Acompañante
     document.querySelectorAll('#modal-flavor-container input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', updatePrice);
+      if (cb.checked) {
+        const opt = product.acompananteOptions.find(o => o.name === cb.value);
+        if (opt) dynamicPrice += opt.price;
+      }
     });
 
-    const modalSizeContainer = document.getElementById('modal-size-container');
-    modalSizeContainer.innerHTML = '';
-    product.sizeOptions.forEach(option => {
-      const checkbox = document.createElement('label');
-      checkbox.innerHTML = `
-        <input type="checkbox" name="size" value="${option.size}">
-         ${option.size}: $${formatNumber(option.price)}
-      `;
-      const input = checkbox.querySelector('input');
-
-      input.addEventListener('change', () => {
-        const checkboxes = modalSizeContainer.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => {
-          if (cb !== input) cb.checked = false;
-        });
-        updatePrice();
-      });
-
-      modalSizeContainer.appendChild(checkbox);
+    // Grano
+    document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]').forEach(cb => {
+      if (cb.checked) {
+        const opt = product.granoOptions.find(o => o.name === cb.value);
+        if (opt) dynamicPrice += opt.price;
+      }
     });
 
-    const modalCheckboxContainer = document.getElementById('modal-checkbox-container');
-    modalCheckboxContainer.innerHTML = '';
-    product.checkboxOptions.forEach(option => {
-      const checkbox = document.createElement('label');
-      checkbox.innerHTML = `
-        <input type="checkbox" value="${option.name}">
-        ${option.name}: $${formatNumber(option.price)}
-      `;
-      const input = checkbox.querySelector('input');
-
-      input.addEventListener('change', () => {
-        const checkboxes = modalCheckboxContainer.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => {
-          if (cb !== input) cb.checked = false;
-        });
-        updatePrice();
-      });
-
-      modalCheckboxContainer.appendChild(checkbox);
+    // Ensalada
+    document.querySelectorAll('#modal-additional-container input[type="checkbox"]').forEach(cb => {
+      if (cb.checked) {
+        const opt = product.ensaladaOptions.find(o => o.name === cb.value);
+        if (opt) dynamicPrice += opt.price;
+      }
     });
 
-    const modalFlavorContainer = document.getElementById('modal-flavor-container');
-    modalFlavorContainer.innerHTML = '';
-    
-    if (product.id === 18) {
-      document.getElementById('Eligesabores').style.display = 'block';
-      modalFlavorContainer.style.display = 'block';
+    // Sopa
+    document.querySelectorAll('#modal-sopa-container input[type="checkbox"]').forEach(cb => {
+      if (cb.checked) {
+        const opt = product.sopaOptions.find(o => o.name === cb.value);
+        if (opt) dynamicPrice += opt.price;
+      }
+    });
 
-      product.flavorOptions.forEach(option => {
-        const checkbox = document.createElement('label');
-        checkbox.innerHTML = `
-          <input type="checkbox" value="${option.name}">
-          ${option.name}: $${formatNumber(option.price)}
-        `;
-        const input = checkbox.querySelector('input');
-    
-        input.addEventListener('change', () => {
-          const checkboxes = modalFlavorContainer.querySelectorAll('input[type="checkbox"]');
-          const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-    
-          if (selectedCount > 2) {
-            input.checked = false;
-          }
-          updatePrice();
-        });
-    
-        modalFlavorContainer.appendChild(checkbox);
-      });
-    } else {
-      modalFlavorContainer.innerHTML = '';
-      document.getElementById('Eligesabores').style.display = 'none';
-      modalFlavorContainer.style.display = 'none';
-    }
+    const quantity = parseInt(document.getElementById('modal-quantity').value, 10) || 1;
+    const totalPrice = dynamicPrice * quantity;
+    document.getElementById('modal-product-price').innerText = `${formatNumber(totalPrice)}`;
+  };
 
-    const modalAdditionalContainer = document.getElementById('modal-additional-container');
-    modalAdditionalContainer.innerHTML = '';
-    product.additionalOptions.forEach(option => {
-      const checkbox = document.createElement('label');
-      checkbox.innerHTML = `
-        <input type="checkbox" value="${option}">
-        ${option}
-      `;
-      const input = checkbox.querySelector('input');
+  // ===============================
+  // CREAR OPCIONES
+  // ===============================
+// ===============================
+// CREAR OPCIONES CON LÍMITE DINÁMICO Y REEMPLAZO
+// ===============================
+const buildOptions = (containerId, options, limit = 1) => {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
 
-      input.addEventListener('change', () => {
-        const checkboxes = modalAdditionalContainer.querySelectorAll('input[type="checkbox"]');
-        const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+  let selectedOrder = []; // Guardar el orden en que se seleccionan
 
-        if (selectedCount > 2) {
-          input.checked = false;
+  options.forEach(option => {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" value="${option.name}"> ${option.name}: $${formatNumber(option.price)}`;
+    const input = label.querySelector('input');
+
+    input.addEventListener('change', () => {
+      if (input.checked) {
+        // Agregar el nuevo seleccionado
+        selectedOrder.push(input);
+
+        if (selectedOrder.length > limit) {
+          // Si supera el límite, quitar el primero (FIFO)
+          const first = selectedOrder.shift();
+          first.checked = false;
         }
-        updatePrice();
-      });
+      } else {
+        // Si desmarca, sacarlo del array
+        selectedOrder = selectedOrder.filter(cb => cb !== input);
+      }
 
-      modalAdditionalContainer.appendChild(checkbox);
+      updatePrice();
     });
 
-    document.getElementById('modal-product-instructions').value = ''; // Limpiar instrucciones
-    document.getElementById('modal-quantity').value = 1; // Reiniciar cantidad
+    container.appendChild(label);
+  });
+};
 
-    document.getElementById('product-modal').style.display = 'flex';
-    updatePrice();
-  }
+
+// ===============================
+// CREAR OPCIONES SEGÚN EL LÍMITE
+// ===============================
+buildOptions('modal-size-container', product.proteinaOptions, 1);   // Proteína → solo 1
+buildOptions('modal-flavor-container', product.acompananteOptions, 1); // Acompañante → solo 1
+buildOptions('modal-checkbox-container', product.granoOptions, 1); // Grano → solo 1
+buildOptions('modal-additional-container', product.ensaladaOptions, 1); // Ensalada → solo 1
+buildOptions('modal-sopa-container', product.sopaOptions, 1); // Sopa → solo 1
+
+
+  document.getElementById('modal-quantity').value = 1;
+  document.getElementById('product-modal').style.display = 'flex';
+  updatePrice();
 }
+
+
 
 // FUNCIÓN PARA CERRAR EL MODAL
 function closeModal() {
@@ -567,101 +431,81 @@ window.onclick = function (event) {
 
 
 
-
-
-
-
-
-// FUNCIÓN PARA AGREGAR AL CARRITO DESDE EL MODAL
+// ===============================
+// FUNCIÓN PARA AGREGAR AL CARRITO
+// ===============================
 function addToCartFromModal() {
 
+
+
   const name = document.getElementById('modal-product-name').innerText;
-  const priceFormatted = document.getElementById('modal-product-price').innerText;
-  const instructions = document.getElementById('modal-product-instructions').value.trim(); // Instrucciones
-  const newQuantity = parseInt(document.getElementById('modal-quantity').value, 10); // Nueva cantidad
-  const image = document.getElementById('modal-product-image').src; // Imagen del producto
-  const price = parseInt(priceFormatted.replace(/\./g, '').replace('$', ''), 10); // Convertir el precio dinámico a un valor numérico
+  const price = parseInt(document.getElementById('modal-product-price').innerText.replace(/\./g, ''), 10) || 0;
+  const instructions = document.getElementById('modal-product-instructions').value.trim();
+  const newQuantity = parseInt(document.getElementById('modal-quantity').value, 10);
+  const image = document.getElementById('modal-product-image').src;
 
-  // Verificar si hay campos vacíos en los checkboxes
-  const sizeCheckboxes = document.querySelectorAll('#modal-size-container input[type="checkbox"]');
-  const flavorCheckboxes = name === "Arma Tu Pizza" ? document.querySelectorAll('#modal-flavor-container input[type="checkbox"]') : [];
-  const borderCheckboxes = document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]');
-  const additionalCheckboxes = document.querySelectorAll('#modal-additional-container input[type="checkbox"]');
+  const proteina = Array.from(document.querySelectorAll('#modal-size-container input:checked')).map(cb => cb.value);
+  if (proteina.length === 0) {
+    const cont = document.getElementById('modal-size-container');
+    cont.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    cont.classList.add('highlight-error');
+    setTimeout(() => cont.classList.remove('highlight-error'), 2000);
+    return;
+  }
 
-  const isSizeSelected = Array.from(sizeCheckboxes).some(cb => cb.checked);
-  const isFlavorSelected = name === "Arma Tu Pizza" ? Array.from(flavorCheckboxes).some(cb => cb.checked) : true; // Verificar si hay sabores seleccionados solo para "Arma Tu Pizza"
-  const isFlavorValid = name === "Arma Tu Pizza" ? Array.from(flavorCheckboxes).filter(cb => cb.checked).length <= 2 : true;
+   // Validación obligatoria: ACOMPAÑANTE
+  const acompanante = Array.from(document.querySelectorAll('#modal-flavor-container input:checked')).map(cb => cb.value);
+  if (acompanante.length === 0) {
+    const cont = document.getElementById('modal-flavor-container');
+    cont.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    cont.classList.add('highlight-error');
+    setTimeout(() => cont.classList.remove('highlight-error'), 2000);
+    return;
+  }
 
-  // Si algún campo está vacío o hay más de 2 sabores seleccionados, evitar añadir al carrito y hacer scroll al contenedor vacío
-  if (!isSizeSelected || !isFlavorSelected || !isFlavorValid) {
-    if (!isSizeSelected) {
-      const sizeContainer = document.getElementById('modal-size-container');
-      sizeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      sizeContainer.classList.add('highlight-error'); // Agregar clase para resaltar
-    } else if (!isFlavorSelected) {
-      const flavorContainer = document.getElementById('modal-flavor-container');
-      flavorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      flavorContainer.classList.add('highlight-error'); // Agregar clase para resaltar
-    } else if (!isFlavorValid) {
-      const flavorContainer = document.getElementById('modal-flavor-container');
-      flavorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      flavorContainer.classList.add('highlight-error'); // Agregar clase para resaltar
+  console.log('Verificando horario antes de agregar al carrito...');
+
+  // ✅ Verificar si la tienda está abierta
+  if (!estaAbierta()) {
+    const estadoTienda = document.getElementById('estado-tienda').textContent;
+
+    if (estadoTienda.includes("reserva")) {
+      alert("La tienda está cerrada, pero puedes hacer una reserva. ¡Agregando al carrito!");
+      // → aquí sí permitimos agregar
+    } else {
+      alert("La tienda está cerrada, no puedes agregar productos al carrito en este momento. Te invitamos a ver nuestro horario.");
+      return; // 🚫 detenemos la función, no se agrega nada
     }
-
-    // Eliminar la clase de error después de 2 segundos
-    setTimeout(() => {
-      document.querySelectorAll('.highlight-error').forEach(el => el.classList.remove('highlight-error'));
-    }, 2000);
-
-    return; // Salir de la función
   }
 
+const selectedProteina = Array.from(document.querySelectorAll('#modal-size-container input[type="checkbox"]')).filter(cb => cb.checked).map(cb => cb.value);
+const selectedAcompanante = Array.from(document.querySelectorAll('#modal-flavor-container input[type="checkbox"]')).filter(cb => cb.checked).map(cb => cb.value);
+const selectedGrano = Array.from(document.querySelectorAll('#modal-checkbox-container input[type="checkbox"]')).filter(cb => cb.checked).map(cb => cb.value);
+const selectedEnsalada = Array.from(document.querySelectorAll('#modal-additional-container input[type="checkbox"]')).filter(cb => cb.checked).map(cb => cb.value);
+const selectedSopa = Array.from(document.querySelectorAll('#modal-sopa-container input[type="checkbox"]')).filter(cb => cb.checked).map(cb => cb.value);
 
-    console.log('Verificando si la tienda está abierta o en reserva...');
+const productToAdd = {
+  name,
+  price,
+  instructions,
+  quantity: newQuantity,
+  image,
+  selectedProteina,
+  selectedAcompanante,
+  selectedGrano,
+  selectedEnsalada,
+  selectedSopa
+};
 
-  // VERIFICAR SI LA TIENDA ESTÁ ABIERTA O EN RESERVA
-  const estadoTienda = document.getElementById('estado-tienda').textContent; // Obtener el texto del estado
-
-  if (estadoTienda === "La tienda está cerrada.") {
-    alert("La tienda está cerrada, no puedes agregar productos al carrito en este momento. Te invitamos a ver nuestro horario");
-    return; // DETIENE LA FUNCIÓN SI LA TIENDA ESTÁ CERRADA Y NO EN RESERVA
-  }
-
-  // Si la tienda está en estado de "reserva"
-  if (estadoTienda === "La tienda está cerrada, pero puedes hacer una reserva.") {
-    alert("La tienda está cerrada, pero puedes hacer una reserva. ¡Agregando al carrito!");
-  }
-
-
-  // Recopilar los valores seleccionados de los checkboxes
-  const selectedSizes = Array.from(sizeCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-  const selectedFlavors = Array.from(flavorCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-  const selectedBorders = Array.from(borderCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-  const selectedAdditionals = Array.from(additionalCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-
-  // Crear el objeto del producto con los datos recopilados
-  const productToAdd = {
-    name,
-    price,
-    instructions,
-    quantity: newQuantity,
-    image,
-    selectedSizes,
-    selectedFlavors,
-    selectedBorders,
-    selectedAdditionals
-  };
 
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  // Agregar el producto al carrito sin eliminar los existentes
   cart.push(productToAdd);
-
-  // Guardar el carrito en localStorage
   localStorage.setItem('cart', JSON.stringify(cart));
 
-  // Actualizar el contador del carrito
   updateCartCount();
+  closeModal();
+
+
 
   // MOSTRAR LA ANIMACIÓN DEL CARRITO EXPANDIÉNDOSE
   const cartButton = document.getElementById('floating-cart');

@@ -1307,7 +1307,7 @@ color: #333;
     width: 90%;
     max-width: 500px;
     max-height: 80%; /* Limita la altura máxima del modal */
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     box-shadow: 0 0px 100px #ffae00; /* Sombra alrededor del modal */
     animation: fadeIn 0.2s ease; /* Animación de entrada */
@@ -1321,27 +1321,39 @@ color: #333;
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Icono de cierre */
+.modal-header {
+  position: relative; /* referencia para el botón close */
+}
+
 .modal .close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 40px;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.1s ease;
+    display: flex;
+  position: sticky;
+  justify-content: flex-end;   /* fijo dentro del modal-content */
+  top: 0px;            /* distancia desde arriba */
+  font-size: 40px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  background: transparent; 
+  padding: 0;
+  z-index: 200;         /* se asegura de estar por encima del contenido */
 }
 
 .modal .close:hover {
-    color: #ff0000;
+  color: #ff0000;
 }
+
+
+
+
+
 
 /* Título del producto */
 .modal-content h2 {
     font-size: 24px;
     color: #ffffff;
     margin-bottom: 15px;
-    margin-top: 20px;
+    margin-top: -20px;
 }
 
 /* Imagen del producto en el modal */
@@ -1349,8 +1361,6 @@ color: #333;
     width: 100%;
     max-height: 220px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
 }
 
 /* Descripción y precio */
@@ -1371,8 +1381,8 @@ color: #333;
     width: 100%;
     height: 60px;
     padding: 10px;
-    margin: 15px 0;
-    border: 1px solid #ddd;
+    margin: 15px 0 30px;
+    border: none;
     border-radius: 5px;
     resize: none;
     font-size: 14px;
@@ -1386,11 +1396,16 @@ color: #333;
     outline: none;
 }
 
-
+/* Estilos para los títulos de las secciones dentro del modal*/
 #Eligetamaño,
 #Eligeborde, 
 #Eligeadiccionales,
-#Eligesabores {
+#Eligesabores,
+#elige1opcion,
+#elige2opcion,
+#elige3opcion,
+#elige4opcion,
+#elige5opcion {
     font-size: 15px;
     font-weight: bold;
     color: #000000;
@@ -1405,7 +1420,8 @@ color: #333;
 #modal-size-container,
 #modal-checkbox-container,
 #modal-additional-container,
-#modal-flavor-container {
+#modal-flavor-container,
+#modal-sopa-container {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ffffff50;
@@ -1418,7 +1434,8 @@ color: #333;
 #modal-size-container::before,
 #modal-checkbox-container::before
 #modal-additional-container::before,
-#modal-flavor-container::before {
+#modal-flavor-container::before,
+#modal-sopa-container::before {
   content: attr(data-title);
   display: block;
   font-size: 18px;
@@ -1431,7 +1448,8 @@ color: #333;
 #modal-size-container label,
 #modal-checkbox-container label,
 #modal-additional-container label,
-#modal-flavor-container label {
+#modal-flavor-container label,
+#modal-sopa-container label {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -1444,7 +1462,8 @@ color: #333;
 #modal-size-container input[type="checkbox"],
 #modal-checkbox-container input[type="checkbox"],
 #modal-additional-container input[type="checkbox"],
-#modal-flavor-container input[type="checkbox"] {
+#modal-flavor-container input[type="checkbox"],
+#modal-sopa-container input[type="checkbox"] {
   appearance: none; /* Elimina el estilo predeterminado del checkbox */
   width: 20px;
   height: 20px;
@@ -1460,7 +1479,8 @@ color: #333;
 #modal-size-container input[type="checkbox"]:checked,
 #modal-checkbox-container input[type="checkbox"]:checked,
 #modal-additional-container input[type="checkbox"]:checked,
-#modal-flavor-container input[type="checkbox"]:checked {
+#modal-flavor-container input[type="checkbox"]:checked,
+#modal-sopa-container input[type="checkbox"]:checked {
   background-color: #ffffff; /* Fondo verde al seleccionar */
   border-color: #ffffff; /* Borde verde al seleccionar */
   position: relative;
@@ -1469,7 +1489,8 @@ color: #333;
 #modal-size-container input[type="checkbox"]:checked::after,
 #modal-checkbox-container input[type="checkbox"]:checked::after,
 #modal-additional-container input[type="checkbox"]:checked::after,
-#modal-flavor-container input[type="checkbox"]:checked::after {
+#modal-flavor-container input[type="checkbox"]:checked::after,
+#modal-sopa-container input[type="checkbox"]:checked::after {
   content: '✔'; /* Símbolo de chulo */
   color: rgb(0, 0, 0); /* Color del chulo */
   font-size: 14px; /* Tamaño del chulo */
@@ -1483,7 +1504,8 @@ color: #333;
 #modal-size-container input[type="checkbox"]:hover,
 #modal-checkbox-container input[type="checkbox"]:hover
 #modal-additional-container input[type="checkbox"]:hover,
-#modal-flavor-container input[type="checkbox"]:hover {
+#modal-flavor-container input[type="checkbox"]:hover,
+#modal-sopa-container input[type="checkbox"]:hover {
   border-color: #888; /* Color del borde al pasar el mouse */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
@@ -1510,63 +1532,94 @@ color: #333;
     }
   }
 
-/* Botón de agregar al carrito */
-.modal-content button {
-    background-color: #ffc400;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 
 
-/* Media query para pantallas pequeñas */
-@media (max-width: 500px) {
-    .modal-content {
-        padding: 15px;
-    }
 
-    .modal .close {
-        top: 10px;
-        right: 15px;
-    }
-}
 
 .quantity-control {
-    justify-content: center;
-    margin-bottom: 10px;
+    position: sticky;   /* se queda fijo dentro del modal */
+    bottom: -21px;          /* pegado abajo */
+    left: 0;
+    width: 100%;
+    background: #222; /* Fondo para diferenciarlo del contenido */
+    padding: 10px;
+    padding-bottom: 15px;
     display: flex;
+    justify-content: space-between; /* contador a la izq, botón a la der */
     align-items: center;
-    gap: 8px; /* Espacio entre el input y los botones */
+    gap: 10px;
+    border-top: 1px solid #444; /* línea separadora */
+    z-index: 10;
 }
 
-.quantity-control button {
-    width: 30px; /* Ajusta el ancho del botón */
-    height: 39px; /* Ajusta la altura del botón */
+/* Contador (- 1 +) */
+.quantity-control .counter {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 20px; /* Tamaño de la fuente del símbolo */
-    font-weight: bold; /* Hace que el símbolo se vea más definido */
-    background-color: #666;
-    cursor: pointer;
-    border-radius: 50%; /* Ajusta la redondez del botón */
+    gap: 0px;
 }
 
-.quantity-control input {
-    width: 60px; /* Ajusta el ancho del campo de cantidad */
+.quantity-control .counter button {
+    width: 40px;
     height: 40px;
-    text-align: center; /* Centra el texto del campo de cantidad */
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    background-color: #444;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
     color: #fff;
 }
+
+.quantity-control .counter input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+}
+
+#add-to-cart-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 48px;
+    padding: 0 22px;
+    background: linear-gradient(135deg, #ffdd00, #ffb700); /* Degradado amarillo */
+    border: none;
+    border-radius: 25px;
+    color: #212529;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+}
+
+#add-to-cart-button:hover {
+    background: linear-gradient(135deg, #ffe54d, #ffc93c);
+    transform: scale(1.05);
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.35);
+}
+
+#add-to-cart-button:active {
+    transform: scale(0.96);
+}
+
+#add-to-cart-button .price {
+    font-weight: bold;
+    color: #212529;
+}
+
+
+
 
 
 
