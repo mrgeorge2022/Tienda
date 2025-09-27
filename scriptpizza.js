@@ -212,21 +212,21 @@ let cart = []; // Este arreglo almacenará los productos del carrito con su cant
 function displayProducts(category = '', searchQuery = '') {
   const products = [
     { 
-      id: 18, 
+      id: 40, 
       image: 'img/productos/armatupizza.jpg', 
       name: 'Arma Tu Pizza', 
       category: ['todos', 'armatupizza'], 
       description: '¡Crea tu pizza con los ingredientes que prefieras!' 
     },
     { 
-      id: 19, 
+      id: 41, 
       image: 'img/productos/pizzamargarita.jpg', 
       name: 'Pizza Margarita', 
       category: ['todos', 'Gourmet', 'recomendados'], 
       description: '¡La clásica pizza Margarita con queso mozzarella y albahaca fresca!' 
     },
     { 
-      id: 20, 
+      id: 42, 
       image: 'img/productos/pizzapepperoni.jpg', 
       name: 'Pizza Pepperoni', 
       category: ['todos', 'Dulces'], 
@@ -314,7 +314,7 @@ function activateCategoryLink(category) {
 function openModal(productId) {
   const products = [
     {
-      id: 18,
+      id: 40,
       image: 'img/productos/armatupizza.jpg',
       name: 'Arma Tu Pizza',
       category: ['todos', 'armatupizza'],
@@ -342,7 +342,7 @@ function openModal(productId) {
       additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
     },
     { 
-      id: 19, 
+      id: 41, 
       image: 'img/productos/pizzamargarita.jpg', 
       name: 'Pizza Margarita', 
       category: ['todos', 'Gourmet', 'recomendados'], 
@@ -360,7 +360,7 @@ function openModal(productId) {
       additionalOptions: ['Orégano', 'Salsa de ajo', 'Maíz']
     },
     { 
-      id: 20, 
+      id: 42, 
       image: 'img/productos/pizzapepperoni.jpg', 
       name: 'Pizza Pepperoni', 
       category: ['todos', 'Dulces'], 

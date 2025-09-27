@@ -335,6 +335,22 @@ function displayProducts(category = '', searchQuery = '') {
     },
     { 
       id: 11, 
+      image: 'img/productos/golosapersonal.jpg', 
+      name: 'La Golosa Personal', 
+      category: ['todos','picadas','recomendados'], 
+      price: 20000, 
+      description: '¡Un festín de sabores que te hará volver por más!' 
+    },
+    { 
+      id: 12, 
+      image: 'img/productos/atrevidapersonal.jpg', 
+      name: 'La Atrevida Personal', 
+      category: ['todos','picadas','recomendados'], 
+      price: 27000, 
+      description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
+    },
+    { 
+      id: 13, 
       image: 'img/productos/golosa.jpg', 
       name: 'La Golosa', 
       category: ['todos','picadas','recomendados'], 
@@ -342,7 +358,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Un festín de sabores que te hará volver por más!' 
     },
     { 
-      id: 12, 
+      id: 14, 
       image: 'img/productos/atrevida.jpg', 
       name: 'La Atrevida', 
       category: ['todos','picadas','recomendados'], 
@@ -350,7 +366,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Para los que se atreven a disfrutar el sabor sin límites!' 
     },
     { 
-      id: 13, 
+      id: 15, 
       image: 'img/productos/limon.jpg', 
       name: 'Limonada', 
       category: ['todos','bebidas','recomendados'], 
@@ -358,7 +374,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Frescura que te llena de vida en cada sorbo!' 
     },
     { 
-      id: 14, 
+      id: 16, 
       image: 'img/productos/mora.jpg', 
       name: 'Mora En Leche', 
       category: ['todos','bebidas'], 
@@ -366,7 +382,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡El sabor que acaricia tus sentidos!' 
     },
     { 
-      id: 15, 
+      id: 17, 
       image: 'img/productos/maracuya.jpg', 
       name: 'Maracuyá', 
       category: ['todos','bebidas'],
@@ -374,7 +390,7 @@ function displayProducts(category = '', searchQuery = '') {
       description: '¡Pura pasión en cada gota!' 
     },
     { 
-      id: 16, 
+      id: 18, 
       image: 'img/productos/lulo.jpg', 
       name: 'Lulo', 
       category: ['todos','bebidas'], 
@@ -382,7 +398,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'¡La frescura cítrica que te llena de energía!' 
     },
     { 
-      id: 17, 
+      id: 19, 
       image: 'img/productos/sodamaracuya.jpg', 
       name: 'Soda de Maracuyá', 
       category: ['todos','bebidas','recomendados'], 
@@ -391,7 +407,7 @@ function displayProducts(category = '', searchQuery = '') {
     },
 
     { 
-      id: 21, 
+      id: 20, 
       image: 'img/productos/cocacola400.jpg', 
       name: 'Coca-Cola 400ml', 
       category: ['todos','bebidas','recomendados'], 
@@ -399,7 +415,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Coca-Cola 400ml', 
     },
     { 
-      id: 22, 
+      id: 21, 
       image: 'img/productos/kolaroman400.jpg', 
       name: 'Kola Román 400ml', 
       category: ['todos','bebidas','recomendados'], 
@@ -407,7 +423,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Kola Román 400ml', 
     },
     { 
-      id: 23, 
+      id: 22, 
       image: 'img/productos/manzana400.jpg', 
       name: 'Manzana 400ml', 
       category: ['todos','bebidas','recomendados'], 
@@ -415,7 +431,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Manzana 400ml', 
     },
     { 
-      id: 24, 
+      id: 23, 
       image: 'img/productos/uva400.jpg', 
       name: 'Uva 400ml', 
       category: ['todos','bebidas'], 
@@ -423,7 +439,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Uva 400ml', 
     },
     { 
-      id: 25, 
+      id: 24, 
       image: 'img/productos/colombiana400.jpg', 
       name: 'Colombiana 400ml', 
       category: ['todos','bebidas'], 
@@ -431,7 +447,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Colombiana 400ml', 
     },
     { 
-      id: 26, 
+      id: 25, 
       image: 'img/productos/mora500.jpg', 
       name: 'Hit Mora 500ml', 
       category: ['todos','bebidas','recomendados'], 
@@ -439,7 +455,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Hit Mora 500ml', 
     },
     { 
-      id: 27, 
+      id: 26, 
       image: 'img/productos/naranjapiña500.jpg', 
       name: 'Hit Naranja Piña 500ml', 
       category: ['todos','bebidas'], 
@@ -447,7 +463,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Hit Naranja Piña 500ml', 
     },
     { 
-      id: 28, 
+      id: 27, 
       image: 'img/productos/tropical500.jpg', 
       name: 'Hit Tropical 500ml', 
       category: ['todos','bebidas'], 
@@ -455,7 +471,7 @@ function displayProducts(category = '', searchQuery = '') {
       description:'Hit Tropical 500ml', 
     },
     { 
-      id: 29, 
+      id: 28, 
       image: 'img/productos/quesomozzarella.jpg', 
       name: 'Queso Mozzarella', 
       category: ['todos','acompañantes'], 
@@ -626,6 +642,22 @@ function openModal(productId) {
       },
       { 
           id: 11, 
+          image: 'img/productos/golosapersonal.jpg', 
+          name: 'La Golosa Personal', 
+          category: 'picadas', 
+          price: 20000, 
+          description: 'Chorizo costeño, cerdo jugoso y pechuga de pollo, acompañados de queso mozzarella, maíz tierno, salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco y un toque especial de salsa de maíz. ¡Un festín irresistible!' 
+      },
+      { 
+          id: 12, 
+          image: 'img/productos/atrevidapersonal.jpg', 
+          name: 'La Atrevida Personal', 
+          category: 'picadas', 
+          price: 27000,  
+          description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
+      },
+      { 
+          id: 13, 
           image: 'img/productos/golosa.jpg', 
           name: 'La Golosa', 
           category: 'picadas', 
@@ -633,7 +665,7 @@ function openModal(productId) {
           description: 'Chorizo costeño, cerdo jugoso y pechuga de pollo, acompañados de queso mozzarella, maíz tierno, salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco y un toque especial de salsa de maíz. ¡Un festín irresistible!' 
       },
       { 
-          id: 12, 
+          id: 14, 
           image: 'img/productos/atrevida.jpg', 
           name: 'La Atrevida', 
           category: 'picadas', 
@@ -641,7 +673,7 @@ function openModal(productId) {
           description: 'Chorizo costeño, chuleta de cerdo, salchicha ranchera y pechuga de pollo jugosa, todo cubierto con queso mozzarella, maíz tierno y tocineta ahumada. Añadido con salsa de cilantro, salsa crema parrilla, papas fritas Fritters, aguacate fresco, salsa de maíz dulce y un toque de plátano amarillo frito. ¡Una experiencia llena de sabor!' 
       },
       {
-          id: 13, 
+          id: 15, 
           image: 'img/productos/limon.jpg', 
           name: 'Limonada', 
           category: ['todos','bebidas','recomendados'], 
@@ -649,7 +681,7 @@ function openModal(productId) {
           description: 'Nuestra limonada combina zumo de limones frescos, el toque justo de dulzura y abundante hielo para ofrecerte una bebida naturalmente refrescante y llena de sabor. ¡Perfecta para cualquier momento del día!' 
       },
       { 
-          id: 14, 
+          id: 16, 
           image: 'img/productos/mora.jpg', 
           name: 'Mora En Leche', 
           category: ['todos','bebidas'], 
@@ -657,7 +689,7 @@ function openModal(productId) {
           description: 'Nuestro jugo de mora en leche es una mezcla perfecta de moras jugosas y leche cremosa, creando una bebida suave, dulce y llena de sabor natural. Ideal para disfrutar en cualquier momento y dejarte conquistar por     su frescura.' 
       },
       { 
-          id: 15, 
+          id: 17, 
           image: 'img/productos/maracuya.jpg', 
           name: 'Maracuyá', 
           category: ['todos','bebidas','recomendados'], 
@@ -665,7 +697,7 @@ function openModal(productId) {
           description:'Nuestra bebida de maracuyá combina el intenso sabor tropical de su pulpa con la frescura justa para ofrecerte una experiencia deliciosa y revitalizante. Ideal para los amantes de lo exótico. ¡Perfecta para     cualquier ocasión!' 
       },
       { 
-          id: 16, 
+          id: 18, 
           image: 'img/productos/lulo.jpg', 
           name: 'Lulo', 
           category: ['todos','bebidas','recomendados'], 
@@ -673,7 +705,7 @@ function openModal(productId) {
           description:'Disfruta de nuestra bebida de lulo, una mezcla única de su pulpa ácida y refrescante con el toque perfecto de dulzura. Cada sorbo es un estallido de sabor natural, ideal para revitalizar tus días y refrescarte en     cualquier momento. ¡Déjate sorprender por su autenticidad!' 
       },
           { 
-      id: 17, 
+      id: 19, 
       image: 'img/productos/sodamaracuya.jpg', 
       name: 'Soda de Maracuyá', 
       category: ['todos','bebidas'], 
@@ -682,7 +714,7 @@ function openModal(productId) {
     },
         
     { 
-      id: 21, 
+      id: 20, 
       image: 'img/productos/cocacola400.jpg', 
       name: 'Coca-Cola 400ml', 
       category: ['todos','bebidas'], 
@@ -690,7 +722,7 @@ function openModal(productId) {
       description:'Coca-Cola 400ml', 
     },
     { 
-      id: 22, 
+      id: 21, 
       image: 'img/productos/kolaroman400.jpg', 
       name: 'Kola Román 400ml', 
       category: ['todos','bebidas'], 
@@ -698,7 +730,7 @@ function openModal(productId) {
       description:'Kola Román 400ml', 
     },
     { 
-      id: 23, 
+      id: 22, 
       image: 'img/productos/manzana400.jpg', 
       name: 'Manzana 400ml', 
       category: ['todos','bebidas'], 
@@ -706,7 +738,7 @@ function openModal(productId) {
       description:'Manzana 400ml', 
     },
     { 
-      id: 24, 
+      id: 23, 
       image: 'img/productos/uva400.jpg', 
       name: 'Uva 400ml', 
       category: ['todos','bebidas'], 
@@ -714,7 +746,7 @@ function openModal(productId) {
       description:'Uva 400ml', 
     },
     { 
-      id: 25, 
+      id: 24, 
       image: 'img/productos/colombiana400.jpg', 
       name: 'Colombiana 400ml', 
       category: ['todos','bebidas'], 
@@ -722,7 +754,7 @@ function openModal(productId) {
       description:'Colombiana 400ml', 
     },
     { 
-      id: 26, 
+      id: 25, 
       image: 'img/productos/mora500.jpg', 
       name: 'Hit Mora 500ml', 
       category: ['todos','bebidas'], 
@@ -730,7 +762,7 @@ function openModal(productId) {
       description:'Hit Mora 500ml', 
     },
     { 
-      id: 27, 
+      id: 26, 
       image: 'img/productos/naranjapiña500.jpg', 
       name: 'Hit Naranja Piña 500ml', 
       category: ['todos','bebidas'], 
@@ -738,7 +770,7 @@ function openModal(productId) {
       description:'Hit Naranja Piña 500ml', 
     },
     { 
-      id: 28, 
+      id: 27, 
       image: 'img/productos/tropical500.jpg', 
       name: 'Hit Tropical 500ml', 
       category: ['todos','bebidas'], 
@@ -746,7 +778,7 @@ function openModal(productId) {
       description:'Hit Tropical 500ml', 
     },
     { 
-      id: 29, 
+      id: 28, 
       image: 'img/productos/quesomozzarella.jpg', 
       name: 'Queso Mozzarella', 
       category: ['todos','acompañantes'], 
