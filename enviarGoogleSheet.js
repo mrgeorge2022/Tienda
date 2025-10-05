@@ -40,7 +40,7 @@ function recolectarDatosParaGoogleSheet(
     }).join('\n');
 
     // ✅ Si observaciones no vino como parámetro, úsalo desde localStorage como respaldo
-    const obsFinal = observaciones || localStorage.getItem('observaciones') || "";
+    const obsFinal = (observaciones || localStorage.getItem('observaciones') || "").trim();
 
     const datos = {
         tipoEntrega: tipoEntrega,

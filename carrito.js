@@ -750,7 +750,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const observacionesInput = document.getElementById('observaciones');
     if (observacionesInput) {
         observacionesInput.addEventListener('input', () => {
-            localStorage.setItem('observaciones', observacionesInput.value);
+            localStorage.setItem('observaciones', observacionesInput.value.trim());
         });
     }
 });

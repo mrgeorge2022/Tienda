@@ -1004,7 +1004,7 @@ function finalizarCompra() {
 let propina = Math.round(totalFinal * 0.10);
 let totalConPropina = totalFinal + propina
 
-    const observaciones = localStorage.getItem('observaciones') || "";
+    const observaciones = (localStorage.getItem('observaciones') || "").trim();
 
 
 
@@ -1091,7 +1091,6 @@ console.log(datos); // <-- Aquí verás el objeto formateado
 enviarDatosAGoogleSheet(datos);
 
 }
-
 
 // Función para mostrar el modal de finalización de compra
 function mostrarModalFin() {
