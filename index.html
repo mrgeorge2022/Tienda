@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mr. George | Restaurante</title>
+  <link rel="icon" type="image/png" href="img/icono_tienda.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- HEADER + CATEGORÍAS combinados -->
+  <header class="header-wrapper">
+    <div class="header">
+      <div class="header-left">
+        <a href="index.html">
+          <img src="img/icono_tienda.png" alt="Logo" class="header-logo">
+        </a>
+        <div class="header-info">
+          <h1>Mr. George</h1>
+          <div id="status-header"></div>
+          <div id="status-subtext"></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="categories">
+      <button class="category-btn active" onclick="scrollToSection('todos')">🌟 Todos</button>
+      <button class="category-btn" onclick="scrollToSection('almuerzos')">🍛 Almuerzos</button>
+      <button class="category-btn" onclick="scrollToSection('perros')">🌭 Perros</button>
+      <button class="category-btn" onclick="scrollToSection('hamburguesas')">🍔 Hamburguesas</button>
+      <button class="category-btn" onclick="scrollToSection('salchipapas')">🍟 Salchipapas</button>
+      <button class="category-btn" onclick="scrollToSection('picadas')">🍖 Picadas</button>
+      <!--<button class="category-btn" onclick="scrollToSection('pizzas')">🍕 Pizzas</button>-->
+      <button class="category-btn" onclick="scrollToSection('bebidas')">🥤 Bebidas</button>
+      <button class="category-btn" onclick="scrollToSection('acompanantes')">🍴 Acompañantes</button>
+    </nav>
+  </header>
+
+
+
+
+
+  <!-- 🦴 Skeletal Loading -->
+  <div class="skeleton-container" id="skeleton-loading" style="display: none;">
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-price"></div>
+        <div class="skeleton-line skeleton-description"></div>
+        <div class="skeleton-line skeleton-description"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Error Message -->
+  <div class="error-message" id="error-message" style="display: none;">
+    Error al cargar los productos. Por favor, actualiza la página.
+  </div>
+  <!-- Menu Sections -->
+  <div class="menu-sections">
+
+    <!-- Almuerzos Section -->
+    <section id="almuerzos" class="menu-section">
+      <h2 class="section-title">🍛 Almuerzos</h2>
+      <div class="products-grid" id="almuerzos-grid"></div>
+    </section>
+
+    <!-- Perros Section -->
+    <section id="perros" class="menu-section">
+      <h2 class="section-title">🌭 Perros</h2>
+      <div class="products-grid" id="perros-grid"></div>
+    </section>
+
+    <!-- Hamburguesas Section -->
+    <section id="hamburguesas" class="menu-section">
+      <h2 class="section-title">🍔 Hamburguesas</h2>
+      <div class="products-grid" id="hamburguesas-grid"></div>
+    </section>
+
+    <!-- Salchipapas Section -->
+    <section id="salchipapas" class="menu-section">
+      <h2 class="section-title">🍟 Salchipapas</h2>
+      <div class="products-grid" id="salchipapas-grid"></div>
+    </section>
+
+    <!-- Picadas Section -->
+    <section id="picadas" class="menu-section">
+      <h2 class="section-title">🍖 Picadas</h2>
+      <div class="products-grid" id="picadas-grid"></div>
+    </section>
+
+    <!-- Pizzas Section -->
+    <!--<section id="pizzas" class="menu-section">
+      <h2 class="section-title">🍕 Pizzas</h2>
+      <div class="products-grid" id="pizzas-grid"></div>
+    </section>-->
+
+    <!-- Bebidas Section -->
+    <section id="bebidas" class="menu-section">
+      <h2 class="section-title">🥤 Bebidas</h2>
+      <div class="products-grid" id="bebidas-grid"></div>
+    </section>
+
+    <!-- Acompañantes Section -->
+    <section id="acompanantes" class="menu-section">
+      <h2 class="section-title">🍴 Acompañantes</h2>
+      <div class="products-grid" id="acompanantes-grid"></div>
+    </section>
+
+  </div>
+
+
+
+  <!-- Product Modal -->
+  <div class="product-modal" id="product-modal">
+    <div class="product-modal-content">
+
+      <!-- Imagen principal con precio superpuesto -->
+      <div class="modal-image-container">
+        <button class="close-product-modal" onclick="closeProductModal()">×</button>
+        <div class="product-modal-image" id="modal-image-content">
+          🍽️
+        </div>
+      </div>
+
+      <div class="product-modal-header">
+        <!-- Parte izquierda: nombre + precio -->
+        <div class="product-info">
+          <h3 class="product-modal-title" id="modal-product-name">Producto</h3>
+          <div class="modal-price-overlay" id="modal-product-price">$0</div>
+        </div>
+
+        <!-- Parte derecha: incrementadores -->
+        <div class="quantity-section">
+          <div class="quantity-control">
+            <button class="quantity-btn-modal" onclick="decreaseQuantity()" id="decrease-btn">-</button>
+            <span class="quantity-display" id="modal-quantity">1</span>
+            <button class="quantity-btn-modal" onclick="increaseQuantity()">+</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Descripción -->
+      <div class="product-modal-description" id="modal-product-description">
+        Descripción del producto
+      </div>
+
+      <!-- Instrucciones especiales -->
+      <div class="instructions-section">
+        <label class="instructions-label" for="product-instructions">
+          Instrucciones especiales (opcional):
+        </label>
+        <textarea id="product-instructions" class="instructions-textarea"
+          placeholder="Ej: Sin cebolla, extra queso, término medio..."></textarea>
+      </div>
+
+      <!-- Incrementadores y botón fijo abajo -->
+<div class="modal-actions">
+  <!-- Precio dinámico -->
+  <span class="add-to-cart-price" id="modal-add-price">
+    <span class="price-number">0</span>
+  </span>
+
+  <!-- Botón -->
+  <button class="add-to-cart-modal-btn" onclick="addToCartFromModal()" id="add-to-cart-modal">
+    Agregar
+  </button>
+</div>
+    </div>
+  </div>
+
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3 class="cart-title">Tu Pedido</h3>
+        <button class="close-cart" onclick="closeCart()">×</button>
+      </div>
+
+      <div class="cart-items" id="cart-items">
+        <!-- Cart items will be inserted here -->
+      </div>
+
+      <!-- 📝 Observaciones generales -->
+      <div class="cart-observations">
+        <label for="cart-notes" class="cart-observations-label">Observaciones generales:</label>
+        <textarea id="cart-notes" class="cart-observations-textarea"
+          placeholder="Ej: Sin picante, agregar servilletas, entregar en portería..."></textarea>
+      </div>
+
+      <div class="cart-summary">
+        <p id="textmetodo">Método de pago*</p>
+        <div class="payment-method">
+          <select id="payment-method" class="cart-payment-select" required>
+            <option value="" selected disabled>💰 Selecciona método de pago</option>
+            <option value="Efectivo">💵 Efectivo</option>
+            <option value="Transferencia">💳 Transferencia</option>
+            <option value="Efectivo/Transferencia">💰 Efectivo / Transferencia</option>
+          </select>
+
+          <div class="cart-total-amount" id="cart-total-modal">Total: $0</div>
+        </div>
+        <div class="cart-actions">
+          <button class="cart-btn clear-cart" onclick="clearCart()">Vaciar</button>
+          <button class="cart-btn checkout-btn" onclick="checkout()">Pedir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Floating Cart -->
+  <div class="cart-float" id="cart-float" onclick="openCart()">
+    <div class="cart-icon">
+      <img src="iconos/carrito.png" alt="Carrito">
+    </div>
+    <div class="cart-info" id="cart-info">
+      <div class="cart-count" id="cart-count">0 productos</div>
+      <div class="cart-total" id="cart-total">$0</div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- Modal de tipo de entrega -->
+  <div class="delivery-modal" id="delivery-modal">
+    <div class="delivery-content">
+      <h3>¿Cómo quieres recibir tu pedido?</h3>
+
+      <div class="delivery-options">
+        <button onclick="selectDeliveryType('Domicilio')" class="delivery-option-btn">
+          <img src="iconos/domicilio.png" alt="Domicilio">
+          <span>Domicilio</span>
+        </button>
+
+        <button onclick="selectDeliveryType('Recoger en tienda')" class="delivery-option-btn">
+          <img src="iconos/recogertienda.png" alt="Recoger en tienda">
+          <span>Recoger en tienda</span>
+        </button>
+
+        <button onclick="selectDeliveryType('Mesa')" class="delivery-option-btn">
+          <img src="iconos/mesa.png" alt="Mesa">
+          <span>Mesa</span>
+        </button>
+      </div>
+
+      <button class="close-delivery" onclick="closeDeliveryModal()">Cancelar</button>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modal de datos del cliente -->
+  <div class="customer-modal" id="customer-modal">
+    <div class="customer-content">
+      <h3 id="customer-modal-title">Datos del pedido</h3>
+      <p class="customer-subtitle">
+        Estás a un paso de confirmar tu pedido<br>
+        Solo ingresa estos datos y ¡listo!
+      </p>
+
+      <form id="customer-form">
+        <input type="text" id="customer-name" placeholder="👤 Nombre completo" required>
+        <input type="tel" id="customer-phone" placeholder="📞 Número de teléfono" required>
+        <div id="mesa-field" style="display:none;">
+          <input type="text" id="customer-mesa" placeholder="🍽️ Número de mesa">
+        </div>
+
+        <!-- ⚠️ Nuevo texto de aviso -->
+        <p style="
+        text-align:center;
+        color:#868686;
+        font-size:14px;
+        margin:12px 0 8px;
+        ">
+          Por favor verifica tus datos antes de enviar
+        </p>
+
+        <button type="submit" class="submit-customer-btn">Confirmar pedido</button>
+      </form>
+
+      <button class="close-customer" onclick="closeCustomerModal()">Cancelar</button>
+    </div>
+  </div>
+
+
+
+  <!-- === FOOTER INFO === -->
+  <footer class="footer-info">
+    <div class="footer-socials">
+      <a href="https://wa.me/573001234567" target="_blank" class="social-link">
+        <img src="iconos/redes/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a href="https://www.instagram.com/mrgeorge" target="_blank" class="social-link">
+        <img src="iconos/redes/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://www.facebook.com/mrgeorge" target="_blank" class="social-link">
+        <img src="iconos/redes/facebook.png" alt="Facebook">
+      </a>
+    </div>
+
+    <div class="footer-qr">
+      <img src="img/QR tienda.png" alt="QR Mr. George">
+    </div>
+
+    <div class="footer-branches">
+      <p><strong>Sedes</strong><br>
+        Mr. George Cartagena, Bolivar<br>
+        San fernando, Cl 5, Cra 81 f 05<br>
+        <span class="telefono">(+57) 302 266 6530</span>
+      </p>
+    </div>
+
+
+    <div class="footer-policies">
+      <a href="terms.html" target="_blank">Términos y condiciones</a>
+      <a href="privacity.html" target="_blank">Políticas de privacidad</a>
+    </div>
+
+    <div class="footer-content">
+      <div>
+        <img src="img/logo.png" alt="Logo Mr. George" class="footer-logo">
+      </div>
+
+      <div class="create-store">
+        <a href="https://wa.me/573022666530?text=Quiero%20crear%20mi%20tienda" target="_blank" class="create-store-btn">
+          Crea tu tienda aquí
+        </a>
+      </div>
+  </footer>
+
+  <script>
+    // Evitar doble-tap zoom
+    (function () {
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function (event) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) event.preventDefault();
+        lastTouchEnd = now;
+      }, { passive: false });
+    })();
+
+    // Evitar gesto de zoom con pinza
+    document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
+    document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
+
+    // Bloquear zoom con dos dedos (Android / navegadores modernos)
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+  </script>
+
+  <script src="horario.js"></script>
+  <script src="productos-variable.js"></script>
+  <script src="domicilio.js"></script>
+  <script src="enviar-whatsapp.js"></script>
+  <script src="script.js"></script>
+  <script src="enviar-sheets.js"></script>
+
+
+
+</body>
+
+</html>
