@@ -99,7 +99,7 @@ function displaySchedule(schedule) {
     const nextText = today.close.h < today.open.h
       ? `Abre más tarde hoy a las ${formatTime(today.open)}`
       : tomorrow && tomorrow.estado
-      ? `Abre mañana a las ${formatTime(tomorrow.open)}`
+      ? `Abre a las ${formatTime(tomorrow.open)}`
       : `Abre próximamente`;
     setClosed("La tienda está cerrada.", nextText);
   }
