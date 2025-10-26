@@ -436,6 +436,20 @@ document.addEventListener("DOMContentLoaded", () => {
 // 🧾 FINALIZAR PEDIDO (SIEMPRE PIDE DATOS) Y ENVIAR A WHATSAPP
 // ================================
 function finalizarPedido() {
+  // ⚠️ Verificar si el cliente seleccionó una ubicación válida
+  if (!markerUsuario || !map.hasLayer(markerUsuario)) {
+    alert("Por favor selecciona una ubicación antes de continuar.");
+    return;
+  }
+
+  const { lat, lng } = markerUsuario.getLatLng();
+
+  // Si el marcador no se ha movido de la posición inicial de la tienda
+  if (lat === tiendaCoords[0] && lng === tiendaCoords[1]) {
+    alert("Por favor selecciona una ubicación válida antes de continuar.");
+    return;
+  }
+
   // Mostrar siempre el modal para confirmar nombre y teléfono
   const modal = document.getElementById("customer-modal");
   const form = document.getElementById("customer-form");
@@ -469,6 +483,7 @@ function finalizarPedido() {
     enviarPedidoDomicilio(nombre, telefono);
   };
 }
+
 
 // ================================
 // 🚀 CONSTRUIR Y ENVIAR PEDIDO (DOMICILIO)
