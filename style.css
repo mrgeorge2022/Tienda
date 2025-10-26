@@ -1188,6 +1188,8 @@ body {
     color: var(--text-color);
 }
 
+
+
 .close-cart {
     background: none;
     border: none;
@@ -1200,6 +1202,40 @@ body {
 .close-cart:hover {
     transform: scale(1.1);
     color: #4a5568;
+}
+
+
+
+
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
+  gap: 12px;
+}
+
+.cart-empty-text {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.btn-add-products {
+  background: var(--bg-end);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-add-products:hover {
+  background: var(--bg-start);
 }
 
 /* === ITEMS DEL CARRITO === */

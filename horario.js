@@ -60,50 +60,106 @@ async function loadSchedule() {
 // =====================================
 // DETERMINAR ESTADO ACTUAL
 // =====================================
+// =====================================
+// DETERMINAR ESTADO ACTUAL (versión mejorada sin emojis)
+// =====================================
 function displaySchedule(schedule) {
   const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const now = new Date();
 
-  // Aseguramos que use horario Colombia (UTC-5)
+  // Usamos hora local de Colombia
   const localNow = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-  const currentDay = days[localNow.getDay()];
+  const currentDayIndex = localNow.getDay();
+  const currentDay = days[currentDayIndex];
   const today = schedule.find(s => s.day === currentDay);
 
+  // Si hoy no abre
   if (!today || !today.estado) {
-    setClosed("Hoy la tienda está cerrada.");
+    const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
+    if (nextDay) {
+      const msg = daysUntil === 1
+        ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
+        : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(nextDay.open)} (${daysUntil} día${daysUntil > 1 ? 's' : ''})`;
+      setClosed("Hoy la tienda no abre", msg);
+    } else {
+      setClosed("Cerrado temporalmente", "No hay próximos horarios disponibles.");
+    }
     window.tiendaAbierta = false;
     return;
   }
 
+  // Definir apertura y cierre
   const open = new Date(localNow);
   open.setHours(today.open.h, today.open.m, 0, 0);
 
   const close = new Date(localNow);
   close.setHours(today.close.h, today.close.m, 0, 0);
 
-  // Si cierra pasada la medianoche (ej. 00:00)
+  // Si cierra pasada la medianoche
   if (close <= open) close.setDate(close.getDate() + 1);
 
+  // 🟢 Está abierto actualmente
   if (localNow >= open && localNow <= close) {
     window.tiendaAbierta = true;
     const diffMin = Math.floor((close - localNow) / 60000);
     const h = Math.floor(diffMin / 60);
     const m = diffMin % 60;
-    const closeText = h > 0
-      ? `Cierra en ${h} hora(s) ${m} minuto(s)`
-      : `Cierra en ${m} minuto(s)`;
-    setOpen("¡La tienda está abierta!", closeText);
-  } else {
+
+    let mensaje;
+    if (diffMin <= 15) {
+      mensaje = `Cerramos pronto a las ${formatTime(today.close)}`;
+    } else if (h >= 1) {
+      mensaje = `Cerramos a las ${formatTime(today.close)} (en ${h} h ${m} min)`;
+    } else {
+      mensaje = `Cerramos en ${m} minuto${m !== 1 ? "s" : ""}`;
+    }
+
+    setOpen("¡La tienda está abierta!", mensaje);
+    return;
+  }
+
+  // ⏳ Aún no ha abierto hoy
+  if (localNow < open) {
+    const diffMin = Math.floor((open - localNow) / 60000);
+    const h = Math.floor(diffMin / 60);
+    const m = diffMin % 60;
+    const msg = h > 0
+      ? `Abrimos hoy a las ${formatTime(today.open)} (en ${h} h ${m} min)`
+      : `Abrimos en ${m} minuto${m !== 1 ? "s" : ""}`;
+    setClosed("Aún no abrimos", msg);
     window.tiendaAbierta = false;
-    const tomorrow = schedule[(localNow.getDay() + 1) % 7];
-    const nextText = today.close.h < today.open.h
-      ? `Abre más tarde hoy a las ${formatTime(today.open)}`
-      : tomorrow && tomorrow.estado
-      ? `Abre mañana a las ${formatTime(tomorrow.open)}`
-      : `Abre próximamente`;
-    setClosed("La tienda está cerrada.", nextText);
+    return;
+  }
+
+  // 🌙 Ya cerró por hoy
+  if (localNow > close) {
+    const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
+    if (nextDay) {
+      const msg = daysUntil === 1
+        ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
+        : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(nextDay.open)} (${daysUntil} día${daysUntil > 1 ? 's' : ''})`;
+      setClosed("Cerramos por hoy", msg);
+    } else {
+      setClosed("Cerramos por hoy", "No hay próximos horarios disponibles.");
+    }
+    window.tiendaAbierta = false;
   }
 }
+
+// Encuentra el próximo día que la tienda abre
+function findNextOpenDay(schedule, currentIndex) {
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  for (let i = 1; i <= 7; i++) {
+    const nextIndex = (currentIndex + i) % 7;
+    const next = schedule.find(s => s.day === days[nextIndex]);
+    if (next && next.estado) {
+      return { nextDay: next, daysUntil: i };
+    }
+  }
+  return { nextDay: null, daysUntil: null };
+}
+
+
 
 function formatTime({ h, m }) {
   const period = h >= 12 ? "PM" : "AM";

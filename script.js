@@ -762,12 +762,19 @@ function closeCart() {
  */
 function renderCartItems() {
   const cartItemsEl = document.getElementById("cart-items");
+if (cart.length === 0) {
+  cartItemsEl.innerHTML = `
+    <div class="cart-empty">
+      <p class="cart-empty-text">Tu carrito está vacío</p>
+      <button class="btn-add-products" onclick="closeCart(); window.scrollTo({ top: 0, behavior: 'smooth' });">
+        Añadir productos
+      </button>
+    </div>
+  `;
+  return;
+}
 
-  if (cart.length === 0) {
-    cartItemsEl.innerHTML =
-      '<p style="text-align: center; color: var(--muted); padding: 20px;">Tu carrito está vacío</p>';
-    return;
-  }
+
 
   cartItemsEl.innerHTML = cart
     .map((item, index) => {
