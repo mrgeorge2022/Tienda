@@ -1,7 +1,7 @@
 // =====================================
-// CONFIGURACIÓN
+// CONFIGURACIÓN (desde config.json)
 // =====================================
-const SCHEDULE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOCBCR_1CsQJz9YljFyiL3YxgnvlUy_eEQMSmmIf9jvsCt0aO0RjoUD0yfTbq1_liXXQ/exec';
+let SCHEDULE_APPS_SCRIPT_URL = "";
 window.tiendaAbierta = false;
 
 // =====================================
@@ -32,6 +32,11 @@ function capitalize(text) {
 // =====================================
 async function loadSchedule() {
   try {
+    if (!SCHEDULE_APPS_SCRIPT_URL) {
+      console.warn("⚠️ No se ha configurado la URL del horario todavía.");
+      return;
+    }
+
     const res = await fetch(SCHEDULE_APPS_SCRIPT_URL, {
       cache: "no-cache",
       headers: { "Accept": "application/json" }
@@ -50,30 +55,25 @@ async function loadSchedule() {
     displaySchedule(schedule);
   } catch (err) {
     console.error("❌ Error al cargar horarios:", err);
-    // Si falla, mostrar mensaje claro
     const el = document.getElementById("status-header");
-    el.textContent = "No se pudo cargar el horario, intenta recargar la página.";
-    el.style.background = "#e67e22";
+    if (el) {
+      el.textContent = "No se pudo cargar el horario, intenta recargar la página.";
+      el.style.background = "#e67e22";
+    }
   }
 }
 
 // =====================================
 // DETERMINAR ESTADO ACTUAL
 // =====================================
-// =====================================
-// DETERMINAR ESTADO ACTUAL (versión mejorada sin emojis)
-// =====================================
 function displaySchedule(schedule) {
   const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const now = new Date();
-
-  // Usamos hora local de Colombia
   const localNow = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
   const currentDayIndex = localNow.getDay();
   const currentDay = days[currentDayIndex];
   const today = schedule.find(s => s.day === currentDay);
 
-  // Si hoy no abre
   if (!today || !today.estado) {
     const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
     if (nextDay) {
@@ -88,17 +88,13 @@ function displaySchedule(schedule) {
     return;
   }
 
-  // Definir apertura y cierre
   const open = new Date(localNow);
   open.setHours(today.open.h, today.open.m, 0, 0);
 
   const close = new Date(localNow);
   close.setHours(today.close.h, today.close.m, 0, 0);
-
-  // Si cierra pasada la medianoche
   if (close <= open) close.setDate(close.getDate() + 1);
 
-  // 🟢 Está abierto actualmente
   if (localNow >= open && localNow <= close) {
     window.tiendaAbierta = true;
     const diffMin = Math.floor((close - localNow) / 60000);
@@ -118,7 +114,6 @@ function displaySchedule(schedule) {
     return;
   }
 
-  // ⏳ Aún no ha abierto hoy
   if (localNow < open) {
     const diffMin = Math.floor((open - localNow) / 60000);
     const h = Math.floor(diffMin / 60);
@@ -131,7 +126,6 @@ function displaySchedule(schedule) {
     return;
   }
 
-  // 🌙 Ya cerró por hoy
   if (localNow > close) {
     const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
     if (nextDay) {
@@ -146,7 +140,6 @@ function displaySchedule(schedule) {
   }
 }
 
-// Encuentra el próximo día que la tienda abre
 function findNextOpenDay(schedule, currentIndex) {
   const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   for (let i = 1; i <= 7; i++) {
@@ -158,8 +151,6 @@ function findNextOpenDay(schedule, currentIndex) {
   }
   return { nextDay: null, daysUntil: null };
 }
-
-
 
 function formatTime({ h, m }) {
   const period = h >= 12 ? "PM" : "AM";
@@ -173,26 +164,36 @@ function formatTime({ h, m }) {
 function setOpen(title, subtitle = "") {
   const header = document.getElementById("status-header");
   const sub = document.getElementById("status-subtext");
+  if (!header) return;
   header.style.background = "#27ae27";
   header.style.color = "#fff";
   header.textContent = title;
-  sub.textContent = subtitle;
+  if (sub) sub.textContent = subtitle;
 }
 
 function setClosed(title, subtitle = "") {
   const header = document.getElementById("status-header");
   const sub = document.getElementById("status-subtext");
+  if (!header) return;
   header.style.background = "#e74c3c";
   header.style.color = "#fff";
   header.textContent = title;
-  sub.textContent = subtitle;
+  if (sub) sub.textContent = subtitle;
 }
 
 // =====================================
 // AUTOEJECUCIÓN Y REFRESCO
 // =====================================
 document.addEventListener("DOMContentLoaded", () => {
-  loadSchedule();
-  // Refresca cada 1 min por si el horario cambia en Sheets
-  setInterval(loadSchedule, 1 * 60 * 1000);
+  // Esperar a que config.json esté cargado
+  document.addEventListener("configCargado", (e) => {
+    const config = e.detail;
+    if (config?.apiUrls?.horario) {
+      SCHEDULE_APPS_SCRIPT_URL = config.apiUrls.horario;
+      loadSchedule();
+      setInterval(loadSchedule, 60 * 1000); // refrescar cada minuto
+    } else {
+      console.warn("⚠️ No se encontró apiUrls.horario en config.json");
+    }
+  });
 });
