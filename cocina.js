@@ -115,6 +115,7 @@ if (p.productos) {
         <div class="pedido-observaciones observaciones">
           <em>OBSERVACIONES:</em> <span>${p.observaciones}</span>
         </div>` : ""}
+
         
     `;
     fragment.appendChild(div);
@@ -126,10 +127,45 @@ if (p.productos) {
 
 // ✅ Fecha actual por defecto
 const hoy = new Date();
+const año = hoy.getFullYear();
+const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+const dia = String(hoy.getDate()).padStart(2, "0");
+
 const fechaInput = document.getElementById("fecha");
-fechaInput.value = hoy.toISOString().split("T")[0];
+fechaInput.value = `${año}-${mes}-${dia}`;
 fechaInput.addEventListener("change", filtrarPorFecha);
+
 
 // ✅ Carga inicial + actualización periódica
 cargarPedidos();
 setInterval(cargarPedidos, 2000);
+
+
+
+async function actualizarEstado(numeroFactura, tipo) {
+  try {
+    // Crear el objeto JSON que se enviará
+    const payload = {
+      accion: "actualizar",
+      numeroFactura: numeroFactura,
+      tipo: tipo
+    };
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+      alert(`✅ Pedido ${numeroFactura} enviado a hoja COCINA (${tipo.toUpperCase()})`);
+    } else {
+      alert("❌ Error: " + (data.error || "Desconocido"));
+    }
+  } catch (err) {
+    alert("⚠️ No se pudo comunicar con el servidor");
+    console.error(err);
+  }
+}
