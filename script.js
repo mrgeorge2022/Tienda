@@ -478,6 +478,9 @@ function openProductModal(product) {
   // ✅ Mostrar modal y actualizar botón con precio base
   productModalEl.classList.add("show");
   updateAddToCartButton();
+
+    // 🚫 Bloquear scroll general del body
+  document.body.style.overflow = "hidden";
 }
 
 
@@ -490,6 +493,9 @@ function closeProductModal() {
   productModalEl.classList.remove("show");
   currentProduct = null;
   modalQuantity = 1;
+
+    // ✅ Restaurar scroll general del body
+  document.body.style.overflow = "";
 }
 
 /**
@@ -763,6 +769,10 @@ function openCart() {
   void cartContent.offsetWidth; // forzar reflow
   cartContent.style.animation = "slideInCart 0.4s ease forwards";
 
+// 🚫 Bloquear scroll general del body
+document.body.style.overflow = "hidden";
+
+
   renderCartItems();
 }
 
@@ -780,6 +790,10 @@ function closeCart() {
     cartModal.style.display = "none";
     cartModal.classList.remove("hide");
     cartContent.style.animation = "";
+
+    // ✅ Restaurar scroll general
+    document.body.style.overflow = "";
+
   }, 400);
 }
 

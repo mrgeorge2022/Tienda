@@ -244,7 +244,9 @@ function descripcionApi(nombre) {
   const map = {
     productos: "URL del script que carga los productos.",
     horario: "URL del script que obtiene los horarios.",
-    envioBaseDatos: "URL del script que guarda los pedidos."
+    envioBaseDatos: "URL del script que guarda los pedidos.",
+    cocina: "URL del script que gestiona los pedidos en cocina (actualiza estados)."
+    
   };
   return map[nombre] || "URL de una API personalizada.";
 }

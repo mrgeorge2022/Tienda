@@ -74,6 +74,7 @@
     "apiUrls": {
         "productos": "https://script.google.com/macros/s/AKfycbxE5905w07prM6Om7B972nZilOZOEi_IUgX2Cixf98F9t-U8A9ClVxq5pyRjXAt5Zg/exec",
         "horario": "https://script.google.com/macros/s/AKfycbxOCBCR_1CsQJz9YljFyiL3YxgnvlUy_eEQMSmmIf9jvsCt0aO0RjoUD0yfTbq1_liXXQ/exec",
-        "envioBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec"
+        "envioBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec",
+        "cocina": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec"
     }
 }
