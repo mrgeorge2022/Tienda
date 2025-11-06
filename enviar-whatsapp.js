@@ -99,18 +99,21 @@ if (tipoEntrega.toLowerCase().includes("recoger")) {
 
   
 
-// ✅ Leer número de WhatsApp para mensajes desde config.json
+// Abre la pestaña primero (autorizada por el clic)
+const win = window.open("", "_blank");
+
+// Luego hace el fetch
 fetch("config.json")
   .then((response) => response.json())
   .then((config) => {
     const numeroWhatsApp = config.numeroWhatsAppMensajes;
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-    
-    // ✅ Mueve window.open aquí afuera
-    const win = window.open("", "_blank"); // Abre una pestaña vacía autorizada por el clic del usuario
-    win.location.href = url; // Luego redirige
+    win.location.href = url; // redirige
   })
-  .catch((error) => console.error("Error al cargar config.json:", error));
+  .catch((error) => {
+    console.error("Error al cargar config.json:", error);
+    win.close(); // cierra la ventana si falló
+  });
 
 
 
