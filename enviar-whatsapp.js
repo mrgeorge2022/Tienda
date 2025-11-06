@@ -105,7 +105,10 @@ fetch("config.json")
   .then((config) => {
     const numeroWhatsApp = config.numeroWhatsAppMensajes;
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
+    
+    // ✅ Mueve window.open aquí afuera
+    const win = window.open("", "_blank"); // Abre una pestaña vacía autorizada por el clic del usuario
+    win.location.href = url; // Luego redirige
   })
   .catch((error) => console.error("Error al cargar config.json:", error));
 

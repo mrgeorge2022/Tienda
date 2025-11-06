@@ -10,14 +10,14 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: #f7f7f7;
+            color: #000000;
             padding: 20px;
-            background-color: #333;
+            background-color: #fff;
         }
 
         h1,
         h2 {
-            color: #ffc400;
+            color: #000000;
         }
 
         h1 {
@@ -110,5 +110,19 @@
 
 </body>
     <script src="config-loader.js"></script>
+
+<script>
+document.addEventListener("configCargado", (event) => {
+  const config = event.detail;
+  const nombreTienda = config.nombreRestaurante || "Mi Tienda";
+
+  // Cambiar el título de la pestaña
+  document.title = `Terminos y condiciones | ${nombreTienda}`;
+
+  // Reemplazar "mi tienda" por el nombre real dentro del contenido
+  document.body.innerHTML = document.body.innerHTML.replace(/mi tienda/gi, nombreTienda);
+});
+</script>
+
 
 </html>
