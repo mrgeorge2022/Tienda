@@ -3,21 +3,15 @@
     "nombreRestaurante": "Mr. George",
     "logo": "img/icono_tienda.png",
     "colores": {
-        "--bg-body": "linear-gradient(135deg, #FFD700, #000000)",
+        "--bg-body": "Url('img/fondobody.png') no-repeat center center / cover",
+        "--header": "linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/fondoheader.png')",
+        "--accent": "#ffc400",
+        "--bg-skeleton": "linear-gradient(135deg, #f9f9f9, #e9e9e9)",
         "--bg-start": "#333",
         "--bg-end": "#444",
-        "--card-bg": "#222",
-        "--muted": "#c4c4c4",
-        "--mutedquantitybtn": "#7272724f",
-        "--primary-1": "#ffc400",
-        "--primary-2": "#e0b800",
-        "--primary-3": "#b19000",
-        "--accent": "linear-gradient(45deg, var(--primary-1) 0%, var(--primary-2) 100%)",
-        "--text-color": "#fff",
-        "--textarea": "#444",
-        "--quantitymodaltext": "#444"
+        "--card-bg": "#222"
     },
-    "categorias": [
+"categorias": [
         {
             "id": "almuerzos",
             "emoji": "🍛",
@@ -76,6 +70,6 @@
         "productos": "https://script.google.com/macros/s/AKfycbxE5905w07prM6Om7B972nZilOZOEi_IUgX2Cixf98F9t-U8A9ClVxq5pyRjXAt5Zg/exec",
         "horario": "https://script.google.com/macros/s/AKfycbxOCBCR_1CsQJz9YljFyiL3YxgnvlUy_eEQMSmmIf9jvsCt0aO0RjoUD0yfTbq1_liXXQ/exec",
         "envioBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec",
-        "cocina": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec"
+        "reciboBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec"
     }
 }

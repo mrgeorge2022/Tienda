@@ -11,7 +11,7 @@ async function init() {
     if (!res.ok) throw new Error("No se pudo cargar config.json");
 
     const config = await res.json();
-    API_URL = config.apiUrls.cocina || config.apiUrls.envioBaseDatos; // fallback si no existe "cocina"
+    API_URL = config.apiUrls.reciboBaseDatos; // fallback si no existe "cocina"
 
     console.log("✅ API de cocina cargada:", API_URL);
 

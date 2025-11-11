@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-   <title>Cargando...</title>
-  <link rel="icon" type="image/png" href="img/icono_tienda.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Factura</title>
+  <link rel="icon" type="image/png" href="../img/icono_tienda.png">
+
   <style>
     body {
       font-family: "Inter", "Helvetica", Arial, sans-serif;
@@ -24,7 +24,6 @@
       box-sizing: border-box;
     }
 
-    /* ==== ENCABEZADO ==== */
     .header-column {
       display: flex;
       flex-direction: column;
@@ -65,6 +64,7 @@
       line-height: 1.3;
     }
 
+
     .factura-info {
       margin-top: 10px;
       font-size: 1rem;
@@ -74,12 +74,6 @@
       display: inline-block;
     }
 
-    .factura-info span {
-      font-size: 12px;
-      color: #666;
-    }
-
-    /* ==== META ==== */
     .meta {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -99,7 +93,6 @@
       margin: 20px 0;
     }
 
-    /* ==== TABLA ==== */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -120,20 +113,11 @@
       vertical-align: top;
     }
 
-    td.qty,
-    td.price {
-      text-align: center;
-    }
+    td.qty, td.price { text-align: center; }
+    td.total { text-align: right; }
 
-    td.total {
-      text-align: right;
-    }
+    tbody tr:nth-child(even) { background-color: #fafafa; }
 
-    tbody tr:nth-child(even) {
-      background-color: #fafafa;
-    }
-
-    /* ==== TOTALES ==== */
     .totals {
       margin-top: 15px;
       padding: 10px;
@@ -153,19 +137,12 @@
       padding-top: 8px;
     }
 
-    /* ==== OBSERVACIONES ==== */
     .observaciones {
       margin-top: 25px;
       font-size: 0.95rem;
       padding: 10px 15px;
     }
 
-    .observaciones strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    /* ==== FOOTER ==== */
     .footer {
       text-align: center;
       margin-top: 25px;
@@ -179,7 +156,6 @@
       font-size: 0.75rem;
     }
 
-    /* ==== BOTONES ==== */
     .print-actions {
       display: flex;
       justify-content: center;
@@ -198,72 +174,14 @@
       transition: background 0.2s;
     }
 
-    .print-actions button:hover {
-      background: #333;
-    }
-
-    /* ==== IMPRESIÓN ==== */
-    @media print and (max-width: 80mm) {
-      body {
-        background: #fff;
-      }
-
-      .page {
-        padding: 5px;
-        font-size: 9px;
-        max-width: 58mm;
-        box-shadow: none;
-        border-radius: 0;
-      }
-
-      .header-column .logo {
-        width: 50px;
-        height: 50px;
-      }
-
-      .store-info h2 {
-        font-size: 1rem;
-      }
-
-      .store-info p {
-        font-size: 0.75rem;
-      }
-
-      .totals,
-      table {
-        font-size: 9px;
-      }
-
-      .footer {
-        font-size: 8px;
-      }
-
-      .print-actions {
-        display: none !important;
-      }
-    }
-
-    @media print and (min-width: 100mm) {
-      .page {
-        width: 210mm;
-        padding: 15mm;
-        box-shadow: none;
-        border-radius: 0;
-      }
-
-      table {
-        font-size: 13px;
-      }
-    }
+    .print-actions button:hover { background: #333; }
 
     @media print {
-      .print-actions {
-        display: none;
-      }
+      .print-actions { display: none; }
+      body { background: #fff; }
+      .page { box-shadow: none; border-radius: 0; margin: 0; padding: 5mm; }
     }
   </style>
-
-
 </head>
 
 <body>
@@ -286,12 +204,12 @@
 
     <div class="meta">
       <div class="left">
-        <span id="cliente-nombre">Cliente: ---</span><br>
-        <span id="cliente-phone">Tel: ---</span><br>
-        <span id="cliente-direccion">Dirección: ---</span><br>
-        <div id="fecha">Fecha: --</div>
-        <div id="hora">Hora: --</div>
-        <div id="tipo-entrega">Tipo: --</div>
+        <span id="cliente-nombre">Cliente: —</span><br>
+        <span id="cliente-phone">Tel: —</span><br>
+        <span id="cliente-direccion">Dirección: —</span><br>
+        <div id="fecha">Fecha: —</div>
+        <div id="hora">Hora: —</div>
+        <div id="tipo-entrega">Tipo: —</div>
       </div>
     </div>
 
@@ -310,26 +228,11 @@
     </table>
 
     <div class="totals">
-      <div class="row">
-        <div>Subtotal</div>
-        <div id="subtotal">$0</div>
-      </div>
-      <div class="row">
-        <div>Domicilio</div>
-        <div id="costo-domicilio">$0</div>
-      </div>
-      <div class="row total">
-        <div>Total sin propina</div>
-        <div id="total-sin-propina"><strong>$0</strong></div>
-      </div>
-      <div class="row">
-        <div>Propina (10%)</div>
-        <div id="propina">$0</div>
-      </div>
-      <div class="row total">
-        <div>Total con propina</div>
-        <div id="total-pagar">$0</div>
-      </div>
+      <div class="row"><div>Subtotal</div><div id="subtotal">$0</div></div>
+      <div class="row"><div>Domicilio</div><div id="costo-domicilio">$0</div></div>
+      <div class="row total"><div>Total sin propina</div><div id="total-sin-propina">$0</div></div>
+      <div class="row"><div>Propina (10%)</div><div id="propina">$0</div></div>
+      <div class="row total"><div>Total con propina</div><div id="total-pagar">$0</div></div>
     </div>
 
     <div class="observaciones">
@@ -349,17 +252,18 @@
   </div>
 
   <script>
-
-// 🏪 Cargar datos del restaurante desde config.json
-fetch("config.json")
-  .then(res => res.json())
-  .then(data => {
+async function cargarConfig() {
+  try {
+    const res = await fetch("../config.json");
+    const data = await res.json();
     const sede = data.sede || {};
     document.getElementById("store-name").textContent = sede.nombre || "—";
     document.getElementById("store-address").textContent = sede.direccion || "—";
     document.getElementById("store-phone").textContent = "Tel: " + (sede.telefono || "—");
-  })
-  .catch(err => console.warn("No se pudo cargar config.json:", err));
+  } catch (e) {
+    console.warn("No se pudo cargar config.json:", e);
+  }
+}
 
     (function () {
       const raw = localStorage.getItem('lastPedido');
@@ -369,78 +273,58 @@ fetch("config.json")
         return;
       }
 
-      let pedido;
-      try { pedido = JSON.parse(raw); } catch (e) { return; }
-
+      const pedido = JSON.parse(raw);
       const formato = n => '$' + Number(n || 0).toLocaleString('es-CO');
 
-      document.getElementById('factura-num').textContent = (pedido.factura || '—').toUpperCase();
-      document.getElementById('cliente-nombre').textContent = `Cliente: ${pedido.cliente?.nombre || ''}`;
-      document.getElementById('cliente-phone').textContent = `Tel: ${pedido.cliente?.telefono || ''}`;
-      document.getElementById('cliente-direccion').textContent = `Dirección: ${pedido.direccion || ''}`;
-      document.getElementById('fecha').textContent = `Fecha: ${pedido.fecha || ''}`;
-      document.getElementById('hora').textContent = `Hora: ${pedido.hora || ''}`;
-      document.getElementById('tipo-entrega').textContent = `Tipo: ${pedido.tipoEntrega || ''}`;
+      document.getElementById('factura-num').textContent = pedido.factura || "—";
+      document.title = `${pedido.factura || "—"}`;
+      document.getElementById('cliente-nombre').textContent = `Cliente: ${pedido.cliente?.nombre || ""}`;
+      document.getElementById('cliente-phone').textContent = `Tel: ${pedido.cliente?.telefono || ""}`;
+      document.getElementById('cliente-direccion').textContent = `Dirección: ${pedido.direccion || ""}`;
+      document.getElementById('fecha').textContent = `Fecha: ${pedido.fecha || ""}`;
+      document.getElementById('hora').textContent = `Hora: ${pedido.hora || ""}`;
+      document.getElementById('tipo-entrega').textContent = `Tipo: ${pedido.tipoEntrega || ""}`;
 
-      // 🍽️ Mostrar número de mesa si el pedido es en mesa
-      if (pedido.tipoEntrega === "Mesa" && pedido.cliente?.mesa) {
-        const mesaEl = document.createElement("div");
-        mesaEl.id = "mesa-num";
-        mesaEl.textContent = `Mesa: ${pedido.cliente.mesa}`;
-        document.querySelector(".meta .left").appendChild(mesaEl);
-      }
-
-
+      // Productos
       const tbody = document.querySelector('#items-table tbody');
-      tbody.innerHTML = '';
+      tbody.innerHTML = "";
       (pedido.productos || []).forEach(p => {
+        const cantidad = Number(p.cantidad || 1);
+        const nombreLimpio = (p.nombre || "").replace(/\s*x\d+\s*$/i, "");
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>
-            <strong>${p.nombre}</strong><br>
-            ${p.instrucciones ? `<small style="color:#666">${p.instrucciones}</small>` : ''}
-          </td>
-          <td class="qty">${p.cantidad || 1}</td>
+          <td><strong>${nombreLimpio}</strong></td>
+          <td class="qty">${cantidad}</td>
           <td class="price">${formato(p.precio)}</td>
-          <td class="total">${formato((p.precio || 0) * (p.cantidad || 1))}</td>`;
+          <td class="total">${formato((p.precio || 0) * cantidad)}</td>`;
         tbody.appendChild(tr);
       });
 
-      // 🧾 Calcular totales
+      // Totales
       const subtotal = Number(pedido.subtotal || 0);
-      const costoDomicilio = Number(pedido.costoDomicilio || 0);
-      const propina = Number(pedido.propina || 0);
-      const totalSinPropina = subtotal + costoDomicilio;
+      const domicilio = Number(pedido.costoDomicilio || 0);
+      const totalSinPropina = subtotal + domicilio;
+      const propina = totalSinPropina * 0.10;
       const totalConPropina = totalSinPropina + propina;
 
-      // Mostrar totales
       document.getElementById('subtotal').textContent = formato(subtotal);
-      document.getElementById('costo-domicilio').textContent = formato(costoDomicilio);
+      document.getElementById('costo-domicilio').textContent = formato(domicilio);
       document.getElementById('total-sin-propina').textContent = formato(totalSinPropina);
       document.getElementById('propina').textContent = formato(propina);
       document.getElementById('total-pagar').textContent = formato(totalConPropina);
-      document.getElementById('obs-text').textContent = pedido.observaciones || '';
-      // 💰 Mostrar método de pago debajo del total con propina
-      const totalsDiv = document.querySelector(".totals");
-      const metodoPagoRow = document.createElement("div");
-      metodoPagoRow.classList.add("row");
-      metodoPagoRow.innerHTML = `
-  <div><strong>Método de pago</strong></div>
-  <div><strong>${pedido.metodoPago || 'No especificado'}</strong></div>
-`;
-      totalsDiv.appendChild(metodoPagoRow);
+      document.getElementById('obs-text').textContent = pedido.observaciones || "";
 
+      const metodo = document.createElement("div");
+      metodo.classList.add("row");
+      metodo.innerHTML = `<div><strong>Método de pago</strong></div><div><strong>${pedido.metodoPago || "—"}</strong></div>`;
+      document.querySelector(".totals").appendChild(metodo);
 
-      // Si propina = 0, ocultar línea
-      if (!propina) {
-        document.querySelector('#propina').parentElement.style.display = 'none';
-      }
+      document.getElementById("btn-print").addEventListener("click", () => window.print());
+document.getElementById("btn-close").addEventListener("click", () => {
+  window.location.href = "pedidos.html";
+});
 
-      document.getElementById('btn-print').addEventListener('click', () => window.print());
-      document.getElementById('btn-close').addEventListener('click', () => {
-        localStorage.removeItem('lastPedido'); // 🧹 Limpia la factura almacenada
-        window.location.href = 'index.html';   // 🔙 Regresa al inicio
-      });
+      cargarConfig(); // 🔥 carga los datos de la sede
 
       // 🧭 Si es domicilio y tiene ubicación, generar QR exacto de Google Maps
       if (pedido.tipoEntrega === "Domicilio" && pedido.ubicacion) {
@@ -482,11 +366,7 @@ fetch("config.json")
       }
 
 
-      // autoimprimir tras abrir
-      setTimeout(() => window.print(), 800);
     })();
   </script>
-    <script src="config-loader.js"></script>
 </body>
-
 </html>
