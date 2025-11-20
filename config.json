@@ -68,8 +68,9 @@
     "crearTienda": "https://wa.me/573022666530?text=Quiero%20crear%20mi%20tienda",
     "apiUrls": {
         "productos": "https://script.google.com/macros/s/AKfycbxE5905w07prM6Om7B972nZilOZOEi_IUgX2Cixf98F9t-U8A9ClVxq5pyRjXAt5Zg/exec",
-        "horario": "https://script.google.com/macros/s/AKfycbxOCBCR_1CsQJz9YljFyiL3YxgnvlUy_eEQMSmmIf9jvsCt0aO0RjoUD0yfTbq1_liXXQ/exec",
+        "horario": "https://script.google.com/macros/s/AKfycbxW1cwQFbgWHXNZ84Qqu_-MMRxbbK1-UYjKS6CU_87lpb085YBJ-OyfzTrWzcdTSl-i/exec",
         "envioBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec",
-        "reciboBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec"
+        "reciboBaseDatos": "https://script.google.com/macros/s/AKfycbwez78KX4oEXCGWV_olvy_J1C8YwURxN-1YaZiYYqQJPVLAJuaRI_5EVl4v14OMjonM/exec",
+        "CajaDatos": "https://script.google.com/macros/s/AKfycbzoEN5CldFTrWRoNVdpDN0fQP-bx77rlpUdwdWi1HAIjBrGv3I0iuYnWUndPAAwvDxujg/exec"
     }
 }

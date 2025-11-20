@@ -108,9 +108,7 @@ async function loadProducts() {
     // Clonar y registrar texto crudo para depuración (no afecta al parseo)
     const rawText = await response.clone().text();
     try {
-      console.groupCollapsed("Carga productos - respuesta cruda");
-      console.log(rawText.slice(0, 2000));
-      console.groupEnd();
+
     } catch (e) {}
 
     let data;

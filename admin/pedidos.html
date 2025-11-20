@@ -6,174 +6,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Pedidos</title>
   <link rel="icon" type="image/png" href="../img/icono_tienda.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
   <style>
+    /* ================================\
+       VARIABLES / RESET (Estilo Unificado)
+       ================================ */
+    :root {
+      --primary: #5bc0de;
+      --accent: #46b8da;
+      --muted: #909ba7;
+      --success: #63d471;
+      --warning: #f8c050;
+      --danger: #ff6b6b;
+      --bg: #1e1e2d; /* Fondo oscuro */
+      --card: #2b2b3f; /* Color de tarjeta oscura */
+      --line: #4a4a68;
+      --text: #f1f1f1; /* Texto claro */
+      --input: #3c3c50;
+      --shadow: rgba(0, 0, 0, 0.25);
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f6fa;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
       margin: 0;
       padding: 1rem;
-      color: #333;
+      color: var(--text);
     }
 
     h1 {
       text-align: center;
-      color: #111;
+      color: var(--text);
       margin-bottom: 0.5rem;
     }
 
+    /* BOTÓN VOLVER */
     .volver-admin {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start; /* Se ajusta para que solo quede el botón de volver */
       margin-bottom: 15px;
     }
 
     .volver-admin button {
-      background: #007bff;
-      color: white;
+      background: var(--primary);
+      color: var(--text);
       border: none;
       padding: 8px 16px;
       border-radius: 8px;
       font-size: 0.9rem;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px var(--shadow);
       transition: all 0.25s ease;
     }
 
     .volver-admin button:hover {
-      background: linear-gradient(135deg, #0056b3, #004080);
+      background: var(--accent);
       transform: translateY(-2px);
     }
 
-
-    .estado {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      padding: 6px 12px;
-      background: #fff;
-      border-radius: 8px;
-      display: inline-block;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-
-    .dashboard {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .dash-card {
-      background: #fff;
-      padding: 8px 12px;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      min-width: 120px;
-    }
-
-    .dash-card h3 {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #007bff;
-    }
-
-    .dash-card p {
-      margin: 4px 0 0;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
+    /* FILTROS */
     .filtros {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
       margin-bottom: 20px;
-      background: #fff;
-      padding: 10px;
+      background: var(--card);
+      padding: 15px;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px var(--shadow);
     }
 
     .filtros input,
     .filtros button {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
       border-radius: 6px;
       font-size: 0.9rem;
+      background: var(--input);
+      color: var(--text);
+    }
+    
+    .filtros input:focus, .filtros button:focus {
+        outline: none;
+        border-color: var(--accent);
     }
 
     .filtros button {
-      background: #007bff;
-      color: #fff;
+      background: var(--accent);
+      color: var(--text);
       cursor: pointer;
       transition: background 0.2s;
+      font-weight: 600;
     }
 
     .filtros button:hover {
-      background: #0056b3;
+      background: var(--primary);
     }
 
-    /* ==== MES === */
+    /* ==== AGRUPADOR DE MES === */
     .mes-header {
       cursor: pointer;
-      background: #e3e3e3;
-      padding: 8px 12px;
+      background: var(--input);
+      padding: 12px 16px;
       border-radius: 6px;
-      margin-top: 10px;
+      margin-top: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 600;
+      transition: background 0.2s;
+      color: var(--text);
+    }
+    
+    .mes-header:hover {
+        background: var(--line);
     }
 
     .mes-header span {
       font-size: 0.85rem;
-      color: #555;
+      color: var(--muted);
     }
 
     .pedidos-mes {
       margin-top: 5px;
+      transition: max-height 0.3s ease-out;
+      overflow: hidden;
+    }
+    
+    .pedidos-mes.oculto {
+        max-height: 0;
+        margin-top: 0;
     }
 
+    /* DETALLE DEL PEDIDO */
     .pedido {
-      background: #fff;
+      background: var(--card);
       margin-bottom: 10px;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px var(--shadow);
       overflow: hidden;
       transition: all 0.3s ease;
+      border: 1px solid var(--line);
+    }
+    
+    .pedido.activo {
+        border-color: var(--primary);
     }
 
     .pedido-header {
       padding: 12px 16px;
-      background: #ffffff;
-      /* gris claro elegante */
-      color: #222;
+      background: var(--card);
+      color: var(--text);
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       font-weight: 600;
       flex-wrap: wrap;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid var(--line);
       border-radius: 8px 8px 0 0;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease;
       font-size: 14px;
     }
 
     .pedido-header:hover {
-      background: #e3e6eb;
-      /* un poco más oscuro al pasar el mouse */
-      color: #000;
+      background: var(--input);
     }
 
     .pedido-header.new {
-      background: #eaf4ff;
-      /* tono sutil azul para nuevos */
-      border-bottom: 1px solid #cfe3ff;
+      background: var(--input); /* Destacar con el color de input */
+      border-bottom: 1px solid var(--primary);
     }
 
     .pedido-header div {
@@ -182,72 +187,94 @@
       justify-content: space-between;
     }
 
-    /* Detalles del pedido */
     .pedido-detalle {
       display: none;
       padding: 14px 16px;
-      background: #fff;
-      border-top: 1px solid #eee;
-      color: #222;
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      color: var(--text);
     }
 
     .pedido.activo .pedido-detalle {
       display: block;
     }
 
+    /* === CABECERA DE PEDIDO === */
+    .pedido-info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
 
-    /* === NUEVO ESTILO PARA CABECERA DE PEDIDO === */
-.pedido-info {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+    .pedido-linea {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
 
-.pedido-linea {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
+    .pedido-nombre {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    
+    .pedido-tipo-entrega {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 8px; /* Separación del nombre */
+        flex-shrink: 0;
+    }
 
-.pedido-nombre {
-  font-weight: 600;
-  color: #222;
-  font-size: 0.95rem;
-}
-
-.pedido-fecha {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.pedido-factura {
-  color: #007bff;
-  font-weight: bold;
-  margin-top: 2px;
-  font-size: 0.9rem;
-}
+    .pedido-factura {
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+      font-size: 0.85rem;
+    }
+    
+    /* TOTAL A PAGAR (PROMINENTE) */
+    .pedido-total {
+        font-size: 1.1rem; 
+        font-weight: 800;
+        color: var(--success);
+        flex-shrink: 0;
+    }
 
 
     /* Lista de productos */
     .productos {
-      background: #f9f9f9;
+      background: var(--input);
       padding: 8px 10px;
       border-radius: 6px;
       font-family: monospace;
       white-space: pre-wrap;
       font-size: 0.85rem;
       margin-top: 6px;
-      border: 1px solid #eee;
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+    
+    .pedido-detalle a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+    
+    .pedido-detalle a:hover {
+        text-decoration: underline;
     }
 
     /* Botón de factura */
     .boton-factura {
       margin-top: 10px;
-      background: #007bff;
-      color: white;
+      background: var(--primary);
+      color: var(--text);
       border: none;
-      padding: 8px 14px;
+      padding: 10px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.9rem;
@@ -255,26 +282,69 @@
     }
 
     .boton-factura:hover {
-      background: #0056b3;
+      background: var(--accent);
     }
 
 
     .cargando {
       text-align: center;
-      color: #666;
+      color: var(--muted);
       font-size: 1rem;
       padding: 20px;
+    }
+
+    /* === ESTILO PARA BOTÓN ELIMINAR === */
+    .boton-eliminar {
+      background: var(--danger);
+      color: var(--text);
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.25s ease;
+      margin-top: 10px;
+    }
+
+    .boton-eliminar:hover {
+      background: #c82333;
+    }
+
+    /* Para que los botones se vean bien en móvil */
+    .pedido-detalle button {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .pedido-detalle button {
+        display: inline-block;
+        width: auto;
+        margin-right: 10px;
+      }
+    }
+    
+    /* Pequeño ajuste para que los filtros se vean mejor */
+    @media (max-width: 500px) {
+        .filtros input,
+        .filtros button {
+            width: 100%;
+            box-sizing: border-box;
+        }
     }
   </style>
 </head>
 
 <body>
+  <div class="volver-admin">
+    <button onclick="window.location.href='admin.html'">
+            ⚙️ Ir al Panel Admin
+        </button>
+  </div>
   <h1>Panel de Pedidos</h1>
 
-  <div class="volver-admin">
-    <button onclick="window.location.href='admin.html'">⬅️ Admin</button>
-    <div class="estado loading">Conectando...</div>
-  </div>
 
 
   <div class="filtros">
@@ -293,13 +363,11 @@
   <script>
 
     const contenedor = document.getElementById("contenedorPedidos");
-    const estado = document.querySelector(".estado");
     const audio = document.getElementById("alertaAudio");
 
     let pedidosGlobal = [];
     let ultimasFacturas = new Set();
-    let horaConexion = null;
-    let intervaloDuracion = null;
+    let API_URL = ''; // Se inicializa para evitar errores antes de cargar config.json
 
     const formatoCOP = valor => {
       const n = Number(valor) || 0;
@@ -307,23 +375,14 @@
     };
 
     async function cargarPedidos(auto = false) {
-      estado.className = "estado loading";
-      estado.textContent = "Actualizando...";
-
       if (!auto) {
         recargarBtn.disabled = true;
         recargarBtn.textContent = "⏳ Actualizando...";
       }
 
-
       try {
         const res = await fetch(API_URL + "?t=" + Date.now());
         const data = await res.json();
-
-        if (!horaConexion) {
-          horaConexion = new Date();
-          iniciarRelojConexion();
-        }
 
         const nuevasFacturas = data.map(p => p.numeroFactura);
         const nuevos = nuevasFacturas.filter(f => !ultimasFacturas.has(f));
@@ -336,14 +395,11 @@
         ultimasFacturas = new Set(nuevasFacturas);
         pedidosGlobal = data;
         mostrarPedidos(data, nuevos);
-
-        estado.className = "estado ok";
-        actualizarEstadoConTiempo();
+        
       } catch (error) {
         console.error("Error al cargar pedidos:", error);
         contenedor.innerHTML = "<p class='cargando'>Error al cargar pedidos.</p>";
-        estado.className = "estado error";
-        estado.textContent = "Error de conexión";
+        alert("Error de conexión al cargar pedidos. Revisa la consola."); // Alerta alternativa
       }
 
       finally {
@@ -356,11 +412,6 @@
     }
 
     function mostrarPedidos(pedidos, nuevasFacturas = []) {
-      if (!pedidos || pedidos.length === 0) {
-        contenedor.innerHTML = "<p class='cargando'>No hay pedidos registrados.</p>";
-        return;
-      }
-
       const mesesNombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
       const pedidosPorMes = {};
 
@@ -372,30 +423,52 @@
         if (!pedidosPorMes[mes]) pedidosPorMes[mes] = [];
         pedidosPorMes[mes].push(p);
       });
+      
+      // === LÓGICA ROBUSTA PARA MOSTRAR "NO HAY REGISTROS" EN TODOS LOS CASOS VACÍOS (inicial, filtro, o datos inválidos) ===
+      if (pedidos.length === 0 || Object.keys(pedidosPorMes).length === 0) {
+        contenedor.innerHTML = "<div class='cargando'>No hay registros.</div>";
+        return;
+      }
+      // ===================================================================================================================
 
       contenedor.innerHTML = "";
 
       Object.keys(pedidosPorMes).sort((a, b) => b - a).forEach(mes => {
         const headerMes = document.createElement("div");
         headerMes.className = "mes-header";
-        headerMes.innerHTML = `<span>${mesesNombres[Number(mes) - 1]}`;
+        // Muestra el nombre del mes y el año (si está disponible y es distinto al actual)
+        const anio = pedidosPorMes[mes][0].fecha.split("/")[2] || new Date().getFullYear();
+        headerMes.innerHTML = `${mesesNombres[Number(mes) - 1]} ${anio !== new Date().getFullYear().toString() ? anio : ''}`;
         contenedor.appendChild(headerMes);
 
         const bloqueMes = document.createElement("div");
         bloqueMes.className = "pedidos-mes";
+        
         pedidosPorMes[mes].slice().reverse().forEach(p => {
+          const rowIndex = p.rowIndex;
+          const numFactura = (p.numeroFactura || "SIN NÚMERO").replace(/'/g, "\\'"); // Escapar comillas para JS
+          
           const div = document.createElement("div");
           div.className = "pedido";
+          // Añadir clase 'new' si es un nuevo pedido
+          if (nuevasFacturas.includes(p.numeroFactura)) {
+              div.querySelector(".pedido-header")?.classList.add("new");
+          }
           div.innerHTML = `
-  <div class="pedido-header">
-    <div class="pedido-info">
-      <div class="pedido-linea">
-        <span class="pedido-nombre">${p.nombre || "Cliente sin nombre"}</span>
-        <span class="pedido-fecha">${p.fecha || "—"} ${p.hora || ""}</span>
-      </div>
-      <div class="pedido-factura">${p.numeroFactura || "—"}</div>
-    </div>
-  </div>
+            <div class="pedido-header ${nuevasFacturas.includes(p.numeroFactura) ? 'new' : ''}">
+              <div class="pedido-info">
+                <div class="pedido-linea">
+                  <span class="pedido-nombre">${p.nombre || "Cliente sin nombre"}</span>
+                  <span class="pedido-tipo-entrega">${p.tipoEntrega || "—"}</span>
+                </div>
+                <div class="pedido-linea">
+                    <div class="pedido-factura">
+                        ${p.numeroFactura || "—"} | ${p.fecha || "—"} ${p.hora || ""}
+                    </div>
+                    <div class="pedido-total">${formatoCOP(p.totalPagar)}</div>
+                </div>
+              </div>
+            </div>
             <div class="pedido-detalle">
               <p><strong>Tipo Entrega:</strong> ${p.tipoEntrega || "—"}</p>
               <p><strong>Teléfono:</strong> ${p.telefono ?? "0"}</p>
@@ -411,6 +484,8 @@
               ${p.ubicacionGoogleMaps ? `<p><strong>Ubicación:</strong> <a href="${p.ubicacionGoogleMaps}" target="_blank">Ver mapa</a></p>` : ""}
               ${p.observaciones ? `<p><strong>Observaciones:</strong> ${p.observaciones}</p>` : ""}
               <button class="boton-factura">👁️ Ver Factura</button>
+              
+              <button class="boton-eliminar" data-row-index="${rowIndex}" onclick="eliminarPedidoAPI(${rowIndex}, '${numFactura}')">🗑️ Eliminar</button>              
             </div>
           `;
           div.querySelector(".pedido-header").addEventListener("click", () => div.classList.toggle("activo"));
@@ -444,10 +519,55 @@
         });
         contenedor.appendChild(bloqueMes);
 
+        // Toggle para ocultar/mostrar los pedidos del mes
         headerMes.addEventListener("click", () => bloqueMes.classList.toggle("oculto"));
       });
     }
 
+    // 🔥 FUNCIÓN MODIFICADA: Ahora recibe y usa el número de factura
+    async function eliminarPedidoAPI(rowIndex, numeroFactura) {
+        if (rowIndex <= 1) { 
+            alert("Error: No se puede eliminar la fila de encabezado.");
+            return;
+        }
+
+        // Usa el número de factura en la confirmación
+        if (!confirm(`⚠️ ¿Estás seguro de que deseas ELIMINAR el pedido con FACTURA ${numeroFactura}? Esta acción es irreversible.`)) {
+            return;
+        }
+
+        const btn = document.querySelector(`.boton-eliminar[data-row-index="${rowIndex}"]`);
+        // Usamos el botón de factura como fallback si el de eliminar no se encuentra (caso extraño)
+        const finalBtn = btn || document.querySelector('.boton-factura'); 
+        
+        const originalText = finalBtn.textContent;
+        finalBtn.disabled = true;
+        finalBtn.textContent = 'Eliminando...';
+        
+        // Llama a la API con action=delete y el rowIndex
+        const urlDelete = `${API_URL}?action=delete&rowIndex=${rowIndex}`;
+
+        try {
+            const response = await fetch(urlDelete, { method: 'GET' });
+            const data = await response.json();
+
+            if (data.status === 'ok') {
+                // 🔥 CAMBIO EN EL MENSAJE DE ÉXITO
+                alert(`✅ Pedido con FACTURA ${numeroFactura} eliminado con éxito.`);
+                // Recarga los pedidos para actualizar la lista
+                cargarPedidos(false);
+            } else {
+                throw new Error(data.message || 'Error desconocido al eliminar.');
+            }
+
+        } catch (error) {
+            console.error("Error al eliminar el pedido:", error);
+            // 🔥 CAMBIO EN EL MENSAJE DE ERROR
+            alert(`❌ Error al eliminar el pedido con FACTURA ${numeroFactura}. Verifique la API y la consola.`);
+            finalBtn.disabled = false;
+            finalBtn.textContent = originalText;
+        }
+    }
 
     function filtrarPedidos() {
       const texto = document.getElementById("buscar").value.toLowerCase();
@@ -472,6 +592,7 @@
         return coincideTexto && coincideFecha;
       });
 
+      // Se elimina la verificación explícita de filtrados.length y se delega a mostrarPedidos
       mostrarPedidos(filtrados);
     }
 
@@ -481,28 +602,12 @@
 
     function mostrarAvisoNuevoPedido() {
       document.title = "¡Nuevo pedido!";
-      estado.style.boxShadow = "0 0 8px #28a745";
-      setTimeout(() => { document.title = "Panel de Pedidos"; estado.style.boxShadow = ""; }, 3000);
+      setTimeout(() => {
+        document.title = "Panel de Pedidos";
+      }, 3000);
     }
 
-    function iniciarRelojConexion() {
-      if (intervaloDuracion) clearInterval(intervaloDuracion);
-      intervaloDuracion = setInterval(actualizarEstadoConTiempo, 1000);
-    }
 
-    function actualizarEstadoConTiempo() {
-      if (!horaConexion) return;
-      const ahora = new Date();
-      const dif = Math.floor((ahora - horaConexion) / 1000);
-      const horas = Math.floor(dif / 3600);
-      const minutos = Math.floor((dif % 3600) / 60);
-      const segundos = dif % 60;
-      const tiempo = (horas > 0 ? horas + "h " : "") + (minutos > 0 ? minutos + "m " : "") + segundos + "s";
-      const horaStr = horaConexion.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      estado.textContent = `🟢 Conectado desde ${horaStr} (${tiempo})`;
-    }
-
-    
     fetch("../config.json")
       .then(r => r.json())
       .then(cfg => {
@@ -512,11 +617,8 @@
       })
       .catch(err => {
         console.error("❌ Error cargando config.json:", err);
-        document.querySelector(".estado").textContent = "Error al cargar configuración";
+        alert("Error al cargar configuración de la API."); // Alerta alternativa
       });
-
-    // ❌ elimina esta línea (ya no hace falta):
-    // cargarPedidos();
 
 
   </script>
