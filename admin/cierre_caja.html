@@ -568,6 +568,98 @@
     }
 }
 
+/* ================================================================= */
+/* 🔎 ESTILOS PARA LA BÚSQUEDA POR FECHA (CONSULTA HISTÓRICA) */
+/* ================================================================= */
+
+.consulta-fecha-controls {
+    display: flex;
+    gap: 15px; /* Aumento de gap para mejor espacio */
+    align-items: center;
+    border-radius: 8px;
+    /* Usar un color de fondo sutil si está en un panel */
+}
+
+.consulta-fecha-label {
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0; /* Evita que la etiqueta se comprima */
+}
+
+.consulta-fecha-input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    /* Fondo oscuro y borde sutil */
+    background-color: var(--input);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    flex-grow: 1; /* Permite que el input se expanda un poco */
+    max-width: 200px; /* Ancho máximo estándar para un input de fecha */
+    transition: border-color 0.2s;
+}
+
+.consulta-fecha-input:focus {
+    outline: none;
+    border-color: var(--accent, #ffc400);
+}
+
+/* 🎨 Estilos Generales de Botón Reutilizables (Asegura consistencia) */
+
+/* Si ya tienes una clase .btn, solo necesitas definir las variantes. */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, opacity 0.2s;
+    color: var(--bg-start, #333); /* Texto oscuro sobre el botón */
+    flex-shrink: 0;
+}
+
+/* Variante principal (Buscar) */
+.btn-primary {
+    /* Usamos el color de éxito para la acción principal */
+    background-color: var(--success, #4caf50); 
+    color: #fff; /* Texto blanco en el botón de éxito */
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Variante secundaria (Ver todo) */
+.btn-secondary {
+    /* Usamos el color muted para la acción secundaria */
+    background-color: var(--muted, #9e9e9e); 
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    opacity: 0.9;
+}
+
+
+/* 📱 Responsiveness (Apilar elementos en móvil) */
+@media (max-width: 600px) {
+    .consulta-fecha-controls {
+        flex-direction: column;
+        align-items: stretch; /* Estirar elementos al 100% */
+        gap: 10px;
+    }
+    
+    .consulta-fecha-label {
+        text-align: left;
+        margin-bottom: -5px; /* Ajuste para acercar la etiqueta al input */
+    }
+
+    .consulta-fecha-input {
+        max-width: 100%;
+    }
+}
+
 
     </style>
 </head>
@@ -745,14 +837,16 @@
                 <h1>📜 Historial de cierres</h1>
                 <p style="color:var(--muted)">Consulta registros anteriores</p>
 
-                <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
-                    <label for="fechaConsulta" style="font-weight:700">Buscar por fecha</label>
-                    <input type="date" id="fechaConsulta" />
-                    <button class="btn" style="background:var(--success)" onclick="consultarCierreHistorico(true)">🔎
-                        Buscar</button>
-                    <button class="btn" style="background:var(--muted)" onclick="consultarCierreHistorico(false)">📜 Ver
-                        todo</button>
-                </div>
+<div class="consulta-fecha-controls">
+    <label for="fechaConsulta" class="consulta-fecha-label">Buscar por fecha</label>
+    <input type="date" id="fechaConsulta" class="consulta-fecha-input" />
+    <button class="btn btn-primary" onclick="consultarCierreHistorico(true)">
+        🔎 Buscar
+    </button>
+    <button class="btn btn-secondary" onclick="consultarCierreHistorico(false)">
+        📜 Ver todo
+    </button>
+</div>
 
                 <div id="resultadoConsulta" style="margin-top:14px;color:var(--muted)">Haga clic en Buscar o Ver todo
                     para cargar.</div>
@@ -1192,42 +1286,44 @@ const RANGO_TOLERANCIA = 500;
             const fechaCierreTardioDate = new Date(fechaCierreInput + 'T00:00:00');
             const fechaCierreTardio = formatFechaActual(fechaCierreTardioDate); 
 
-            // Construir el payload con los campos de fecha y hora explícitos
-            const payload = { 
-                // Los dos campos de fecha y la hora (en el orden lógico de tu encabezado)
-                fechaCierreActual: fechaCierreActual,       
-                fechaCierreTardio: fechaCierreTardio,       
-                horaCierre: horaCierreActual,               
-                
-                // Responsable y Notas
-                usuario: responsable, 
-                notas: notas,
+// ⭐ CÓDIGO CORREGIDO PARA EL PAYLOAD ⭐
+const payload = { 
+    // Los dos campos de fecha y la hora (en el orden lógico de tu encabezado)
+    fechaCierreActual: fechaCierreActual,       
+    fechaCierreTardio: fechaCierreTardio,       
+    horaCierre: horaCierreActual,               
+    
+    // Responsable y Notas
+    usuario: responsable, 
+    notas: notas,
 
-                // Datos financieros (tomados de cierreData, explícitamente listados)
-                efectivoContado: cierreData.efectivoContado,
-                efectivoEsperado: cierreData.efectivoEsperado,
-                diferenciaEfectivo: cierreData.diferenciaEfectivo,
+    // Datos financieros (tomados de cierreData, explícitamente listados)
+    // 1. EFECTIVO
+    efectivoContado: cierreData.efectivoContado,
+    efectivoEsperado: cierreData.efectivoEsperado, 
+    diferenciaEfectivo: cierreData.diferenciaEfectivo,
 
-                transferenciaContada: cierreData.transferenciaContada,
-                transferenciaEsperada: cierreData.transferenciaEsperada,
-                diferenciaTransferencia: cierreData.diferenciaTransferencia,
-                
-                // Nota: Incluyo Mixto (Efectivo/Transferencia) y Otros.
-                // Si su API/Google Sheet no tiene las columnas para Mixto, 
-                // deberá ajustar la Google Apps Script para omitir o fusionar estos campos.
-                mixtoContado: cierreData.mixtoContado,
-                mixtoEsperado: cierreData.mixtoEsperado,
-                diferenciaMixto: cierreData.diferenciaMixto,
+    // 2. TRANSFERENCIA
+    transferenciaContada: cierreData.transferenciaContada,
+    transferenciaEsperada: cierreData.transferenciaEsperada,
+    diferenciaTransferencia: cierreData.diferenciaTransferencia,
+    
+    // 3. EFECTIVO / TRANSFERENCIA (Mixto) - ¡CLAVES CORREGIDAS!
+    efectivoTransferenciaContada: cierreData.mixtoContado, // ✅ Cambiado
+    efectivoTransferenciaEsperada: cierreData.mixtoEsperado, // ✅ Cambiado
+    diferenciaEfectivoTransferencia: cierreData.diferenciaMixto, // ✅ Cambiado
 
-                otrosContados: cierreData.otrosContados,
-                otrosEsperados: cierreData.otrosEsperados,
-                diferenciaOtros: cierreData.diferenciaOtros,
+    // 4. OTROS
+    otrosContados: cierreData.otrosContados,
+    otrosEsperados: cierreData.otrosEsperados,
+    diferenciaOtros: cierreData.diferenciaOtros,
 
-                diferenciaTotal: cierreData.diferenciaTotal,
-                totalSistema: cierreData.totalSistema,
-                totalContado: cierreData.totalContado
-            };
-            // ⭐ FIN CAMBIO
+    // 5. TOTALES
+    diferenciaTotal: cierreData.diferenciaTotal,
+    totalSistema: cierreData.totalSistema,
+    totalContado: cierreData.totalContado
+};
+// ⭐ FIN CÓDIGO CORREGIDO
 
             const btn = document.getElementById('btnRegistrarCierre');
             const original = btn.textContent;
@@ -1254,6 +1350,7 @@ const RANGO_TOLERANCIA = 500;
         /* =================================
            HISTORIAL (CONSULTA / ELIMINAR)
            ================================= */
+// ...
         async function consultarCierreHistorico(filtrarPorFecha) {
             const inputFecha = document.getElementById('fechaConsulta');
             const resultadoDiv = document.getElementById('resultadoConsulta');
@@ -1273,30 +1370,104 @@ const RANGO_TOLERANCIA = 500;
                 const data = await resp.json();
                 if (data.status === 'ok') {
                     if (Array.isArray(data.resultados) && data.resultados.length) {
-                        let html = `<h3>✅ ${data.resultados.length} cierre(s) encontrados</h3>`;
+                        let html = `<h3>✅ ${data.resultados.length} cierre(s) encontrado(s)</h3>`;
+                        
+                        // Ordenar por fecha y hora descendente
                         data.resultados.sort((a, b) => {
                             const dateA = new Date(a["Fecha Cierre"].split('/').reverse().join('-') + ' ' + (a["Hora Cierre"] || '00:00'));
                             const dateB = new Date(b["Fecha Cierre"].split('/').reverse().join('-') + ' ' + (b["Hora Cierre"] || '00:00'));
                             return dateB - dateA;
                         });
+                        
                         data.resultados.forEach(c => {
-                            const diff = parseFloat(c["Diferencia Total"]) || 0;
-                            const abs = Math.abs(diff);
-                            let color = diff > 0 ? 'var(--warning)' : diff < 0 ? 'var(--danger)' : 'var(--success)';
-                            let estado = Math.abs(diff) < RANGO_TOLERANCIA ? 'Cuadrado' : (diff > 0 ? `SOBRA ${formatCurrency(abs)}` : `FALTA ${formatCurrency(abs)}`);
+                            const diffTotal = parseFloat(c["Diferencia Total"]) || 0;
+                            const absTotal = Math.abs(diffTotal);
+                            let colorTotal = diffTotal > 0 ? 'var(--warning)' : diffTotal < 0 ? 'var(--danger)' : 'var(--success)';
+                            let estado = Math.abs(diffTotal) < RANGO_TOLERANCIA ? 'CUADRADO' : (diffTotal > 0 ? `SOBRA ${formatCurrency(absTotal)}` : `FALTA ${formatCurrency(absTotal)}`);
                             const rowIndex = parseInt(c["Fila ID"]);
+                            const notas = c["Notas/Observaciones"] || 'Sin notas.';
+
+                            // Función auxiliar para obtener color basado en la diferencia
+                            const getColor = (diff) => diff == 0 ? 'var(--success)' : (diff > 0 ? 'var(--warning)' : 'var(--danger)');
+                            
+                            // Detalle por método de pago
+                            const detalles = [
+                                { 
+                                    metodo: 'Efectivo', 
+                                    contado: parseFloat(c["Efectivo Contado"]) || 0, 
+                                    esperado: parseFloat(c["Efectivo Esperado"]) || 0, 
+                                    diferencia: parseFloat(c["Diferencia Efectivo"]) || 0 
+                                },
+                                { 
+                                    metodo: 'Transferencia', 
+                                    contado: parseFloat(c["Transferencia Contada"]) || 0, 
+                                    esperado: parseFloat(c["Transferencia Esperada"]) || 0, 
+                                    diferencia: parseFloat(c["Diferencia Transferencia"]) || 0 
+                                },
+                                { 
+                                    metodo: 'Efectivo/Transf.', 
+                                    contado: parseFloat(c["Efectivo/Transferencia Contada"]) || 0, 
+                                    esperado: parseFloat(c["Efectivo/Transferencia Esperada"]) || 0, 
+                                    diferencia: parseFloat(c["Diferencia Efectivo/Transferencia"]) || 0 
+                                },
+                                { 
+                                    metodo: 'Otros', 
+                                    contado: parseFloat(c["Otros Contados"]) || 0, 
+                                    esperado: parseFloat(c["Otros Esperados"]) || 0, 
+                                    diferencia: parseFloat(c["Diferencia Otros"]) || 0 
+                                }
+                            ];
+                            
+                            // Construcción del HTML
                             html += `
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;margin-top:8px;background:var(--input);border-left:4px solid ${color}">
-                  <div>
-                    <div style="font-weight:800">${c["Fecha Cierre"]} ${c["Hora Cierre"] || ''}</div>
-                    <div style="color:var(--muted);font-size:0.95rem">Responsable: ${c["Responsable Cierre"] || ''}</div>
-                  </div>
-                  <div style="display:flex;gap:8px;align-items:center">
-                    <div style="font-weight:800;color:${color}">${estado}</div>
-                    <button style="background:transparent;border:none;color:var(--danger);cursor:pointer" onclick="eliminarCierreAPI(${rowIndex})">Eliminar🗑️</button>
-                  </div>
-                </div>
-              `;
+                                <div style="padding:15px;border-radius:12px;margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:5px solid ${colorTotal};box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                  
+                                  <div style="justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--line);">
+                                    <div style="flex-grow:1;">
+                                      <div style="font-weight:900;font-size:1.1rem;color:var(--text);">
+                                        Cierre del ${c["Fecha Cierre"]} a las ${c["Hora Cierre"] || 'N/A'}
+                                      </div>
+                                      <div style="color:var(--muted);font-size:0.9rem;">
+                                        Responsable: ${c["Responsable Cierre"] || 'N/A'}
+                                      </div>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-shrink:0;">
+                                      <div style="font-weight:900;color:${colorTotal};text-align:right;font-size:1.2rem;">
+                                        ${estado}
+                                      </div>
+                                      <button style="background:var(--danger);color:var(--text);border:none;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:700;box-shadow: 0 2px 4px rgba(0,0,0,0.2);" onclick="eliminarCierreAPI(${rowIndex})">
+                                        🗑️ Eliminar
+                                      </button>
+                                    </div>
+                                  </div>
+
+<div style="overflow-x: auto; margin-top: 15px;">
+    
+    <div style="display:grid; grid-template-columns: minmax(150px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr); font-size: 0.95rem; gap: 15px; min-width: 550px; padding-bottom: 5px;">
+        
+        <span style="font-weight:800;color:var(--accent, #ffc400);">MÉTODO</span>
+        <span style="font-weight:800;text-align:right;color:var(--accent, #ffc400);">ESPERADO</span>
+        <span style="font-weight:800;text-align:right;color:var(--accent, #ffc400);">CONTADO</span>
+        <span style="font-weight:800;text-align:right;color:var(--accent, #ffc400);">DIFERENCIA</span>
+        
+        ${detalles.map(d => `
+            <span style="font-weight:500;color:var(--text, #fff);">${d.metodo}</span>
+            <span style="text-align:right;color:var(--muted, #aaa);">${formatCurrency(d.esperado)}</span>
+            <span style="text-align:right;color:var(--text, #fff);font-weight:600;">${formatCurrency(d.contado)}</span>
+            <span style="text-align:right;font-weight:800;color:${getColor(d.diferencia)}">
+                ${formatCurrency(d.diferencia)}
+            </span>
+        `).join('')}
+        
+    </div>
+</div>
+
+                                  <div style="margin-top:15px;padding-top:10px;border-top:1px dashed var(--line);font-size:0.9rem;color:var(--text);">
+                                    <span style="font-weight:700;color:var(--muted)">Notas/Observaciones:</span> ${notas}
+                                  </div>
+
+                                </div>
+                            `;
                         });
                         resultadoDiv.innerHTML = html;
                     } else {
@@ -1311,23 +1482,47 @@ const RANGO_TOLERANCIA = 500;
                 resultadoDiv.innerHTML = '❌ Error de conexión al consultar la API.'; resultadoDiv.style.color = 'var(--danger)';
             }
         }
+// ...
 
-        async function eliminarCierreAPI(rowIndex) {
-            if (!confirm(`Eliminar registro Fila ID ${rowIndex}? Esta acción es irreversible.`)) return;
-            const resultadoDiv = document.getElementById('resultadoConsulta');
-            resultadoDiv.innerHTML = `⏳ Eliminando fila ${rowIndex}...`;
-            try {
-                const resp = await fetch(`${API_URL_CIERRES}?action=delete&rowIndex=${rowIndex}`, { method: 'GET' });
-                const data = await resp.json();
-                if (data.status === 'ok') {
-                    alert('✅ Eliminado correctamente.');
-                    consultarCierreHistorico(false);
-                } else throw new Error(data.message || 'Error eliminar');
-            } catch (err) {
-                console.error('Error eliminar:', err);
-                resultadoDiv.innerHTML = '❌ Error al eliminar el registro.'; resultadoDiv.style.color = 'var(--danger)';
-            }
+/* =================================
+   FUNCIÓN DE ELIMINACIÓN DE CIERRE (API)
+   ================================= */
+async function eliminarCierreAPI(rowIndex) {
+    if (!confirm(`⚠️ ¿Estás seguro de que quieres eliminar permanentemente el cierre de caja?`)) {
+        return;
+    }
+
+    const resultadoDiv = document.getElementById('resultadoConsulta');
+    resultadoDiv.innerHTML = `⏳ Eliminando cierre...`;
+    resultadoDiv.style.color = 'var(--muted)';
+
+    // Construye la URL de eliminación que tu Google Apps Script espera:
+    // API_URL_CIERRES?action=delete&rowIndex=X
+    const urlEliminar = `${API_URL_CIERRES}?action=delete&rowIndex=${rowIndex}`;
+
+    try {
+        const resp = await fetch(urlEliminar);
+        const data = await resp.json();
+
+        if (data.status === 'ok') {
+            alert(`✅ Eliminación exitosa`);
+            // Después de eliminar, recarga el historial para que desaparezca el registro
+            consultarCierreHistorico(false); // Recarga sin filtro de fecha
+        } else {
+            alert(`❌ Error al eliminar: ${data.message}`);
+            resultadoDiv.innerHTML = `❌ Error al eliminar.`;
+            resultadoDiv.style.color = 'var(--danger)';
+            // Si hay error, recarga de todas formas para mostrar el estado actual
+            consultarCierreHistorico(false);
         }
+
+    } catch (err) {
+        console.error('Error en eliminarCierreAPI:', err);
+        alert('❌ Error de conexión al intentar eliminar el cierre.');
+        resultadoDiv.innerHTML = '❌ Error de conexión.';
+        resultadoDiv.style.color = 'var(--danger)';
+    }
+}
 
         /* =================================
            CHECK RESPONSABLE (habilitar botón)
@@ -1389,7 +1584,6 @@ document.addEventListener('DOMContentLoaded', () => {
                          throw new Error("Una de las URLs de la API no está definida en config.json.");
                     }
 
-                    console.log("✅ Configuración cargada. Iniciando carga de pedidos...");
                     estadoCargaCierre.textContent = '⏳ Configuración cargada. Cargando datos de ventas...';
                     
                     // 2. Asegurar que cierre-section se muestre al inicio

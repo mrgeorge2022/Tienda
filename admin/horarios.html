@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Horarios</title>
+    <link rel="icon" type="image/png" href="../img/icono_tienda.png">
+
     
     <!-- Enlazar Google Fonts para 'Inter' -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -432,8 +434,24 @@
 
     <script>
         // *** TU URL DE APPS SCRIPT INSERTADA AQUÍ ***
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxW1cwQFbgWHXNZ84Qqu_-MMRxbbK1-UYjKS6CU_87lpb085YBJ-OyfzTrWzcdTSl-i/exec'; 
+let API_URL = ""; // Se llenará desde config.json
 
+async function cargarConfig() {
+    try {
+        const res = await fetch("../config.json");
+        const config = await res.json();
+
+        // 👇 Aquí tomamos SOLO la API de horario
+        API_URL = config.apiUrls.horario;
+
+        // Una vez cargada la URL → cargamos el horario
+        cargarHorario();
+
+    } catch (error) {
+        console.error("Error cargando config.json:", error);
+        alert("❌ No se pudo cargar config.json. Revisa la ruta.");
+    }
+}
         const tableBody = document.querySelector('#horario-table tbody');
         const loadingDiv = document.querySelector('#loading');
         const containerDiv = document.querySelector('#horario-container');
@@ -789,7 +807,7 @@ async function guardarHorario() {
         guardarBtn.addEventListener('click', guardarHorario);
 
         // --- Inicio de la aplicación ---
-        cargarHorario();
+        cargarConfig();
     </script>
 
 </body>

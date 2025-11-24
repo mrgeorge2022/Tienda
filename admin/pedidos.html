@@ -612,7 +612,6 @@
       .then(r => r.json())
       .then(cfg => {
         API_URL = cfg.apiUrls.reciboBaseDatos || cfg.apiUrls.envioBaseDatos;
-        console.log("✅ API cargada desde config.json:", API_URL);
         cargarPedidos(); // ✅ se llama solo aquí
       })
       .catch(err => {

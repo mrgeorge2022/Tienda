@@ -144,23 +144,37 @@ async function loadSchedule() {
 // DETERMINAR ESTADO ACTUAL
 // =====================================
 function displaySchedule(schedule) {
-  const days = [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ];
+  const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
   const now = new Date();
-  const localNow = new Date(
-    now.toLocaleString("en-US", { timeZone: BUSINESS_TIMEZONE })
-  );
+  const localNow = new Date(now.toLocaleString("en-US",{timeZone: BUSINESS_TIMEZONE}));
   const currentDayIndex = localNow.getDay();
   const currentDay = days[currentDayIndex];
-  const today = schedule.find((s) => s.day === currentDay);
 
+  const today = schedule.find(s => s.day === currentDay);
+  const yesterday = schedule.find(s => s.day === days[(currentDayIndex + 6) % 7]); // día anterior
+
+  // --- 1. Revisar si la tienda sigue abierta por el día anterior ---
+  if (yesterday && yesterday.estado && yesterday.closesNextDay && yesterday.nextDayCloseTime) {
+    const yesterdayClose = new Date(localNow);
+    yesterdayClose.setHours(yesterday.nextDayCloseTime.h, yesterday.nextDayCloseTime.m, 0, 0);
+    // El cierre del día anterior siempre es el día actual
+    if (localNow < yesterdayClose) {
+      // La tienda sigue abierta por el cierre del día anterior
+      const diffMin = Math.floor((yesterdayClose - localNow) / 60000);
+      const h = Math.floor(diffMin / 60);
+      const m = diffMin % 60;
+      const mensaje = diffMin <= 15
+        ? `Cerramos pronto a las ${formatTime(yesterday.nextDayCloseTime)}`
+        : h >= 1
+          ? `Cerramos a las ${formatTime(yesterday.nextDayCloseTime)} (en ${h} h ${m} min)`
+          : `Cerramos en ${m} minuto${m !== 1 ? "s" : ""}`;
+      setOpen("¡La tienda está abierta!", mensaje);
+      window.tiendaAbierta = true;
+      return;
+    }
+  }
+
+  // --- 2. Lógica normal para hoy ---
   if (!today || !today.estado) {
     if (schedule.length === 0) {
       setClosed("CERRADO", "No se encontró información de horario.");
@@ -169,18 +183,12 @@ function displaySchedule(schedule) {
     }
     const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
     if (nextDay) {
-      const msg =
-        daysUntil === 1
-          ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
-          : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(
-              nextDay.open
-            )} (${daysUntil} día${daysUntil > 1 ? "s" : ""})`;
+      const msg = daysUntil === 1
+        ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
+        : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(nextDay.open)} (${daysUntil} día${daysUntil>1?"s":""})`;
       setClosed("Hoy la tienda no abre", msg);
     } else {
-      setClosed(
-        "Cerrado temporalmente",
-        "No hay próximos horarios disponibles."
-      );
+      setClosed("Cerrado temporalmente", "No hay próximos horarios disponibles.");
     }
     window.tiendaAbierta = false;
     return;
@@ -195,77 +203,54 @@ function displaySchedule(schedule) {
   const open = new Date(localNow);
   open.setHours(today.open.h, today.open.m, 0, 0);
 
-  // --- CORRECCIÓN IMPORTANTE AQUÍ ---
   let close = new Date(localNow);
   let displayedCloseTime = today.close;
 
-  // Si cierra al día siguiente, usar la hora del día siguiente SIEMPRE
   if (today.closesNextDay && today.nextDayCloseTime) {
-    // Cierre real
     close.setHours(today.nextDayCloseTime.h, today.nextDayCloseTime.m, 0, 0);
     close.setDate(close.getDate() + 1);
-
-    // *** ESTA ES LA CORRECCIÓN ***
     displayedCloseTime = today.nextDayCloseTime;
   } else {
     close.setHours(today.close.h, today.close.m, 0, 0);
-    if (close <= open) close.setDate(close.getDate() + 1);
+    if (close <= open) close.setDate(close.getDate()+1);
   }
 
-  // ===================================
-  // TIENDA ABIERTA
-  // ===================================
   if (localNow >= open && localNow < close) {
-    window.tiendaAbierta = true;
-    const diffMin = Math.floor((close - localNow) / 60000);
-    const h = Math.floor(diffMin / 60);
+    const diffMin = Math.floor((close - localNow)/60000);
+    const h = Math.floor(diffMin/60);
     const m = diffMin % 60;
-
-    let mensaje;
-
-    if (diffMin <= 15) {
-      mensaje = `Cerramos pronto a las ${formatTime(displayedCloseTime)}`;
-    } else if (h >= 1) {
-      mensaje = `Cerramos a las ${formatTime(
-        displayedCloseTime
-      )} (en ${h} h ${m} min)`;
-    } else {
-      mensaje = `Cerramos en ${m} minuto${m !== 1 ? "s" : ""}`;
-    }
-
+    const mensaje = diffMin <= 15
+      ? `Cerramos pronto a las ${formatTime(displayedCloseTime)}`
+      : h >= 1
+        ? `Cerramos a las ${formatTime(displayedCloseTime)} (en ${h} h ${m} min)`
+        : `Cerramos en ${m} minuto${m !== 1?"s":""}`;
     setOpen("¡La tienda está abierta!", mensaje);
+    window.tiendaAbierta = true;
     return;
   }
 
   if (localNow < open) {
-    const diffMin = Math.floor((open - localNow) / 60000);
-    const h = Math.floor(diffMin / 60);
+    const diffMin = Math.floor((open - localNow)/60000);
+    const h = Math.floor(diffMin/60);
     const m = diffMin % 60;
-    const msg =
-      h > 0
-        ? `Abrimos hoy a las ${formatTime(today.open)} (en ${h} h ${m} min)`
-        : `Abrimos en ${m} minuto${m !== 1 ? "s" : ""}`;
+    const msg = h>0 ? `Abrimos hoy a las ${formatTime(today.open)} (en ${h} h ${m} min)` : `Abrimos en ${m} minuto${m!==1?"s":""}`;
     setClosed("Aún no abrimos", msg);
     window.tiendaAbierta = false;
     return;
   }
 
-  if (localNow >= close) {
-    const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
-    if (nextDay) {
-      const msg =
-        daysUntil === 1
-          ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
-          : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(
-              nextDay.open
-            )} (${daysUntil} día${daysUntil > 1 ? "s" : ""})`;
-      setClosed("Cerramos por hoy", msg);
-    } else {
-      setClosed("Cerramos por hoy", "No hay próximos horarios disponibles.");
-    }
-    window.tiendaAbierta = false;
+  const { nextDay, daysUntil } = findNextOpenDay(schedule, currentDayIndex);
+  if (nextDay) {
+    const msg = daysUntil === 1
+      ? `Volvemos mañana a las ${formatTime(nextDay.open)}`
+      : `Abrimos el ${nextDay.day.toLowerCase()} a las ${formatTime(nextDay.open)} (${daysUntil} día${daysUntil>1?"s":""})`;
+    setClosed("Cerramos por hoy", msg);
+  } else {
+    setClosed("Cerramos por hoy", "No hay próximos horarios disponibles.");
   }
+  window.tiendaAbierta = false;
 }
+
 
 function findNextOpenDay(schedule, currentIndex) {
   const days = [
@@ -331,6 +316,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loadSchedule();
-    setInterval(loadSchedule, 60 * 1000);
   });
 });

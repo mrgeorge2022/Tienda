@@ -364,6 +364,78 @@ select {
 }
 
 
+
+
+
+/* ================================================================= */
+/* 1. CONTENEDOR DE FILTROS (.filter-controls) */
+/* ================================================================= */
+.filter-controls {
+    display: flex;
+    gap: 15px; /* Más espacio para una apariencia limpia */
+    padding: 15px 20px;
+    
+    /* Fondo oscuro, usando la variable de tu tema */
+    background-color: none; 
+    
+    /* Centrar en pantallas grandes y dar un máximo de ancho */
+    margin: 0 auto;
+    
+    /* Sombra muy sutil para separarlo del contenido si es necesario */
+    width: 100%;
+}
+
+/* Adaptación móvil: apilar los controles */
+@media (max-width: 600px) {
+    .filter-controls {
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+/* ================================================================= */
+/* 2. ESTILO DE SELECT Y BUSCADOR (Compartido) */
+/* ================================================================= */
+
+#category-select, 
+#product-search {
+    /* Fondo que coincide con la tarjeta (más oscuro) y texto blanco */
+    background-color: var(--card-bg, #222); 
+    color: #fff;
+    
+    padding: 10px 12px; /* Espacio cómodo para el texto */
+    border-radius: 25px; /* Bordes ligeramente más suaves y modernos */
+    font-size: 1rem;
+    
+    /* Borde limpio: blanco sutil */
+    border: none; 
+    
+    /* Animación para el efecto de enfoque */
+    transition: all 0.2s ease-in-out;
+    outline: none; /* Eliminar el contorno feo por defecto */
+}
+
+
+
+/* ================================================================= */
+/* 3. AJUSTES ESPECÍFICOS */
+/* ================================================================= */
+
+#category-select {
+    flex-shrink: 0; 
+    /* Asegura que el color de las opciones sea legible si se usa un fondo claro */
+    /* Este estilo solo es necesario si las opciones de un select tienen problemas de color en dark mode */
+}
+
+#product-search {
+    flex-grow: 1; 
+    /* Estilo limpio para el texto del placeholder */
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.5); /* Gris claro semitransparente */
+    }
+}
+
+
 /* ===============================
    🦴 SKELETON LOADING - SIMULACIÓN EXACTA DE PRODUCT-CARD
 ================================= */
@@ -483,16 +555,13 @@ select {
 
 
 
-/* Products Grid */
-.products-grid {
+#main-products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-    gap: 30px;
-    padding: 30px;
-    align-items: start;
-    width: 100%;
+    /* Layout responsive: 1 columna en móvil, 2 o más en escritorio */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
     margin: 0 auto;
-    /* centra todo el bloque en la página */
 }
 
 

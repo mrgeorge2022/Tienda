@@ -84,10 +84,7 @@ function enviarPedidoWhatsApp(pedido) {
     msg += `*Ubicación en Google Maps:*\n${ubicacion}\n\n`;
   }
 
-  // 📍 Ubicación de la tienda solo si es recoger en tienda
-  if (tipoEntrega.toLowerCase().includes("recoger")) {
-    msg += `*Ubicación de la tienda:*\nhttps://goo.su/X4C1\n\n`;
-  }
+
 
   msg += `\n\n\n\n*Envía tu pedido aqui --------->*`;
 

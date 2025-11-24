@@ -31,12 +31,80 @@ document.addEventListener("configCargado", (e) => {
 
 
 // DOM Elements
+// DOM Elements
 const skeletonLoadingEl = document.getElementById("skeleton-loading");
 const errorEl = document.getElementById("error-message");
-const categoryBtns = document.querySelectorAll(".category-btn");
+
+// Nuevos Elementos de Filtro
+const categorySelect = document.getElementById("category-select");
+const productSearchInput = document.getElementById("product-search");
+
+// Antiguas variables relacionadas con el scroll/botones (pueden eliminarse o comentarse si no se usan en otro lugar)
+// const categoryBtns = document.querySelectorAll(".category-btn");
+
 const cartFloatEl = document.getElementById("cart-float");
 const cartModalEl = document.getElementById("cart-modal");
 const productModalEl = document.getElementById("product-modal");
+
+
+/**
+ * 🛠 Configura los filtros de categoría y búsqueda.
+ * Extrae las categorías únicas, popula el SELECT y añade listeners.
+ */
+async function setupCategoryAndSearchFilters() {
+    // Usamos la clave 'categoria' que se normaliza en loadProducts
+    const uniqueCategories = [
+        "Todo", // Opción por defecto
+        ...new Set(products.map(p => p.categoria).filter(c => c)) 
+    ];
+
+    // 1. Poblar el SELECT
+    categorySelect.innerHTML = ""; // Limpiar opciones anteriores
+    uniqueCategories.forEach(category => {
+        const option = document.createElement("option");
+        // value="" para "Todas las categorías" permite filtrar por todos.
+        option.value = (category === "Todo") ? "" : category; 
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+
+    // 2. Añadir Listeners de Eventos
+    categorySelect.addEventListener("change", filterProducts);
+    productSearchInput.addEventListener("input", filterProducts);
+    
+    // 3. 💥 ¡CRUCIAL! Ejecutar el filtrado para el renderizado inicial de TODOS los productos.
+    filterProducts(); 
+}
+/**
+ * 🔍 Función principal para filtrar y mostrar los productos.
+ * Filtra por categoría seleccionada y/o por término de búsqueda.
+ */
+function filterProducts() {
+    const selectedCategory = categorySelect.value;
+    const searchTerm = productSearchInput.value.toLowerCase().trim();
+
+    let filteredProducts = products;
+
+    // 1. Filtrar por Categoría
+    // Si selectedCategory es "", se incluyen todos (Todas las categorías).
+    if (selectedCategory) {
+        filteredProducts = filteredProducts.filter(product => product.categoria === selectedCategory);
+    }
+
+    // 2. Filtrar por Nombre del Producto
+    if (searchTerm) {
+        filteredProducts = filteredProducts.filter(product => 
+            // Buscamos si el nombre del producto incluye el término de búsqueda
+            product.nombre.toLowerCase().includes(searchTerm)
+        );
+    }
+
+    // 3. Renderizar los productos filtrados
+    // DEBES tener una función 'renderProducts' definida en otra parte de tu script.
+    renderProducts(filteredProducts); 
+}
+
+
 
 // Initialize app
 /**
@@ -203,8 +271,10 @@ async function loadProducts() {
       errorEl.textContent =
         'No se encontraron productos en la respuesta. Revisa la consola (raw response) o asegúrate de que la hoja "Productos" exista y tenga datos.';
     }
+setupCategoryAndSearchFilters();
+
     showLoading(false);
-    renderProducts();
+    //renderProducts();
   } catch (err) {
     console.error(err);
     showLoading(false);
@@ -236,50 +306,47 @@ function tryParsePossibleJSONP(txt) {
   }
 }
 
-// Render products by sections
+// Render products en un único contenedor dinámico
 /**
  * renderProducts
  * --------------
- * Recorre las categorías definidas y renderiza las tarjetas de producto
- * correspondientes dentro del grid de cada categoría. Si no hay productos
- * para una sección, muestra un mensaje de 'No hay productos'.
+ * Muestra las tarjetas de producto en un único contenedor principal.
+ * Esta función es utilizada por el sistema de filtros (`filterProducts`) 
+ * y por el renderizado inicial.
+ * @param {Array<Object>} productsToRender - Lista de productos a dibujar.
  */
-function renderProducts() {
-  // 🧩 Usar las categorías desde config.json si existen
-  const categoriasConfig = configTienda?.categorias?.map(c => c.id.toLowerCase()) || [];
+function renderProducts(productsToRender) {
+  // 💡 Define el ID de tu contenedor principal en index.html
+  const mainGridContainer = document.getElementById("main-products-grid"); 
+  
+  if (!mainGridContainer) {
+    console.error("❌ ERROR: Contenedor principal 'main-products-grid' no encontrado.");
+    return;
+  }
+  
+  mainGridContainer.innerHTML = ""; // Limpiar contenido anterior
 
-  // Si no hay categorías configuradas, usar un fallback vacío
-  const categories = categoriasConfig.length > 0 ? categoriasConfig : [];
+  // Usa los productos filtrados, o si no hay argumento, usa el array global (aunque filterProducts lo enviará siempre)
+  const finalProducts = productsToRender || products; 
 
-  categories.forEach((category) => {
-    const grid = document.getElementById(`${category}-grid`);
-    if (!grid) return;
+  if (finalProducts.length === 0) {
+    mainGridContainer.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #718096; font-size: 1.1rem;">
+        No se encontraron productos que coincidan con los filtros aplicados.
+      </div>
+    `;
+    return;
+  }
 
-    const filteredProducts = products.filter((product) => {
-      try {
-        const cat = (product.categoria || "").toString().toLowerCase();
-        return cat === category;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    grid.innerHTML = "";
-
-    if (filteredProducts.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #718096;">
-          No hay productos en esta sección
-        </div>
-      `;
-      return;
-    }
-
-    filteredProducts.forEach((product) => {
-      const productCard = createProductCard(product);
-      grid.appendChild(productCard);
-    });
+  // Dibuja TODAS las tarjetas en el único contenedor
+  finalProducts.forEach((product) => {
+    // Asegúrate de que tienes una función 'createProductCard' definida en otra parte del script
+    const productCard = createProductCard(product); 
+    mainGridContainer.appendChild(productCard);
   });
+  
+  // Llama a la función para configurar los botones de producto si es necesario
+  updateProductButtons(); 
 }
 
 

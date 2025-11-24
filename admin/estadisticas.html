@@ -237,9 +237,10 @@
     /* Contenedor de gráficos */
     .charts {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 15px;
       margin-top: 15px;
+      overflow-x: auto;
     }
 
     /* Controles de Rango */
@@ -421,6 +422,9 @@
         width: 100%;
       }
     }
+
+    
+
   </style>
 </head>
 
@@ -704,9 +708,9 @@
     // Registrar plugins de Chart.js
     Chart.register(ChartDataLabels);
     // Colores globales de Chart.js
-    Chart.defaults.color = 'var(--text)';
-    Chart.defaults.borderColor = 'var(--line)';
-
+// Colores globales de Chart.js
+Chart.defaults.color = '#fff5';
+Chart.defaults.borderColor = '#3c3c58'; // ✅ CAMBIO: Usamos el gris claro (muted) para las líneas y la cuadrícula.
     // ---------- utilidades ----------
     const fmtCOP = n => (Number(n) || 0).toLocaleString('es-CO', {
       style: 'currency',
@@ -1112,7 +1116,7 @@ function parseFechaDDMMYYYY(fechaStr) {
           legend: {
             position: 'bottom',
             labels: {
-              color: 'var(--text)'
+              color: '#909ba7'
             }
           },
           title: {
@@ -1143,13 +1147,14 @@ datasets: [{
                 tension: 0.3
             }]
         },
-        options: {
+options: {
           ...chartOptions,
           plugins: {
             ...chartOptions.plugins,
             title: {
               ...chartOptions.plugins.title,
-              text: 'Tendencia de Ventas por Día'
+              text: 'Tendencia de Ventas por Día',
+              color: '#909ba7',
             }
           }
         }
@@ -1176,7 +1181,8 @@ backgroundColor: generateColors(24)          }]
             },
             title: {
               ...chartOptions.plugins.title,
-              text: 'Pico de Pedidos por Hora'
+              text: 'Pico de Pedidos por Hora',
+              color: '#909ba7'
             }
           }
         }
@@ -1200,7 +1206,8 @@ backgroundColor: generateColors(24)          }]
             ...chartOptions.plugins,
             title: {
               ...chartOptions.plugins.title,
-              text: 'Distribución por Tipo de Entrega'
+              text: 'Distribución por Tipo de Entrega',
+                            color: '#909ba7'
             }
           }
         }
@@ -1224,7 +1231,8 @@ backgroundColor: generateColors(24)          }]
             ...chartOptions.plugins,
             title: {
               ...chartOptions.plugins.title,
-              text: 'Distribución por Método de Pago'
+              text: 'Distribución por Método de Pago',
+                            color: '#909ba7'
             }
           }
         }
@@ -1298,7 +1306,7 @@ backgroundColor: generateColors(24)          }]
             title: {
               display: true,
               text: 'Ventas Totales por Día de la Semana',
-              color: 'var(--text)'
+              color: '#909ba7'
             }
           },
           scales: {
@@ -1332,7 +1340,7 @@ backgroundColor: generateColors(24)          }]
             title: {
               display: true,
               text: 'Top 10 Productos por Cantidad Vendida',
-              color: 'var(--text)'
+              color: '#909ba7'
             }
           },
           scales: {

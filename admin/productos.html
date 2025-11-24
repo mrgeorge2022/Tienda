@@ -495,10 +495,10 @@ background: linear-gradient(90deg, #181822, #232332);
 
         .card-body .meta {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             color: var(--muted);
             font-size: 13px;
-            align-items: center;
         }
 
 
@@ -1037,44 +1037,59 @@ input:checked + .slider:before {
     </div>
 
     <script>
-        const API_URL =
-            "https://script.google.com/macros/s/AKfycbxE5905w07prM6Om7B972nZilOZOEi_IUgX2Cixf98F9t-U8A9ClVxq5pyRjXAt5Zg/exec";
-        const DEFAULT_IMG = "https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg";
+    let API_URL; // Se cargará desde config.json
+    const DEFAULT_IMG = "https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg";
+    let products = [];
+    let isNewProduct = false;
 
-        let products = [];
-        let isNewProduct = false;
+    // Referencias DOM
+    const loader = document.getElementById("loaderOverlay");
+    const loaderText = document.getElementById("loaderText");
+    const modal = document.getElementById("productModal");
+    const saveBtn = document.getElementById("saveBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
+    const closeModalSpan = document.getElementById("closeModal");
+    const addProductBtn = document.getElementById("addProductBtn");
+    const searchInput = document.getElementById("search");
+    const editImagenInput = document.getElementById("editImagen");
+    const editActivoCheckbox = document.getElementById("editActivo");
+    const modalImg = document.getElementById("modalImg");
+    const activoLabel = document.getElementById("activoLabel");
 
-        /* Referencias DOM */
-        const loader = document.getElementById("loaderOverlay");
-        const loaderText = document.getElementById("loaderText");
-        const modal = document.getElementById("productModal");
-        const saveBtn = document.getElementById("saveBtn");
-        const deleteBtn = document.getElementById("deleteBtn");
-        const closeModalSpan = document.getElementById("closeModal");
-        const addProductBtn = document.getElementById("addProductBtn");
-        const searchInput = document.getElementById("search");
-        const editImagenInput = document.getElementById("editImagen");
-        const editActivoCheckbox = document.getElementById("editActivo");
-        const modalImg = document.getElementById("modalImg");
-        const activoLabel = document.getElementById("activoLabel");
+    const filterStatus = document.getElementById("filterStatus");
+    const filterCategory = document.getElementById("filterCategory");
+    const editCategoria = document.getElementById("editCategoria");
+    const editCategoriaCustom = document.getElementById("editCategoriaCustom");
 
-        // NUEVAS REFERENCIAS PARA FILTROS Y CATEGORÍAS
-        const filterStatus = document.getElementById("filterStatus");
-        const filterCategory = document.getElementById("filterCategory");
-        const editCategoria = document.getElementById("editCategoria"); // Select del modal
-        const editCategoriaCustom = document.getElementById("editCategoriaCustom"); // Input de texto 'Otra...'
-
-        /* LOADER */
-        function showLoader(msg = "Cargando...") {
-            loaderText.textContent = msg;
-            loader.classList.add("active");
-            loader.style.display = "flex";
+    // Cargar config.json y asignar API_URL
+    async function loadConfig() {
+        try {
+            const response = await fetch("../config.json");
+            if (!response.ok) throw new Error("No se pudo cargar config.json");
+            const config = await response.json();
+            API_URL = config.apiUrls.productos;
+            initApp();
+        } catch (error) {
+            console.error("❌ Error al cargar config.json:", error);
+            alert("No se pudo cargar la configuración. Revise la consola.");
         }
+    }
 
-        function hideLoader() {
-            loader.classList.remove("active");
-            loader.style.display = "none";
-        }
+function initApp() {
+    fetchProducts(); // Llamamos directamente, sin depender de DOMContentLoaded
+}
+
+
+    /* LOADER */
+    function showLoader(msg = "Cargando...") {
+        loaderText.textContent = msg;
+        loader.classList.add("active");
+        loader.style.display = "flex";
+    }
+    function hideLoader() {
+        loader.classList.remove("active");
+        loader.style.display = "none";
+    }
 
         /* OBTENER PRODUCTOS */
         async function fetchProducts() {
@@ -1422,9 +1437,7 @@ input:checked + .slider:before {
             }
         });
 
-        /* INIT */
-        document.addEventListener("DOMContentLoaded", fetchProducts);
-
+ loadConfig(); // Inicia todo cargando la configuración
     </script>
 
 </body>

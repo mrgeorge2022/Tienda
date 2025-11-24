@@ -11,43 +11,6 @@
         "--bg-end": "#444",
         "--card-bg": "#222"
     },
-"categorias": [
-        {
-            "id": "almuerzos",
-            "emoji": "🍛",
-            "nombre": "Almuerzos"
-        },
-        {
-            "id": "perros",
-            "emoji": "🌭",
-            "nombre": "Perros"
-        },
-        {
-            "id": "hamburguesas",
-            "emoji": "🍔",
-            "nombre": "Hamburguesas"
-        },
-        {
-            "id": "salchipapas",
-            "emoji": "🍟",
-            "nombre": "Salchipapas"
-        },
-        {
-            "id": "picadas",
-            "emoji": "🍖",
-            "nombre": "Picadas"
-        },
-        {
-            "id": "bebidas",
-            "emoji": "🥤",
-            "nombre": "Bebidas"
-        },
-        {
-            "id": "acompanantes",
-            "emoji": "🍴",
-            "nombre": "Acompañantes"
-        }
-    ],
     "redes": {
         "whatsapp": "https://wa.me/573022666530",
         "instagram": "https://www.instagram.com/mr_ge0rge/",

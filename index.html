@@ -27,7 +27,10 @@
 
 
   <!-- 🔥 Botones generados dinámicamente -->
-  <nav class="categories"></nav>
+<div class="filter-controls">
+    <select id="category-select" aria-label="Seleccionar Categoría"></select>
+    <input type="text" id="product-search" placeholder="Buscar producto por nombre..." aria-label="Buscar producto">
+  </div>
   </header>
 
 
@@ -143,7 +146,11 @@
     Error al cargar los productos. Por favor, actualiza la página.
   </div>
   <!-- Menu Sections -->
-  <div class="menu-sections"></div>
+<main class="menu-sections"> 
+    <section id="main-products-grid" class="product-grid-container">
+        </section>
+
+    </main>
 
 
 
