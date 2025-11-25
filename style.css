@@ -30,8 +30,6 @@ body {
 
     /* aplicamos el gradient del root */
     background: var(--bg-body);
-    background-attachment: fixed;
-    /* efecto parallax suave */
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -45,13 +43,11 @@ body::before {
   position: fixed;
   inset: 0;
   background: var(--bg-body);
-  background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 
-  /* 🎨 Efecto blur + oscuridad */
-  filter: blur(10px);
+
   transform: scale(1.05); /* evita bordes cortados */
   z-index: -1;
 
@@ -84,14 +80,13 @@ select {
     flex-direction: column;
     background: var(--header);
     background-size: cover;
-    /* ✅ se ajusta al tamaño sin repetirse */
     background-position: center;
-    /* ✅ centrada horizontal y verticalmente */
     background-repeat: no-repeat;
-    /* ✅ evita que se repita */
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    /* 💡 OPTIMIZACIÓN CRÍTICA: Promueve a la GPU */
+    transform: translateZ(0); 
+    will-change: transform, box-shadow;
 }
 
 /* Ajuste visual para integrar bien el header con las categorías */
@@ -371,70 +366,113 @@ select {
 /* 1. CONTENEDOR DE FILTROS (.filter-controls) */
 /* ================================================================= */
 .filter-controls {
+    /* Flexbox por defecto */
     display: flex;
-    gap: 15px; /* Más espacio para una apariencia limpia */
+    
+    /* Espaciado moderno */
+    gap: 15px; 
     padding: 15px 20px;
     
-    /* Fondo oscuro, usando la variable de tu tema */
-    background-color: none; 
-    
-    /* Centrar en pantallas grandes y dar un máximo de ancho */
+    /* Centrado en el flujo del documento */
     margin: 0 auto;
     
-    /* Sombra muy sutil para separarlo del contenido si es necesario */
-    width: 100%;
-}
-
-/* Adaptación móvil: apilar los controles */
-@media (max-width: 600px) {
-    .filter-controls {
-        gap: 10px;
-        padding: 10px;
-    }
+    /* Ancho: Ocupa el 100% hasta un máximo, ignora el 70% fijo si la pantalla es más pequeña */
+    width: 95%; 
+    max-width: 1200px; 
+    
+    /* Alineación */
+    justify-content: flex-start; /* Alinea los elementos a la izquierda/inicio (Mejor que 'center' para UX) */
+    align-items: center; 
 }
 
 /* ================================================================= */
-/* 2. ESTILO DE SELECT Y BUSCADOR (Compartido) */
+/* 2. ESTILO DE SELECT Y BUSCADOR (COMPARTIDO - Píldora) */
 /* ================================================================= */
 
 #category-select, 
 #product-search {
-    /* Fondo que coincide con la tarjeta (más oscuro) y texto blanco */
-    background-color: var(--card-bg, #222); 
-    color: #fff;
-    
-    padding: 10px 12px; /* Espacio cómodo para el texto */
-    border-radius: 25px; /* Bordes ligeramente más suaves y modernos */
+    /* Diseño Base */
+    background-color: var(--card-bg, #222);
+    color: var(--text, #fff); /* Usamos var(--text) por si el tema define otro color */
+    padding: 12px 18px; 
+    border-radius: 25px; 
     font-size: 1rem;
     
-    /* Borde limpio: blanco sutil */
+    /* Borde / Sombra */
     border: none; 
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15); 
     
-    /* Animación para el efecto de enfoque */
-    transition: all 0.2s ease-in-out;
-    outline: none; /* Eliminar el contorno feo por defecto */
+    /* Transiciones para suavizar el cambio de estado */
+    transition: box-shadow 0.2s ease-in-out, background-color 0.2s;
+    outline: none; 
 }
 
-
-
 /* ================================================================= */
-/* 3. AJUSTES ESPECÍFICOS */
+/* 3. AJUSTES ESPECÍFICOS Y ANCHOS (ESCRITORIO) */
 /* ================================================================= */
 
 #category-select {
+    /* Escritorio: Ancho base fijo y no se encoge (220px) */
+    flex-basis: 220px; 
     flex-shrink: 0; 
-    /* Asegura que el color de las opciones sea legible si se usa un fondo claro */
-    /* Este estilo solo es necesario si las opciones de un select tienen problemas de color en dark mode */
+    flex-grow: 0; 
+
+    /* Eliminación de apariencia nativa */
+    appearance: none;
+    -webkit-appearance: none;
+    
+    /* Icono de flecha SVG y posición */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z" fill="%23FFC400"/></svg>'); 
+    background-repeat: no-repeat;
+    background-position: right 18px center; 
+    padding-right: 45px; /* Espacio para el icono */
 }
 
 #product-search {
+    /* Escritorio: Crece para ocupar el espacio restante */
     flex-grow: 1; 
-    /* Estilo limpio para el texto del placeholder */
-    &::placeholder {
-        color: rgba(255, 255, 255, 0.5); /* Gris claro semitransparente */
-    }
+    flex-shrink: 1; 
 }
 
+/* Estilo específico para el placeholder (compatible con CSS puro) */
+#product-search::placeholder {
+    color: rgba(255, 255, 255, 0.5); 
+}
+
+/* ================================================================= */
+/* 4. ADAPTACIÓN MÓVIL (HORIZONTAL) */
+/* ================================================================= */
+@media (max-width: 600px) {
+    .filter-controls {
+        /* Se mantiene la dirección horizontal (row) */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    #category-select {
+        /* En móvil: Ocupa el 35% del ancho */
+        flex-basis: 35%; 
+        flex-grow: 0;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+        
+        /* Ajuste de padding y posición de icono para móvil */
+        padding: 10px 15px; 
+        background-position: right 10px center;
+        padding-right: 30px; 
+        width: 10%;
+    }
+
+    #product-search {
+        /* En móvil: Ocupa el 65% del ancho restante */
+        flex-basis: 65%;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-size: 0.95rem;
+        padding: 10px 15px;
+        width: 90%;
+    }
+}
 
 /* ===============================
    🦴 SKELETON LOADING - SIMULACIÓN EXACTA DE PRODUCT-CARD
@@ -738,6 +776,7 @@ select {
 
 
 /* Cart */
+/* Cart */
 .cart-float {
     display: flex;
     position: fixed;
@@ -756,6 +795,13 @@ select {
     justify-content: center;
     box-shadow: 0 8px 25px #0000004d;
     transition: all 0.3s ease;
+
+    /* 💡 OPTIMIZACIÓN CRÍTICA: La clave para la fluidez en móviles */
+    transform: translateZ(0); 
+    will-change: transform; 
+
+    /* ⚠️ Si el problema persiste, elimina cualquier 'backdrop-filter: blur(...);' */
+    /* backdrop-filter: none; */ 
 }
 
 
@@ -1611,12 +1657,6 @@ select {
 
 
 
-/* Menu Sections */
-.menu-sections {
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
 .menu-section {
     scroll-margin-top: 100px;
 }
@@ -2151,6 +2191,12 @@ select {
     /* se moverá con JS */
     right: 20px;
     z-index: 1000;
+    
+    /* 💡 Aceleración GPU (CRÍTICO para "position: fixed") */
+    transform: translateZ(0); 
+    will-change: transform;
+
+    /* Diseño */
     background: #999;
     border: none;
     border-radius: 50%;
@@ -2164,7 +2210,21 @@ select {
     align-items: center;
     justify-content: center;
     transition: all 0.25s ease;
+    
+    /* Filtro por defecto (para escritorio) */
     backdrop-filter: blur(4px);
+}
+
+/* === OPTIMIZACIÓN MÓVIL (< 600px) === */
+@media (max-width: 600px) {
+    .locate-btn {
+        /* ❌ ELIMINAR EL FILTRO CARO EN MÓVIL */
+        backdrop-filter: none;
+        
+        /* Reemplazar el fondo con un color RGBA eficiente */
+        /* Usamos el color base (#999) con una ligera transparencia (0.95) */
+        background: rgba(153, 153, 153, 0.95); 
+    }
 }
 
 .locate-btn img {

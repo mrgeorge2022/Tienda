@@ -1074,7 +1074,6 @@ function openDeliveryModal() {
   }
 
   localStorage.setItem("cartTotal", cartTotal);
-  console.log("💾 Subtotal leído del DOM y guardado:", cartTotal);
 
   // Abrir modal
   deliveryModalEl.classList.add("show");
