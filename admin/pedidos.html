@@ -762,21 +762,34 @@
                         .split("\n")
                         .filter((x) => x.trim() !== "")
                         .map((linea) => {
-                          const partes = linea.split("-").map((x) => x.trim());
-                          const nombreCompleto = partes[0];
+                          // 1. Separamos por el ÚLTIMO guion para no romper nombres como "coca-cola"
+                          const ultimoGuionIndex = linea.lastIndexOf("-");
+                          const parteIzquierda = linea
+                            .substring(0, ultimoGuionIndex)
+                            .trim(); // "coca-cola 1 litro x1"
+                          const partePrecio = linea
+                            .substring(ultimoGuionIndex + 1)
+                            .trim(); // "$7000"
 
-                          // Extraemos el primer número que encuentre en el nombre (ej: el "2" de "Promo 2")
-                          const cantidadExtraida = nombreCompleto.match(/\d+/);
-                          const cantidadFinal = cantidadExtraida
-                            ? parseInt(cantidadExtraida[0])
-                            : 1;
+                          // 2. Buscamos la cantidad: una "x" seguida de números al final de la parte izquierda
+                          const matchCantidad =
+                            parteIzquierda.match(/\s+x(\d+)$/i);
+
+                          let nombreFinal = parteIzquierda;
+                          let cantidadFinal = 1;
+
+                          if (matchCantidad) {
+                            cantidadFinal = parseInt(matchCantidad[1]); // Extrae el 1 de "x1"
+                            // Quitamos solo la parte de la "x1" del nombre
+                            nombreFinal = parteIzquierda
+                              .substring(0, matchCantidad.index)
+                              .trim();
+                          }
 
                           return {
-                            nombre: nombreCompleto,
+                            nombre: nombreFinal, // Saldrá "coca-cola 1 litro"
                             cantidad: cantidadFinal,
-                            precio:
-                              Number((partes[1] || "0").replace(/\D/g, "")) ||
-                              0,
+                            precio: Number(partePrecio.replace(/\D/g, "")) || 0,
                           };
                         });
                     }
