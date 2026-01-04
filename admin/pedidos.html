@@ -830,41 +830,35 @@ function mostrarPedidos(pedidos, nuevasFacturas = [], esBusquedaTexto = false) {
       }
 
 function filtrarPedidos() {
-        const texto = document.getElementById("buscar").value.toLowerCase();
-        const fechaFiltro = document.getElementById("fechaFiltro").value;
-        
-        // 🆕 Guardar el estado de los pedidos abiertos antes de filtrar
-        guardarEstadoPedidosAbiertos();
+    const texto = document.getElementById("buscar").value.toLowerCase();
+    const fechaFiltro = document.getElementById("fechaFiltro").value;
+    
+    guardarEstadoPedidosAbiertos();
 
-        const filtrados = pedidosGlobal.filter((p) => {
-          // Coincidencia por texto (Nombre o Factura)
-          const coincideTexto =
+    const filtrados = pedidosGlobal.filter((p) => {
+        const coincideTexto =
             (p.nombre || "").toLowerCase().includes(texto) ||
             (p.numeroFactura || "").toLowerCase().includes(texto);
 
-          // Coincidencia por fecha
-          let coincideFecha = true;
-          if (fechaFiltro && p.fecha) {
+        let coincideFecha = true;
+        if (fechaFiltro && p.fecha) {
             const partes = p.fecha.split("/");
             if (partes.length === 3) {
-              const fechaPedido = `${partes[2]}-${partes[1].padStart(2, "0")}-${partes[0].padStart(2, "0")}`;
-              coincideFecha = fechaPedido === fechaFiltro;
+                const fechaPedido = `${partes[2]}-${partes[1].padStart(2, "0")}-${partes[0].padStart(2, "0")}`;
+                coincideFecha = fechaPedido === fechaFiltro;
             } else {
-              coincideFecha = false;
+                coincideFecha = false;
             }
-          }
+        }
+        return coincideTexto && coincideFecha;
+    });
 
-          return coincideTexto && coincideFecha;
-        });
+    // ⚡ NUEVA LÓGICA: Si el usuario está filtrando (por texto O por fecha), 
+    // forzamos a que los meses se abran para mostrar los resultados.
+    const forzarApertura = texto.length > 0 || fechaFiltro !== "";
 
-        // DETERMINAMOS SI ES BÚSQUEDA DE TEXTO
-        // Si hay algo escrito en el buscador, mandamos 'true' para que se expandan los meses automáticamente.
-        const esBusquedaTexto = texto.length > 0;
-
-        // Pasamos los pedidos filtrados y el aviso de expansión
-        mostrarPedidos(filtrados, [], esBusquedaTexto);
-      }
-
+    mostrarPedidos(filtrados, [], forzarApertura);
+}
       document
         .getElementById("filtrarBtn")
         .addEventListener("click", filtrarPedidos);
