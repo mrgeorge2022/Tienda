@@ -1,0 +1,1002 @@
+:root {
+    --accent: #ffc400;
+    --bg-dark: #000;
+    --card-bg: #111;
+    --border: #222;
+    --text-main: #eee;
+    --step-inactive: #333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background: #000;
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* LINEA DE PROCESO */
+.process-stepper {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #080808;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 1001;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    position: relative;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--step-inactive);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.step-label {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #555;
+    text-transform: uppercase;
+}
+
+.step.active .step-dot {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+.step.active .step-label {
+    color: var(--accent);
+}
+
+.step-line {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--step-inactive);
+    z-index: -1;
+}
+
+.step:last-child .step-line {
+    display: none;
+}
+
+/* GRID PRINCIPAL */
+.main-grid {
+    display: grid;
+    grid-template-columns: 5% 40% 25% 30%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.col {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+}
+
+/* COL 1: NAVEGACION */
+.sidebar-main {
+    background: #080808;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.nav-link {
+    width: 100%;
+    padding: 30px 8px;
+    background: none;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s, background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link.active {
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    box-shadow: 0 0 15px rgba(255, 196, 0, 0.3);
+}
+
+.nav-link i {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 0;
+    font-style: normal;
+}
+
+.view-overlay {
+    display: none;
+    flex-direction: column;
+    background: #000;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    /* --- AGREGA ESTA LÍNEA --- */
+    position: relative;
+}
+
+.view-overlay.active {
+    display: flex;
+    margin-top: 10px;
+}
+
+.close-view {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--accent);
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.close-view:hover {
+    transform: scale(1.2);
+    color: #ff4444;
+    /* Un tono rojo al pasar el mouse */
+}
+
+.data-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    background: var(--accent);
+    color: #000;
+}
+
+/* SERVICIO, CARTA Y COMANDA (ESTILOS ORIGINALES) */
+.service-sidebar {
+    background: #0d0d0d;
+    padding: 15px;
+}
+
+#m-col-3 {
+    overflow-y: auto;
+
+}
+
+.btn-method {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-method.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+}
+
+.dynamic-fields {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-pro {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+}
+
+/* Inputs compactos: mismo estilo y tamaño reducido para nombre, teléfono y mesa */
+.input-compact {
+    padding: 8px;
+    font-size: 0.85rem;
+    height: 36px;
+    border-radius: 6px;
+}
+
+.input-mesa {
+    padding: 8px;
+    font-size: 0.85rem;
+    height: 36px;
+    border-radius: 6px;
+}
+
+.catalog-container {
+    display: flex;
+    flex-direction: column;
+    background: #000;
+}
+
+.catalog-split {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    flex: 1;
+    overflow: hidden;
+}
+
+.cat-list-vertical {
+    background: #050505;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+}
+
+.cat-btn {
+    padding: 15px 5px;
+    width: 100%;
+    border: none;
+    background: none;
+    color: #555;
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 1px solid #111;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.cat-btn.active {
+    background: #111;
+    color: var(--accent);
+    border-right: 3px solid var(--accent);
+}
+
+.grid-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.card-prod {
+    background: var(--card-bg);
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #222;
+    cursor: pointer;
+}
+
+.card-prod h4 {
+    font-size: 0.9rem;
+}
+
+.order-panel {
+    background: #fff;
+    color: #000;
+}
+
+.order-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 10px;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.qty {
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+.order-footer {
+    padding: 8px;
+    background: #f0f0f0;
+    border-top: 1px solid #ddd;
+}
+
+.order-footer .order-method {
+    margin-bottom: 8px;
+}
+
+.order-footer .order-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.05rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: #000;
+    align-items: center;
+}
+
+.btn-action {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    background: #27ae60;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-action:active {
+    transform: translateY(1px);
+}
+
+/* TABS MÓVIL */
+.tab-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(0, 0, 0, 0.85);
+    /* Negro con transparencia */
+    backdrop-filter: blur(10px);
+    /* Desenfoque de fondo */
+    -webkit-backdrop-filter: blur(10px);
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2000;
+}
+
+.tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    /* Gris suave para inactivos */
+    transition: 0.3s;
+    cursor: pointer;
+    font-size: 0.65rem;
+    gap: 2px;
+    font-size: 15px;
+}
+
+.tab-item i {
+    font-size: 1.3rem;
+    font-style: normal;
+    margin-bottom: 2px;
+    transition: 0.3s;
+}
+
+
+@media (max-width: 1000px) {
+    .main-grid {
+        grid-template-columns: 70px 1fr;
+    }
+
+.col {
+        display: none; /* Oculta las columnas por defecto */
+        padding: 10px;
+        /* El margen que solicitaste para separar del tab-bar inferior */
+        margin-bottom: 60px; 
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .col.active-m {
+        display: flex !important;
+    }
+
+    /* Mostrar siempre la sidebar (m-col-1) en móvil; el servicio (m-col-2)
+               se mostrará sólo si tiene la clase active-m */
+    #m-col-1 {
+        display: flex !important;
+    }
+
+    .tab-bar {
+        display: grid;
+    }
+
+    /* Ajustes de estilo para móvil */
+    .sidebar-main {
+        padding: 10px 0;
+    }
+
+    /* Fijar ancho de la barra lateral en móvil para que no ocupe toda la pantalla */
+    .sidebar-main {
+        min-width: 70px;
+        max-width: 70px;
+    }
+
+    .nav-link {
+        padding: 20px 5px;
+        font-size: 0.6rem;
+    }
+
+    .nav-link i {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .service-sidebar {
+        padding: 12px;
+    }
+
+    .btn-method {
+        padding: 5px;
+        font-size: 0.75rem;
+    }
+
+    .dynamic-fields {
+        gap: 5px;
+    }
+
+    .input-pro {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .input-mesa {
+        font-size: 0.8rem;
+    }
+
+    /* En móvil, cuando mesas-expanded está activo, mostrar col 1 y col 2 juntas */
+    .main-grid.mesas-expanded {
+        grid-template-columns: 70px 1fr;
+    }
+
+    .main-grid.mesas-expanded #m-col-1,
+    .main-grid.mesas-expanded #m-col-2 {
+        display: flex;
+    }
+
+    .main-grid.mesas-expanded #m-col-3,
+    .main-grid.mesas-expanded #m-col-4 {
+        display: none;
+    }
+
+
+
+    .cat-list-vertical {
+        padding-bottom: 80px;
+    }
+
+    .grid-items {
+        padding-bottom: 80px;
+        padding: 4px;
+    }
+
+
+    .grid-items{
+        gap: 3px;
+    }
+
+    .card-prod {
+        padding: 5px;
+        font-size: 10px;
+    }
+    .btn-add-fast, .btn-add-note{
+        padding: 0;
+        font-size: 12px;
+    }
+}
+
+.input-wrapper-pro {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.btn-input-helper {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: transform 0.2s;
+    user-select: none;
+}
+
+.btn-input-helper.is-delete {
+    color: #ff4444; /* Rojo para la X */
+}
+
+.btn-input-helper:active {
+    transform: scale(0.9);
+}
+
+/* Ajuste para que el texto no se tape con el icono */
+.input-pro.input-compact {
+    padding-right: 35px !important;
+}
+
+/* Estilos para los nuevos controles de la comanda */
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-qty {
+    background: #000;
+    color: #fff;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-qty:active {
+    background: var(--accent);
+    color: #000;
+}
+
+.btn-trash {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    margin-left: auto;
+}
+
+.btn-empty-cart {
+    width: 100%;
+    background: #ffeded;
+    color: #d63031;
+    border: 1px solid #fab1a0;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.btn-empty-cart:hover {
+    background: #d63031;
+    color: #fff;
+}
+
+.note-line {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+/* ESTILOS PARA LÍNEAS DE CARRITO */
+.cart-item-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 0;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.85rem;
+    transition: background-color 0.2s;
+}
+
+.cart-item-line:hover {
+    background-color: #f9f9f9;
+}
+
+.cart-item-name {
+    font-weight: 600;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+}
+
+.cart-item-edit {
+    cursor: pointer;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.cart-item-edit:hover {
+    transform: scale(1.15);
+}
+
+.cart-item-price {
+    font-weight: bold;
+    flex-shrink: 0;
+    min-width: 65px;
+    text-align: center;
+}
+
+.cart-item-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.cart-item-btn-qty {
+    background: #000;
+    color: #fff;
+    border: none;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    padding: 0;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.cart-item-btn-qty:active {
+    background: var(--accent);
+    color: #000;
+}
+
+.cart-item-qty {
+    font-weight: bold;
+    min-width: 10px;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+.cart-item-trash {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.cart-item-trash:hover {
+    transform: scale(1.2);
+}
+
+.cart-item-note {
+    font-size: 0.65rem;
+    color: #d35400;
+    margin-left: 5px;
+    margin-top: 2px;
+    padding-left: 8px;
+    border-left: 2px solid #d35400;
+}
+
+
+
+/* Contenedor de descripción con truncado a 2 líneas */
+.prod-desc-container {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: #888;
+    position: relative;
+}
+
+.prod-desc-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Límite inicial de 2 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Estado expandido */
+.card-prod.expanded .prod-desc-text {
+    -webkit-line-clamp: unset;
+    /* Muestra todo el texto */
+    display: block;
+}
+
+/* Icono de flecha interactivo */
+.expand-icon {
+    display: inline-block;
+    float: right;
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.card-prod.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+/* Evitar que el click en la descripción dispare el 'add' al carrito si solo se quiere leer */
+.btn-toggle-desc {
+    background: none;
+    border: none;
+    padding: 5px 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+
+/* Estilo para la tarjeta agotada */
+.card-prod.agotado {
+    opacity: 0.6;
+    filter: grayscale(0.8);
+    border: 1px dashed #444 !important;
+    pointer-events: none;
+    /* Bloquea clics en toda la tarjeta */
+}
+
+/* Permitir que el acordeón siga funcionando incluso si está agotado */
+.card-prod.agotado .prod-desc-container {
+    pointer-events: auto;
+}
+
+/* Etiqueta de Agotado */
+.badge-agotado {
+    background: #555;
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+/* Botones de acción rápida en la carta */
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.btn-add-fast {
+    flex: 1;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn-add-note {
+    flex: 1;
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Acordeón de descripción */
+.desc-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid #222;
+}
+
+.desc-content {
+    display: none;
+    font-size: 0.8rem;
+    color: #888;
+    padding: 8px 0;
+}
+
+.desc-content.show {
+    display: block;
+}
+
+.arrow-icon {
+    transition: transform 0.3s;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.nombre-header h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+    flex: 1;
+    /* Esto hace que el nombre tome todo el espacio y deje la flecha al final */
+}
+
+/* ESTILOS DEL HEADER */
+.main-header {
+    height: 60px;
+    background: #080808;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    /* Centra horizontalmente */
+    align-items: center;
+    /* Centra verticalmente */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3000;
+}
+
+.logo-img {
+    height: 45px;
+    /* Aumenté un poco el tamaño para que destaque al estar solo */
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.logo-img:active {
+    transform: scale(0.95);
+    /* Efecto de pulsación al tocarlo */
+}
+
+/* IMPORTANTE: Ajustar el cuerpo para que no se esconda nada */
+.main-grid {
+    margin-top: 60px;
+}
+
+
+
+/* Animación de pulso y color para la tarjeta */
+@keyframes pulse-add {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+        background-color: rgba(255, 196, 0, 0.15);
+        box-shadow: 0 0 15px rgba(255, 196, 0, 0.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* Burbuja de notificación (Toast) */
+.toast-msg {
+    position: fixed;
+    top: 80px;
+    /* Debajo del logo */
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #27ae60;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.toast-msg.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.edit-mode-banner {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);
+    color: #fff;
+    display: none;
+    align-items: center;
+    /* centra vertical */
+    justify-content: center;
+    /* centra horizontal */
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 2500;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+    animation: slideDown 0.3s ease;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.edit-mode-banner.show {
+    display: flex;
+    /* activa flex para que funcione el centrado */
+}
+
+.edit-mode-banner * {
+    margin: 0;
+}
+
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Ajustar grid cuando hay edit-mode-banner */
+.main-grid.edit-mode {
+    margin-top: 100px;
+}
+
+/* Expansión de la columna 2 cuando se selecciona Mesas (SOLO EN DESKTOP) */
+@media (min-width: 1001px) {
+    .main-grid.mesas-expanded {
+        grid-template-columns: 80px 500px 1fr 460px;
+    }
+}

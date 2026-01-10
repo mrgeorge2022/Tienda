@@ -822,3 +822,15 @@ if (panel && btnLocate) {
   // También al redimensionar la ventana
   window.addEventListener("resize", posicionarBoton);
 }
+
+// Función global para que POS.js pueda calcular el costo igual que la web
+function obtenerCostoEnvioEstandar(distanciaKm) {
+    const valorKM = config?.costoPorKilometro || 1000;
+    const baseEnvio = config?.costoEnvioBase || 2000;
+    const TARIFA_MINIMA = 3000; // <--- Cambia aquí y se cambia en todo el sistema
+
+    let costoCalculado = Math.round(distanciaKm * valorKM) + baseEnvio;
+
+    // Retornamos el valor, pero aseguramos que nunca sea menor a la mínima
+    return Math.max(TARIFA_MINIMA, costoCalculado);
+}
