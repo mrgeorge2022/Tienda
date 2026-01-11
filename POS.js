@@ -516,53 +516,49 @@ function filterCat(cat, btn) {
 }
 
 function renderItems(list) {
-  document.getElementById("v-prods").innerHTML = list
-    .map((p) => {
-      const estaAgotado = p.activo === false;
+  const container = document.getElementById("v-prods");
+  if (!container) return;
 
-      return `
-    <div class="card-prod ${estaAgotado ? "agotado" : ""}" id="prod-card-${
-        p.id
-      }">
+  container.innerHTML = list.map((p) => {
+    const estaAgotado = p.activo === false;
+    const precioFormateado = Number(p.precio).toLocaleString();
+
+    return `
+    <div class="card-prod ${estaAgotado ? "agotado" : ""}" id="prod-card-${p.id}">
+        
         ${estaAgotado ? '<span class="badge-agotado">AGOTADO</span>' : ""}
         
-        <div class="info-principal">
-            <div class="nombre-header" onclick="toggleDesc(${p.id}, event)" 
-                 style="display:flex; justify-content: space-between; align-items: center; cursor:pointer; width: 100%;">
-                <h4 style="margin:0; font-size: 15px;">${p.nombre}</h4>
-                <span class="expand-icon" id="arrow-${
-                  p.id
-                }" style="font-size: 10px; transition:0.3s; color: #fff; ">▼</span>
+        <div class="card-top-section">
+            <div class="prod-img-box">
+                ${p.imagen 
+                    ? `<img src="${p.imagen}" alt="${p.nombre}" loading="lazy">` 
+                    : `<div class="img-placeholder">🖼️</div>`
+                }
             </div>
 
-            <div class="price" style="color:var(--accent); font-weight:bold; font-size:0.9rem;">
-                $${Number(p.precio).toLocaleString()}
+            <div class="prod-info-box" onclick="toggleDesc(${p.id}, event)">
+                <div class="title-row">
+                    <h4>${p.nombre}</h4>
+                    <span class="expand-icon" id="arrow-${p.id}">▼</span>
+                </div>
+                <div class="price-tag">$${precioFormateado}</div>
             </div>
         </div>
 
-        <div class="prod-desc-text" id="desc-${
-          p.id
-        }" style="display:none; font-size:0.8rem; color:#888; margin:10px 0; border-left:2px solid var(--accent); padding-left:8px;">
+        <div class="prod-desc-text" id="desc-${p.id}" style="display: none;">
             ${p.descripcion || "Sin descripción disponible."}
         </div>
 
-        <div class="card-actions" style="display:flex; gap:8px; ">
-            <button class="btn-add-fast" onclick="add(${p.id}, false)" ${
-        estaAgotado ? "disabled" : ""
-      } 
-                style="flex:1; background:var(--accent); color:#000; border:none;  border-radius:6px; font-weight:bold; cursor:pointer;">
-                ⚡ Rápido
+        <div class="card-actions">
+            <button class="btn-add-fast" onclick="add(${p.id}, false)" ${estaAgotado ? "disabled" : ""}>
+                ⚡ RÁPIDO
             </button>
-            <button class="btn-add-note" onclick="add(${p.id}, true)" ${
-        estaAgotado ? "disabled" : ""
-      } 
-                style="flex:1; background:#222; color:#fff; border:1px solid #444; padding:8px; border-radius:6px; cursor:pointer;">
-                📝 +Nota
+            <button class="btn-add-note" onclick="add(${p.id}, true)" ${estaAgotado ? "disabled" : ""}>
+                📝 NOTA
             </button>
         </div>
     </div>`;
-    })
-    .join("");
+  }).join("");
 }
 
 // Función para mostrar/ocultar descripción
@@ -629,21 +625,31 @@ function showToast(text) {
   }, 1500);
 }
 
-// NUEVA: Cambiar cantidad (+ o -)
 function changeQty(cartId, delta) {
-  const item = cart.find((i) => i.cartId === cartId);
-  if (!item) return;
-  item.qty += delta;
-  if (item.qty <= 0) removeLine(cartId); // Si llega a 0 se elimina
-  updateUI();
+    const item = cart.find(i => i.cartId === cartId);
+    if (!item) return;
+
+    const nuevaCant = item.qty + delta;
+
+    if (nuevaCant <= 0) {
+        // Si intenta bajar de 1 a 0, llama a la función de borrar
+        remove(cartId);
+    } else {
+        item.qty = nuevaCant;
+        updateUI();
+    }
 }
 
-// NUEVA: Eliminar línea completa (Bote de basura)
-function removeLine(cartId) {
-  if (confirm("¿Eliminar este producto de la comanda?")) {
-    cart = cart.filter((i) => i.cartId !== cartId);
-    updateUI();
-  }
+// Cambia el nombre a 'remove' para que coincida con el onclick del HTML
+function remove(cartId) {
+    const item = cart.find(i => i.cartId === cartId);
+    if (!item) return;
+
+    // Pregunta lo mismo que la caneca
+    if (confirm(`¿Deseas eliminar "${item.nombre}" de la comanda?`)) {
+        cart = cart.filter(i => i.cartId !== cartId);
+        updateUI(); // Refresca la vista del carrito
+    }
 }
 
 // NUEVA: Editar nota rápida
@@ -664,7 +670,6 @@ function clearCart() {
   }
 }
 
-// ACTUALIZACIÓN: Interfaz de la comanda (Columna 4) con desglose de Domicilio
 function updateUI() {
     const box = document.getElementById("cart-box");
     const subtotalProductos = cart.reduce((s, i) => s + i.precio * i.qty, 0);
@@ -672,57 +677,124 @@ function updateUI() {
     const valorEnvio = esDomicilio ? (costoDomicilioActual || 0) : 0;
     const totalFinal = subtotalProductos + valorEnvio;
 
-    // 1. Renderizar items en el carrito (Parte superior)
     if (cart.length === 0) {
         box.innerHTML = '<p style="text-align:center; color:#999; margin-top:50px;">Vacío</p>';
     } else {
         let htmlItems = `<button class="btn-empty-cart" onclick="clearCart()">🗑️ Vaciar</button>`;
-        htmlItems += cart.map(i => `
+        
+        htmlItems += cart.map(i => {
+            // Precio Unitario Formateado
+            const precioUnitario = Number(i.precio).toLocaleString();
+            // Subtotal de la línea (Precio * Cantidad)
+            const subtotalItem = (i.precio * i.qty).toLocaleString();
+
+            return `
             <div class="cart-item-line">
-                <span class="cart-item-name">${i.nombre} x${i.qty}</span>
-                <span class="cart-item-price">$${(i.precio * i.qty).toLocaleString()}</span>
+                <div class="cart-item-row">
+                    
+                    <button class="btn-icon-action" onclick="remove(${i.cartId})" title="Eliminar" style="color:#ff4444;">
+                        🗑️
+                    </button>
+
+                    ${i.imagen 
+                        ? `<img src="${i.imagen}" alt="${i.nombre}" class="cart-item-image">` 
+                        : `<div class="cart-item-image" style="background:#222; display:flex; align-items:center; justify-content:center; font-size:10px;">🖼️</div>`
+                    }
+                    
+                    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0;">
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                            <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
+                                <span class="cart-item-name">${i.nombre}</span>
+                                <span style="font-size: 0.75rem; color: #777;">$${precioUnitario} c/u</span>
+                            </div>
+                            <span class="cart-item-price">$${subtotalItem}</span>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between; ">
+                            <button class="btn-icon-action" onclick="editNote(${i.cartId})" title="Nota" style="opacity: 0.7;">
+                                📝
+                            </button>
+
+                            <div class="qty-controls">
+                                <button class="qty-btn" onclick="changeQty(${i.cartId}, -1)">−</button>
+                                <span class="qty-display">${i.qty}</span>
+                                <button class="qty-btn" onclick="changeQty(${i.cartId}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ${i.nota ? `
+                    <div class="cart-item-note">
+                        <span>📌 ${i.nota}</span>
+                    </div>
+                ` : ''}
             </div>
-        `).join("");
+            `;
+        }).join("");
+        
         box.innerHTML = htmlItems;
     }
 
-    // 2. ACTUALIZAR EL ORDER-FOOTER (Desglose encima del TOTAL)
+    // ... (resto del código del footer igual)
+    actualizarFooter(subtotalProductos, esDomicilio, valorEnvio, totalFinal);
+}
+
+// Función auxiliar para no repetir código del footer
+function actualizarFooter(subtotal, esDomicilio, valorEnvio, totalFinal) {
     const footer = document.querySelector(".order-footer");
-    if (footer) {
-        let desgloseContainer = document.getElementById("desglose-dinamico");
-        
-        // Si no existe el contenedor de Subtotal/Domicilio, lo creamos
-        if (!desgloseContainer) {
-            desgloseContainer = document.createElement("div");
-            desgloseContainer.id = "desglose-dinamico";
-            const totalRow = footer.querySelector(".order-total-row");
-            footer.insertBefore(desgloseContainer, totalRow);
-        }
+    if (!footer) return;
 
-        // Si el método es Domicilio, inyectamos las dos líneas inmediatamente
-        if (esDomicilio) {
-            desgloseContainer.innerHTML = `
-                <div class="order-total-row" style="font-size: 0.85rem; color: #777; margin-bottom: 2px; border-top: 1px dashed #ccc; padding-top: 5px;">
-                    <span>SUBTOTAL</span>
-                    <span>$ ${subtotalProductos.toLocaleString()}</span>
-                </div>
-                <div class="order-total-row" style="font-size: 0.85rem; color: var(--accent); margin-bottom: 5px;">
-                    <span>DOMICILIO</span>
-                    <span id="display-costo-domicilio">$ ${valorEnvio.toLocaleString()}</span>
-                </div>
-            `;
-        } else {
-            desgloseContainer.innerHTML = ""; // Se oculta si es Mesa o Recoger
-        }
+    let desgloseContainer = document.getElementById("desglose-dinamico");
+    if (!desgloseContainer) {
+        desgloseContainer = document.createElement("div");
+        desgloseContainer.id = "desglose-dinamico";
+        const totalRow = footer.querySelector(".order-total-row");
+        footer.insertBefore(desgloseContainer, totalRow);
+    }
 
-        // 3. Actualizar el TOTAL (Id: order-total)
-        const totalDisplay = document.getElementById("order-total");
-        if (totalDisplay) {
-            totalDisplay.innerText = `$ ${totalFinal.toLocaleString()}`;
-        }
+    if (esDomicilio) {
+        desgloseContainer.innerHTML = `
+            <div class="order-total-row" style="font-size: 0.85rem; color: #777; margin-bottom: 2px; border-top: 1px dashed #333; padding-top: 5px;">
+                <span>SUBTOTAL</span>
+                <span>$ ${subtotal.toLocaleString()}</span>
+            </div>
+            <div class="order-total-row" style="font-size: 0.85rem; color: var(--accent); margin-bottom: 5px;">
+                <span>DOMICILIO</span>
+                <span id="display-costo-domicilio">$ ${valorEnvio.toLocaleString()}</span>
+            </div>
+        `;
+    } else {
+        desgloseContainer.innerHTML = ""; 
+    }
+
+    const totalDisplay = document.getElementById("order-total");
+    if (totalDisplay) {
+        totalDisplay.innerText = `$ ${totalFinal.toLocaleString()}`;
     }
 }
 
+// FUNCIONES DE APOYO (Asegúrate de tenerlas)
+function changeQty(cartId, delta) {
+    const item = cart.find(i => i.cartId === cartId);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+        cart = cart.filter(i => i.cartId !== cartId);
+    }
+    updateUI();
+}
+
+function editNote(cartId) {
+    const item = cart.find(i => i.cartId === cartId);
+    if (!item) return;
+    const nuevaNota = prompt(`Editar nota para ${item.nombre}:`, item.nota || "");
+    if (nuevaNota !== null) {
+        item.nota = nuevaNota.trim();
+        updateUI();
+    }
+}
 // goStep remapeado: sidebar (m-col-1) permanece fija; pasos 1..3 -> cols 2..4
 function goStep(n) {
   // Limpiar estados

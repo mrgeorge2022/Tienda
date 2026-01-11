@@ -291,7 +291,6 @@ body {
 }
 
 .grid-items {
-    display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 15px;
@@ -299,15 +298,94 @@ body {
 }
 
 .card-prod {
-    background: var(--card-bg);
-    padding: 8px;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column; /* Flujo vertical para desc y acciones */
+    background: #111;
     border: 1px solid #222;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 10px;
+    min-height: 120px; /* Se ajustará si la descripción se abre */
+}
+
+.card-top-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.prod-img-box {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+.prod-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.prod-info-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     cursor: pointer;
 }
 
+.img-placeholder {
+    font-size: 2.5rem;
+    color: #555;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.info-top {
+    cursor: pointer;
+    user-select: none;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.title-row h4 {
+    margin: 0;
+    font-size: 15px;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.price-tag {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.prod-desc-text {
+    display: none; /* Se activa con el click */
+    font-size: 12px;
+    color: #aaa;
+    padding: 8px 4px;
+    border-top: 1px solid #222;
+    }
+
+
 .card-prod h4 {
-    font-size: 0.9rem;
+    font-size: 15px;
 }
 
 .order-panel {
@@ -622,29 +700,11 @@ body {
     width: 100%;
 }
 
-/* ESTILOS PARA LÍNEAS DE CARRITO */
-.cart-item-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 6px 0;
-    border-top: 1px solid #e0e0e0;
-    font-size: 0.85rem;
-    transition: background-color 0.2s;
-}
 
-.cart-item-line:hover {
-    background-color: #f9f9f9;
-}
 
-.cart-item-name {
-    font-weight: 600;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #000;
-}
+
+
+
 
 .cart-item-edit {
     cursor: pointer;
@@ -657,67 +717,63 @@ body {
     transform: scale(1.15);
 }
 
-.cart-item-price {
-    font-weight: bold;
-    flex-shrink: 0;
-    min-width: 65px;
-    text-align: center;
-}
+
 
 .cart-item-controls {
     display: flex;
     gap: 5px;
     align-items: center;
     flex-shrink: 0;
+    background: #f9f9f9;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
 }
 
 .cart-item-btn-qty {
-    background: #000;
-    color: #fff;
-    border: none;
-    width: 20px;
-    height: 20px;
-    font-size: 0.75rem;
+    background: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
     padding: 0;
-    border-radius: 25px;
+    border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-item-btn-qty:active {
     background: var(--accent);
     color: #000;
+    border-color: var(--accent);
 }
 
 .cart-item-qty {
     font-weight: bold;
-    min-width: 10px;
+    min-width: 20px;
     text-align: center;
     font-size: 0.75rem;
+    color: #000;
 }
 
 .cart-item-trash {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 0.95rem;
-    padding: 0;
+    font-size: 1.1rem;
+    padding: 0 4px;
     flex-shrink: 0;
     transition: transform 0.2s;
+    color: #d63031;
 }
 
 .cart-item-trash:hover {
     transform: scale(1.2);
-}
-
-.cart-item-note {
-    font-size: 0.65rem;
-    color: #d35400;
-    margin-left: 5px;
-    margin-top: 2px;
-    padding-left: 8px;
-    border-left: 2px solid #d35400;
 }
 
 
@@ -748,11 +804,12 @@ body {
 
 /* Icono de flecha interactivo */
 .expand-icon {
+    margin-right: 5px;
     display: inline-block;
     float: right;
     transition: transform 0.3s ease;
     font-size: 0.8rem;
-    color: var(--accent);
+    color: #fff;
 }
 
 .card-prod.expanded .expand-icon {
@@ -773,7 +830,7 @@ body {
 /* Estilo para la tarjeta agotada */
 .card-prod.agotado {
     opacity: 0.6;
-    filter: grayscale(0.8);
+    filter: grayscale(1);
     border: 1px dashed #444 !important;
     pointer-events: none;
     /* Bloquea clics en toda la tarjeta */
@@ -786,21 +843,34 @@ body {
 
 /* Etiqueta de Agotado */
 .badge-agotado {
-    background: #555;
-    color: #fff;
-    font-size: 0.6rem;
+    position: absolute;
+    top: -9px;
+    left: 6px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
     padding: 2px 6px;
     border-radius: 4px;
+    font-size: 0.6rem;
     font-weight: bold;
-    letter-spacing: 1px;
+    z-index: 10;
 }
 
-
 /* Botones de acción rápida en la carta */
+/* Acciones (Debajo de todo) */
 .card-actions {
+    margin-top: 5px;
     display: flex;
     gap: 8px;
-    margin-top: 5px;
+}
+
+.card-actions button {
+    flex: 1;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .btn-add-fast {
@@ -1001,3 +1071,118 @@ body {
         grid-template-columns: 80px 500px 1fr 460px;
     }
 }
+
+
+
+/* Contenedor de la línea del carrito */
+.cart-item-line {
+    border-top: 1px solid #ddd;
+    padding: 5px 0px;
+    background: #fff;
+}
+
+/* Fila principal: Basura + Imagen + Info */
+.cart-item-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+/* Imagen miniatura */
+.cart-item-image {
+    width: 45px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Textos: Nombre y Precio */
+.cart-item-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-price {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000;
+}
+
+/* CONTADORES (Cápsula) */
+.qty-controls {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.qty-controls:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.qty-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 25px;
+    border: none;
+    background: #efefef; /* Gris medio */
+    color: #a78f8f; /* Texto gris suave */
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+/* Efecto al presionar: Brillo suave del color acento */
+.qty-btn:active {
+    color: var(--accent);
+    transform: scale(0.85);
+    background: rgba(255, 196, 0, 0.1); /* Brillo tenue del amarillo */
+}
+
+/* El número central */
+.qty-display {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgb(0 0 0 / 70%); /* No es blanco puro, es un gris claro */
+    min-width: 18px;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+
+/* Iconos de Acción (Basura y Nota) */
+/* Botón de nota también tenue */
+.btn-icon-action {
+    background: transparent;
+    border: none;
+    filter: grayscale(1); /* Quita el color al emoji */
+    transition: all 0.2s ease;
+}
+
+.btn-icon-action:hover {
+    opacity: 1;
+    filter: grayscale(0); /* Recupera color al tocar */
+    transform: scale(1.1);
+}
+
+/* Estilo de la Nota */
+.cart-item-note {
+    margin-top: 5px;
+    margin-left: 23px; /* Alineado después del icono de basura */
+    font-size: 0.8rem;
+    color: #888; /* Naranja para resaltar instrucciones */
+    font-style: italic;
+    border-radius: 4px;
+    }
