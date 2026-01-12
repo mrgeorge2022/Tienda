@@ -65,16 +65,26 @@
                 <div id="mesas-list"></div>
             </div>
 
-            <div id="view-pedidos" class="view-overlay">
-                <span class="close-view" onclick="closeLists()">×</span>
-                <h3>Historial de Pedidos</h3>
-                <div id="pedidos-list"></div>
-            </div>
+<div id="view-pedidos" class="view-overlay">
+    <span class="close-view" onclick="closeLists()">×</span>
+    <h3>Historial de Pedidos</h3>
+    
+    <div class="filter-switch-container">
+        <span class="switch-label label-ayer">Ayer</span>
+        <label class="switch">
+            <input type="checkbox" id="date-toggle" checked onchange="showPedidos()">
+            <span class="slider round"></span>
+        </label>
+        <span class="switch-label label-hoy">Hoy</span>
+    </div>
+
+    <div id="pedidos-list"></div>
+</div>
         </div>
 
         <div class="col order-panel" id="m-col-4">
             <div style="padding: 15px; border-bottom: 1px solid #eee;">
-                <h2 id="order-title" style="font-size: 1rem;">Pedido: --</h2>
+                <h2 id="order-title" style="font-size: 1rem;">Pedido: </h2>
             </div>
             <div class="order-content" id="cart-box"></div>
             <div style="border-top: 1px solid #eee; padding: 10px 8px;">
@@ -83,6 +93,7 @@
                     generales</label>
                 <textarea id="val-observaciones" class="input-pro"
                     placeholder="Ej: Sin lechuga, portería, billete de ..."
+                    oninput="updateButtonState()"
                     style="background: #fff; color: #000; border: 1px solid #ddd; height: 50px; font-size: 0.8rem; resize: none;"></textarea>
             </div>
             <div class="order-footer">
@@ -90,7 +101,7 @@
                     <label
                         style="font-size: 0.62rem; color: #666; display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Método
                         de Pago</label>
-                    <select id="val-metodo-pago" class="input-pro"
+                    <select id="val-metodo-pago" class="input-pro" onchange="updateButtonState()"
                         style="background: #fff; color: #000; border: 1px solid #ddd; padding: 8px; height: 40px; font-weight: bold;">
                         <option value="" selected disabled>Seleccionar método de pago</option>
                         <option value="Efectivo">💵 Efectivo</option>
@@ -106,25 +117,30 @@
                     <button class="btn-action" onclick="finish()" style="flex:1">ENVIAR PEDIDO</button>
                     <button id="btn-cancel-edit" class="btn-action" onclick="cancelEdit()"
                         style="flex:1; background:#666; display:none;">❌ CANCELAR</button>
+                    <button id="btn-close-mesa" class="btn-action" onclick="closeMesa()"
+                        style="flex:1; background:#d32f2f; display:none;">🔐 CERRAR MESA</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="tab-bar" id="bottom-tabs">
-        <div class="tab-item disabled" id="t-1" onclick="goStep(1)">
-            <span class="tab-icon">🍽️</span>
-            <span class="tab-label">Carta</span>
-        </div>
-        <div class="tab-item disabled" id="t-2" onclick="goStep(2)">
-            <span class="tab-icon">📝</span>
-            <span class="tab-label">Datos</span>
-        </div>
-        <div class="tab-item disabled" id="t-3" onclick="goStep(3)">
-            <span class="tab-icon">🛒</span>
-            <span class="tab-label">Pedido</span>
-        </div>
+<div class="tab-bar" id="bottom-tabs">
+    <div class="tab-item disabled" id="t-1" onclick="goStep(1)">
+        <span class="tab-icon">🍽️</span>
+        <span class="tab-label">Carta</span>
     </div>
+    <div class="tab-item disabled" id="t-2" onclick="goStep(2)">
+        <span class="tab-icon">📝</span>
+        <span class="tab-label">Datos</span>
+    </div>
+    <div class="tab-item disabled" id="t-3" onclick="goStep(3)">
+        <div style="position: relative; display: inline-block;">
+            <span class="tab-icon">🛒</span>
+            <span id="badge-mobile" class="mobile-badge">0</span>
+        </div>
+        <span class="tab-label">Pedido</span>
+    </div>
+</div>
 
     <script src="POS.js"></script>
 </body>

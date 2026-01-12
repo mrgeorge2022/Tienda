@@ -1,9 +1,10 @@
 let db = [];
 let cart = [];
-let currentMethod = null;
+let currentMethod = "";
 let currentStep = 0;
 let config = null;
 let editingOrderId = null; // Almacena el ID del pedido que se está editando
+let originalOrderSnapshot = null; // Almacenará el estado inicial del pedido para comparar
 
 async function init() {
   // Iniciar mostrando Carta (paso 1) por defecto
@@ -76,46 +77,59 @@ async function showMesas() {
 }
 
 async function showPedidos() {
-  goStep(2);
-  const list = document.getElementById("pedidos-list");
-  document.getElementById("service-content").style.display = "none";
-  document.getElementById("view-mesas").classList.remove("active");
-  document.getElementById("view-pedidos").classList.add("active");
-  list.innerHTML = "<p>Cargando todos los pedidos...</p>";
+    goStep(2);
+    const list = document.getElementById("pedidos-list");
+    // Detectar si el switch está en Hoy (checked) o Ayer (unchecked)
+    const isToday = document.getElementById("date-toggle").checked;
 
-  const res = await fetch(config.apiUrls.reciboBaseDatos);
-  const data = await res.json();
+    document.getElementById("service-content").style.display = "none";
+    document.getElementById("view-mesas").classList.remove("active");
+    document.getElementById("view-pedidos").classList.add("active");
+    
+    list.innerHTML = `<p style="text-align:center; padding:20px; color:#888;">Cargando pedidos de ${isToday ? 'HOY' : 'AYER'}...</p>`;
 
-  list.innerHTML = data
-    .map(
-      (p) => `
-        <div class="data-card" onclick="editExistingOrder(${JSON.stringify(
-          p
-        ).replace(
-          /"/g,
-          "&quot;"
-        )})" style="border-color:#333; cursor:pointer; border-left: 4px solid #555; transition: all 0.2s;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                <span style="font-size:0.75rem; color:var(--accent); font-weight:bold;">${
-                  p.numeroFactura
-                }</span>
-                <span style="font-size:0.7rem; color:#555;">${p.fecha} - ${
-        p.hora
-      }</span>
+    try {
+        const res = await fetch(config.apiUrls.reciboBaseDatos);
+        const data = await res.json();
+
+        // Calcular la fecha a filtrar
+        const targetDate = new Date();
+        if (!isToday) {
+            targetDate.setDate(targetDate.getDate() - 1); // Restar 1 día si es "Ayer"
+        }
+
+        // Formato DD/MM/YYYY (ajusta según cómo guardes en tu Excel)
+        const d = String(targetDate.getDate()).padStart(2, '0');
+        const m = String(targetDate.getMonth() + 1).padStart(2, '0');
+        const y = targetDate.getFullYear();
+        const fechaBusqueda = `${d}/${m}/${y}`;
+
+        // Filtrar
+        const filtrados = data.filter(p => p.fecha === fechaBusqueda);
+
+        if (filtrados.length === 0) {
+            list.innerHTML = `<p style="text-align:center; padding:30px; color:#555;">No hay pedidos de ${isToday ? 'hoy' : 'ayer'}.</p>`;
+            return;
+        }
+
+        // Mostrar lista
+        list.innerHTML = filtrados.reverse().map(p => `
+            <div class="data-card" onclick="editExistingOrder(${JSON.stringify(p).replace(/"/g, "&quot;")})">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--accent); font-weight:bold; font-size:0.8rem;">${p.numeroFactura}</span>
+                    <span style="color:#777; font-size:0.7rem;">${p.hora}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                    <strong>${p.nombre}</strong>
+                    <span style="font-weight:bold;">$${Number(p.totalPagar).toLocaleString()}</span>
+                </div>
             </div>
-            <div style="display:flex; justify-content:space-between;">
-                <strong>${p.nombre}</strong>
-                <span style="color:#fff; font-weight:bold;">$${Number(
-                  p.totalPagar
-                ).toLocaleString()}</span>
-            </div>
-            <div style="font-size:0.65rem; color:#888; margin-top:5px;">${
-              p.tipoEntrega
-            }</div>
-        </div>`
-    )
-    .reverse()
-    .join("");
+        `).join("");
+
+    } catch (err) {
+        console.error("Error:", err);
+        list.innerHTML = "<p>Error al cargar historial.</p>";
+    }
 }
 
 function startNewOrder() {
@@ -263,20 +277,79 @@ async function finish() {
   }
 }
 
-// --- FUNCIONES DE SOPORTE (TU LÓGICA ORIGINAL) ---
+// --- FUNCIÓN PARA CERRAR MESA ---
+async function closeMesa() {
+  if (!editingOrderId) {
+    alert("No hay mesa abierta para cerrar");
+    return;
+  }
 
-// Función para actualizar el estado del botón (ENVIAR vs ACTUALIZAR)
-function updateButtonState() {
-  const btn = document.querySelector(".btn-action");
-  if (editingOrderId) {
-    btn.innerText = "ACTUALIZAR PEDIDO";
-    btn.style.background = "#ff6b35";
-  } else {
-    btn.innerText = "ENVIAR PEDIDO";
-    btn.style.background = "var(--accent)";
+  if (!confirm("¿Está seguro de que desea CERRAR esta mesa? No podrá editarla de nuevo.")) {
+    return;
+  }
+
+  const btn = document.getElementById("btn-close-mesa");
+  btn.disabled = true;
+  btn.innerText = "CERRANDO...";
+
+  try {
+    const payload = {
+      action: "closeMesa",
+      numeroFactura: editingOrderId
+    };
+
+    await fetch(config.apiUrls.envioBaseDatos, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(payload),
+    });
+
+    alert("✅ ¡Mesa cerrada correctamente!");
+    location.reload();
+  } catch (err) {
+    alert("❌ Error al cerrar la mesa.");
+    btn.disabled = false;
+    btn.innerText = "🔐 CERRAR MESA";
   }
 }
 
+// --- FUNCIONES DE SOPORTE (TU LÓGICA ORIGINAL) ---
+
+function updateButtonState() {
+    const btn = document.querySelector(".btn-action");
+    if (!btn) return;
+
+    if (editingOrderId) {
+        btn.innerText = "ACTUALIZAR PEDIDO";
+
+        // Creamos la "foto" del estado actual
+        const currentSnapshot = JSON.stringify({
+            nombre: (document.getElementById("val-nombre")?.value || "").trim(),
+            tel: (document.getElementById("val-tel")?.value || "").trim(),
+            mesa: (document.getElementById("val-mesa")?.value || "").trim(),
+            obs: (document.getElementById("val-observaciones")?.value || "").trim(),
+            pago: (document.getElementById("val-metodo-pago")?.value || ""),
+            metodo: currentMethod,
+            items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
+        });
+
+        // Solo se habilita si hay cambios REALES
+        const hayCambios = (currentSnapshot !== originalOrderSnapshot);
+
+        btn.disabled = !hayCambios;
+        btn.style.opacity = hayCambios ? "1" : "0.4";
+        btn.style.cursor = hayCambios ? "pointer" : "not-allowed";
+        btn.style.background = "#ff6b35"; 
+
+    } else {
+        // Lógica para pedido nuevo
+        btn.innerText = "ENVIAR PEDIDO";
+        const tieneItems = cart.length > 0;
+        btn.disabled = !tieneItems;
+        btn.style.opacity = tieneItems ? "1" : "0.5";
+        btn.style.background = "var(--accent)";
+    }
+}
 function cancelEdit() {
   if (confirm("¿Descartar cambios, limpiar campos y volver al inicio?")) {
     forceResetToNew(); // <--- Aquí ocurre toda la magia de limpieza
@@ -287,6 +360,7 @@ function cancelEdit() {
 function forceResetToNew() {
   // 1. Limpieza de variables lógicas
   editingOrderId = null;
+  originalOrderSnapshot = null;
   cart = [];
 
   // 2. Limpieza de todos los inputs del formulario
@@ -329,7 +403,11 @@ function forceResetToNew() {
   const serviceContent = document.getElementById("service-content");
   if (serviceContent) serviceContent.style.display = "none";
 
-  currentMethod = null; // Reseteamos la variable del método actual
+  // Limpiamos también el contenedor de inputs dinámicos
+  const fieldsContainer = document.getElementById("fields-container");
+  if (fieldsContainer) fieldsContainer.innerHTML = "";
+
+  currentMethod = ""; // Reseteamos la variable del método actual
   // ----------------------------------------------------
 
   // 5. Actualizar UI visual
@@ -385,7 +463,7 @@ function setMethod(btn, method) {
     if (btn.classList.contains("active")) {
         btn.classList.remove("active");
         container.innerHTML = "";
-        currentMethod = null;
+        currentMethod = "";
         costoDomicilioActual = 0;
         updateTitle();
         updateUI();
@@ -402,11 +480,12 @@ function setMethod(btn, method) {
 
     // --- FUNCIÓN PARA GENERAR INPUTS CON BOTÓN DINÁMICO ---
     const crearInputConAccion = (id, placeholder, type = "text", oninput = "") => {
+        const commands = `checkInputStatus('${id}')${oninput ? '; ' + oninput : ''}; updateButtonState()`;
         return `
         <div class="input-wrapper-pro">
             <input type="${type}" id="${id}" class="input-pro input-compact" 
                    placeholder="${placeholder}" 
-                   oninput="checkInputStatus('${id}'); ${oninput}">
+                   oninput="${commands}">
             <span class="btn-input-helper" id="helper-${id}" onclick="handleInputHelper('${id}')">📋</span>
         </div>`;
     };
@@ -474,14 +553,14 @@ function clearSearch() {
 
 function updateTitle() {
   const title = document.getElementById("order-title");
-  if (currentMethod === "Mesa")
-    title.innerText = `Pedido: Mesa ${
-      document.getElementById("val-mesa")?.value || "--"
-    }`;
-  else
-    title.innerText = `Pedido: ${currentMethod} - ${
-      document.getElementById("val-nombre")?.value || "..."
-    }`;
+  const mesaValue = document.getElementById("val-mesa")?.value || "";
+  const nombreValue = document.getElementById("val-nombre")?.value || "";
+  
+  if (currentMethod === "Mesa") {
+    title.innerText = `Pedido: Mesa ${mesaValue} - ${nombreValue}`;
+  } else {
+    title.innerText = `Pedido: ${currentMethod} - ${nombreValue}`;
+  }
 }
 
 function showEditModeBanner(mesaNumber) {
@@ -606,6 +685,15 @@ function add(id, conNota) {
   }
 
   updateUI();
+  updateButtonState();
+  
+  // --- ANIMACIÓN DEL BADGE ---
+  const badge = document.getElementById("badge-mobile");
+  if (badge) {
+    badge.classList.remove("badge-bounce");
+    void badge.offsetWidth; // Reiniciar animación
+    badge.classList.add("badge-bounce");
+  }
 }
 
 // Función para mostrar la notificación
@@ -637,6 +725,7 @@ function changeQty(cartId, delta) {
     } else {
         item.qty = nuevaCant;
         updateUI();
+        updateButtonState();
     }
 }
 
@@ -649,6 +738,7 @@ function remove(cartId) {
     if (confirm(`¿Deseas eliminar "${item.nombre}" de la comanda?`)) {
         cart = cart.filter(i => i.cartId !== cartId);
         updateUI(); // Refresca la vista del carrito
+        updateButtonState();
     }
 }
 
@@ -659,6 +749,7 @@ function editNote(cartId) {
   if (nuevaNota !== null) {
     item.nota = nuevaNota;
     updateUI();
+    updateButtonState();
   }
 }
 
@@ -737,6 +828,14 @@ function updateUI() {
         box.innerHTML = htmlItems;
     }
 
+    // Actualizar badge de número de productos en móvil
+    const badge = document.getElementById("badge-mobile");
+    if (badge) {
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        badge.textContent = totalItems;
+        badge.style.display = totalItems > 0 ? "flex" : "none";
+    }
+
     // ... (resto del código del footer igual)
     actualizarFooter(subtotalProductos, esDomicilio, valorEnvio, totalFinal);
 }
@@ -784,6 +883,7 @@ function changeQty(cartId, delta) {
         cart = cart.filter(i => i.cartId !== cartId);
     }
     updateUI();
+    updateButtonState();
 }
 
 function editNote(cartId) {
@@ -793,6 +893,7 @@ function editNote(cartId) {
     if (nuevaNota !== null) {
         item.nota = nuevaNota.trim();
         updateUI();
+        updateButtonState();
     }
 }
 // goStep remapeado: sidebar (m-col-1) permanece fija; pasos 1..3 -> cols 2..4
@@ -1015,10 +1116,30 @@ document.querySelector(".main-grid")?.classList.add("edit-mode");
 
     updateTitle();
     updateUI();
+
+// NUEVO: Guardamos el estado exacto del pedido al abrirlo
+    originalOrderSnapshot = JSON.stringify({
+        nombre: (document.getElementById("val-nombre")?.value || "").trim(),
+        tel: (document.getElementById("val-tel")?.value || "").trim(),
+        mesa: (document.getElementById("val-mesa")?.value || "").trim(),
+        obs: (document.getElementById("val-observaciones")?.value || "").trim(),
+        pago: (document.getElementById("val-metodo-pago")?.value || ""),
+        metodo: currentMethod,
+        // Guardamos los productos con su cantidad e ID
+        items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
+    });
+
+    // Forzamos la actualización del botón (esto lo deshabilitará al inicio)
     updateButtonState();
 
     if (document.getElementById("btn-cancel-edit"))
       document.getElementById("btn-cancel-edit").style.display = "block";
+
+    // Mostrar botón "Cerrar mesa" solo si es una mesa
+    const btnCloseMesa = document.getElementById("btn-close-mesa");
+    if (btnCloseMesa) {
+      btnCloseMesa.style.display = (metodoAActivar === "Mesa") ? "block" : "none";
+    }
 
     showColumn(3);
   }, 150);
@@ -1308,6 +1429,7 @@ function checkInputStatus(id) {
         helper.innerHTML = "📋";
         helper.classList.remove("is-delete");
     }
+    updateButtonState();
 }
 
 // Ejecuta Pegar o Borrar
@@ -1336,6 +1458,7 @@ async function handleInputHelper(id) {
     
     checkInputStatus(id);
     updateTitle();
+    updateButtonState();
 }
 
 window.onload = init;

@@ -481,7 +481,20 @@ body {
     font-size: 0.65rem;
     gap: 2px;
     font-size: 15px;
+    position: relative;
 }
+
+.tab-item.active {
+    background: rgba(255, 196, 0, 0.15);
+    color: var(--accent);
+    border-bottom: 3px solid var(--accent);
+}
+
+.tab-item.active i {
+    color: var(--accent);
+    font-size: 1.4rem;
+}
+
 
 
 
@@ -1186,3 +1199,108 @@ body {
     font-style: italic;
     border-radius: 4px;
     }
+
+
+    /* Contenedor del Switch */
+.filter-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #222;
+}
+
+.switch-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #555;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+/* Resaltar label activo */
+#date-toggle:checked ~ .label-hoy { color: var(--accent); }
+#date-toggle:not(:checked) ~ .label-ayer { color: var(--accent); }
+
+/* Estructura del Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Colores cuando está en "Hoy" (Checked) */
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: #000;
+}
+
+.mobile-badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background-color: var(--accent);
+    color: #000;
+    font-size: 0.85rem; /* Bajamos un poquito la fuente para que quepan 3 números */
+    font-weight: 800;
+    
+    /* CAMBIO CLAVE: min-width en lugar de width fijo */
+    min-width: 24px; 
+    height: 24px;
+    padding: 0 6px; /* Espacio extra a los lados para cuando crezca */
+    
+    /* Mantenemos el border-radius alto para que siempre parezca redondeado */
+    border-radius: 12px; 
+    
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    white-space: nowrap; /* Evita que el número se baje de línea */
+}
+
+/* Animación de brinco mejorada para el tamaño nuevo */
+.badge-bounce {
+    animation: bounce-anim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounce-anim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); } /* Un poco menos de escala ya que el objeto es más grande */
+    100% { transform: scale(1); }
+}
