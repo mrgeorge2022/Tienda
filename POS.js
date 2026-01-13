@@ -6,9 +6,125 @@ let config = null;
 let editingOrderId = null; // Almacena el ID del pedido que se está editando
 let originalOrderSnapshot = null; // Almacenará el estado inicial del pedido para comparar
 
+// --- FUNCIONES DEL SPINNER ---
+function showSpinner(text = "Cargando...") {
+  const overlay = document.getElementById("spinner-overlay");
+  const textEl = document.getElementById("spinner-text");
+  if (overlay) {
+    textEl.textContent = text;
+    overlay.classList.add("show");
+  }
+}
+
+function hideSpinner() {
+  const overlay = document.getElementById("spinner-overlay");
+  if (overlay) {
+    overlay.classList.remove("show");
+  }
+}
+
+// --- FUNCIONES DEL INDICADOR DE SIGUIENTE PASO ---
+function updateStepIndicator() {
+  const indicator = document.getElementById("step-indicator");
+  const stepText = document.getElementById("step-text");
+
+  // Lógica para determinar qué paso mostrar
+  const hasProducts = cart.length > 0;
+  const hasMethod = currentMethod !== "";
+  const fieldsContainer = document.getElementById("fields-container");
+  const hasFieldsContent = fieldsContainer && fieldsContainer.innerHTML.trim() !== "" && !fieldsContainer.innerHTML.includes("Seleccione un servicio");
+  
+  // Validar que los inputs requeridos estén llenos
+  const inputNombre = document.getElementById("val-nombre")?.value.trim();
+  const inputTel = document.getElementById("val-tel")?.value.trim();
+  const inputMesa = document.getElementById("val-mesa")?.value.trim();
+  const inputGoogleMaps = document.getElementById("val-google-maps")?.value.trim();
+  
+  let allFieldsFilled = inputNombre && inputTel;
+  if (currentMethod === "Mesa") {
+    allFieldsFilled = inputNombre && inputTel && inputMesa;
+  } else if (currentMethod === "Domicilio") {
+    allFieldsFilled = inputNombre && inputTel && inputGoogleMaps;
+  }
+
+  // Paso 1: Mostrar indicador si no hay productos
+  if (!hasProducts) {
+    stepText.textContent = "Agrega productos";
+    indicator.classList.add("show");
+    return;
+  }
+
+  // Paso 2: Mostrar indicador si no hay método seleccionado
+  if (!hasMethod) {
+    stepText.textContent = "Selecciona un servicio";
+    indicator.classList.add("show");
+    return;
+  }
+
+  // Paso 3: Mostrar indicador si los campos no están completos
+  if (hasMethod && !allFieldsFilled) {
+    stepText.textContent = "Completa los datos";
+    indicator.classList.add("show");
+    return;
+  }
+
+  // Paso 4: Mostrar indicador si todos los datos están completos
+  if (hasMethod && allFieldsFilled) {
+    stepText.textContent = "Termina tu pedido";
+    indicator.classList.add("show");
+    return;
+  }
+
+  // Si llegamos aquí, algo está mal
+  indicator.classList.remove("show");
+}
+
+// --- FUNCIÓN PARA IR AL SIGUIENTE PASO ---
+function goNextStep() {
+  const hasProducts = cart.length > 0;
+  const hasMethod = currentMethod !== "";
+  const inputNombre = document.getElementById("val-nombre")?.value.trim();
+  const inputTel = document.getElementById("val-tel")?.value.trim();
+  const inputMesa = document.getElementById("val-mesa")?.value.trim();
+  const inputGoogleMaps = document.getElementById("val-google-maps")?.value.trim();
+  
+  let allFieldsFilled = inputNombre && inputTel;
+  if (currentMethod === "Mesa") {
+    allFieldsFilled = inputNombre && inputTel && inputMesa;
+  } else if (currentMethod === "Domicilio") {
+    allFieldsFilled = inputNombre && inputTel && inputGoogleMaps;
+  }
+
+  // Si no hay productos, no hacer nada
+  if (!hasProducts) {
+        goStep(1);
+    return;
+  }
+
+  // Si hay productos pero no hay servicio, ir a step 2 (servicios y datos)
+  if (hasProducts && !hasMethod) {
+    goStep(2);
+    return;
+  }
+
+  // Si hay método pero datos incompletos, ir a step 3 (completa datos)
+  if (hasMethod && !allFieldsFilled) {
+    goStep(2);
+    return;
+  }
+
+  // Si todos los datos están completos, ir a step 3 (enviar pedido)
+  if (hasMethod && allFieldsFilled) {
+    goStep(3);
+    return;
+  }
+}
+
 async function init() {
   // Iniciar mostrando Carta (paso 1) por defecto
   goStep(1);
+
+  showSpinner();
 
   try {
     const response = await fetch("config.json");
@@ -21,7 +137,10 @@ async function init() {
 
     renderCats();
     renderItems(db);
+    
+    hideSpinner();
   } catch (err) {
+    hideSpinner();
     console.error("Error inicializando:", err);
   }
 }
@@ -34,7 +153,8 @@ async function showMesas() {
   document.getElementById("service-content").style.display = "none";
   document.getElementById("view-pedidos").classList.remove("active");
   document.getElementById("view-mesas").classList.add("active");
-  list.innerHTML = "<p>Cargando mesas activas...</p>";
+  
+  showSpinner();
 
   const res = await fetch(config.apiUrls.reciboBaseDatos);
   const data = await res.json();
@@ -42,6 +162,7 @@ async function showMesas() {
     .filter((item) => item.mesasActivas === true || item.q === true)
     .sort((a, b) => Number(a.mesa || 0) - Number(b.mesa || 0));
 
+  hideSpinner();
   list.innerHTML = activas.length
     ? activas
         .map(
@@ -61,7 +182,7 @@ async function showMesas() {
             </div>
             <small>${m.hora || ""}</small>
         </div>
-        <div style="margin:10px 0; font-size:0.9rem; color:#fff; font-weight:bold;">${
+        <div style="font-size:0.9rem; color:#fff; font-weight:bold;">${
           m.nombre || ""
         }</div>
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -86,7 +207,7 @@ async function showPedidos() {
     document.getElementById("view-mesas").classList.remove("active");
     document.getElementById("view-pedidos").classList.add("active");
     
-    list.innerHTML = `<p style="text-align:center; padding:20px; color:#888;">Cargando pedidos de ${isToday ? 'HOY' : 'AYER'}...</p>`;
+    showSpinner();
 
     try {
         const res = await fetch(config.apiUrls.reciboBaseDatos);
@@ -107,6 +228,7 @@ async function showPedidos() {
         // Filtrar
         const filtrados = data.filter(p => p.fecha === fechaBusqueda);
 
+        hideSpinner();
         if (filtrados.length === 0) {
             list.innerHTML = `<p style="text-align:center; padding:30px; color:#555;">No hay pedidos de ${isToday ? 'hoy' : 'ayer'}.</p>`;
             return;
@@ -127,6 +249,7 @@ async function showPedidos() {
         `).join("");
 
     } catch (err) {
+        hideSpinner();
         console.error("Error:", err);
         list.innerHTML = "<p>Error al cargar historial.</p>";
     }
@@ -261,6 +384,8 @@ async function finish() {
   btn.disabled = true;
   btn.innerText = editingOrderId ? "ACTUALIZANDO..." : "REGISTRANDO...";
 
+  showSpinner();
+
   try {
     await fetch(config.apiUrls.envioBaseDatos, {
       method: "POST",
@@ -268,9 +393,11 @@ async function finish() {
       body: JSON.stringify(payload),
     });
 
+    hideSpinner();
     alert(editingOrderId ? "✅ ¡Pedido actualizado!" : "🚀 ¡Pedido enviado!");
     location.reload();
   } catch (err) {
+    hideSpinner();
     alert("❌ Error de conexión.");
     btn.disabled = false;
     btn.innerText = editingOrderId ? "ACTUALIZAR PEDIDO" : "ENVIAR PEDIDO";
@@ -292,6 +419,8 @@ async function closeMesa() {
   btn.disabled = true;
   btn.innerText = "CERRANDO...";
 
+  showSpinner();
+
   try {
     const payload = {
       action: "closeMesa",
@@ -304,9 +433,21 @@ async function closeMesa() {
       body: JSON.stringify(payload),
     });
 
+    hideSpinner();
     alert("✅ ¡Mesa cerrada correctamente!");
+    
+    // Limpiar banner y reset
+    const banner = document.getElementById("edit-mode-banner");
+    if (banner) {
+      banner.classList.remove("show", "active");
+      banner.style.display = "none";
+    }
+    document.querySelector(".main-grid")?.classList.remove("edit-mode");
+    editingOrderId = null;
+    
     location.reload();
   } catch (err) {
+    hideSpinner();
     alert("❌ Error al cerrar la mesa.");
     btn.disabled = false;
     btn.innerText = "🔐 CERRAR MESA";
@@ -363,17 +504,8 @@ function forceResetToNew() {
   originalOrderSnapshot = null;
   cart = [];
 
-  // 2. Limpieza de todos los inputs del formulario
-  const campos = [
-    "val-nombre",
-    "val-tel",
-    "val-mesa",
-    "val-direccion",
-    "val-referencia",
-    "val-google-maps",
-    "val-observaciones",
-  ];
-
+  // 2. Limpieza de todos los inputs (Nombre, Tel, etc.)
+  const campos = ["val-nombre", "val-tel", "val-mesa", "val-direccion", "val-referencia", "val-google-maps", "val-observaciones"];
   campos.forEach((id) => {
     const input = document.getElementById(id);
     if (input) input.value = "";
@@ -382,53 +514,52 @@ function forceResetToNew() {
   const payment = document.getElementById("val-metodo-pago");
   if (payment) payment.selectedIndex = 0;
 
-  // 3. Limpiar Banner y estilos de edición
+  // 3. Limpiar Banner de edición y BOTÓN CERRAR MESA (Cambio Clave)
   const banner = document.getElementById("edit-mode-banner");
   if (banner) {
     banner.classList.remove("show", "active");
     banner.style.display = "none";
-    banner.textContent = "";
   }
+  
+  // Remover clase edit-mode del grid para que margin-top vuelva a 60px
   document.querySelector(".main-grid")?.classList.remove("edit-mode");
+  
+  // Aquí ocultamos el botón de cerrar mesa
+  const btnCloseMesa = document.getElementById("btn-close-mesa");
+  if (btnCloseMesa) btnCloseMesa.style.display = "none";
 
   const btnCancel = document.getElementById("btn-cancel-edit");
   if (btnCancel) btnCancel.style.display = "none";
 
-  // --- 4. RESETEAR SERVICIOS (Ninguno seleccionado) ---
-  // Quitamos la clase 'active' de los botones de servicio (Mesa, Domicilio, etc.)
-  document.querySelectorAll(".btn-method").forEach((btn) => {
-    btn.classList.remove("active");
-  });
-  // Ocultamos el contenedor que muestra los inputs (nombre, mesa, etc.)
+  // 4. Resetear Servicios y Métodos
+  document.querySelectorAll(".btn-method").forEach((btn) => btn.classList.remove("active"));
   const serviceContent = document.getElementById("service-content");
   if (serviceContent) serviceContent.style.display = "none";
+  currentMethod = ""; 
 
-  // Limpiamos también el contenedor de inputs dinámicos
-  const fieldsContainer = document.getElementById("fields-container");
-  if (fieldsContainer) fieldsContainer.innerHTML = "";
-
-  currentMethod = ""; // Reseteamos la variable del método actual
-  // ----------------------------------------------------
-
-  // 5. Actualizar UI visual
+  // 5. Actualizar UI y VOLVER A CARTA (Cambio Clave)
   updateTitle();
   updateUI();
   updateButtonState();
 
-  // 6. Volver a la Carta (Paso 1)
-  showColumn(1);
+  // goStep(1) activa visualmente el tab inferior y muestra la columna de productos
+  goStep(1); 
 
-  // 7. Sincronización visual del menú lateral (Nuevo)
-  document
-    .querySelectorAll(".nav-link")
-    .forEach((btn) => btn.classList.remove("active"));
-  const navNuevo =
-    document.querySelector(".nav-link[onclick*='nuevo']") ||
-    document.querySelector(".nav-link");
+  // 6. Sincronización Menú Lateral y Buscador
+  document.querySelectorAll(".nav-link").forEach((btn) => btn.classList.remove("active"));
+  const navNuevo = document.querySelector(".nav-link[onclick*='nuevo']");
   if (navNuevo) navNuevo.classList.add("active");
+
+  // Limpiar buscador para que vea toda la carta
+  const searchInput = document.getElementById("search-input");
+  if (searchInput) {
+      searchInput.value = "";
+      renderItems(db);
+  }
 
   closeLists();
 }
+
 
 // Función para extraer coordenadas de diferentes formatos
 function extractCoordinates(input) {
@@ -495,8 +626,8 @@ function setMethod(btn, method) {
     html += crearInputConAccion("val-mesa", "Núm. mesa", "number", "updateTitle()");
 
     if (method === "Domicilio") {
+      html += crearInputConAccion("val-google-maps", "Pega Link de Maps o Coordenadas", "text", "analizarEntradaMapa(this.value)");
         html += crearInputConAccion("val-direccion", "Dirección");
-        html += crearInputConAccion("val-google-maps", "Pega Link de Maps o Coordenadas", "text", "analizarEntradaMapa(this.value)");
         html += crearInputConAccion("val-referencia", "Punto de referencia");
         html += `
             <div id="map-pos" style="height: 350px; width: 100%; margin-top: 10px; border-radius: 8px;"></div>
@@ -522,6 +653,7 @@ function setMethod(btn, method) {
 
     updateTitle();
     updateUI();
+    updateStepIndicator();
 }
 
 function filterProducts() {
@@ -686,6 +818,7 @@ function add(id, conNota) {
 
   updateUI();
   updateButtonState();
+  updateStepIndicator();
   
   // --- ANIMACIÓN DEL BADGE ---
   const badge = document.getElementById("badge-mobile");
@@ -959,7 +1092,7 @@ function updateNavigationUI() {
 }
 
 function handleNavClick(btn, action) {
-  // 1. CAMBIO VISUAL: Quitamos active de todos y ponemos al seleccionado
+  // 1. CAMBIO VISUAL: Gestión de botones laterales
   document
     .querySelectorAll(".nav-link")
     .forEach((link) => link.classList.remove("active"));
@@ -970,16 +1103,18 @@ function handleNavClick(btn, action) {
   // 2. LÓGICA PARA "NUEVO"
   if (action === "nuevo") {
     if (cart.length > 0 || tieneNombre) {
-      if (
-        !confirm("Se borrarán los datos actuales. ¿Deseas empezar de nuevo?")
-      ) {
-        // Opcional: Si cancela, podrías devolver el active a donde estaba,
-        // pero normalmente el usuario se queda donde hizo clic.
+      if (!confirm("Se borrarán los datos actuales. ¿Deseas empezar de nuevo?")) {
         return;
       }
     }
+    
+    // Ejecutamos la limpieza
     forceResetToNew();
-    // Quitamos el return de aquí para que el flujo sea natural
+    
+    // --- CLAVE: Forzamos el salto visual a la Carta ---
+    goStep(1); 
+    
+    return; // Finalizamos aquí para "nuevo"
   }
 
   // 3. LÓGICA PARA OTRAS PESTAÑAS
@@ -1020,9 +1155,6 @@ if (banner) {
     banner.style.display = "flex"; 
     banner.classList.add("show", "active");
 
-    // Construcción de frase dinámica general:
-    // Resultado esperado: ⚠️ Editando: #FAC123 - Mesa 5 - Juan Perez
-    // O si no hay mesa:  ⚠️ Editando: #FAC123 - Juan Perez
     const mesaInfo = mesaData.mesa ? `Mesa ${mesaData.mesa} - ` : "";
     
     banner.textContent = `⚠️ Editando: ${mesaData.numeroFactura} - ${mesaInfo}${mesaData.nombre}`;
@@ -1136,12 +1268,20 @@ document.querySelector(".main-grid")?.classList.add("edit-mode");
       document.getElementById("btn-cancel-edit").style.display = "block";
 
     // Mostrar botón "Cerrar mesa" solo si es una mesa
-    const btnCloseMesa = document.getElementById("btn-close-mesa");
-    if (btnCloseMesa) {
-      btnCloseMesa.style.display = (metodoAActivar === "Mesa") ? "block" : "none";
+const btnCloseMesa = document.getElementById("btn-close-mesa");
+if (btnCloseMesa) {
+    // Verificamos que sea una mesa Y que la propiedad de actividad sea true
+    const estaActiva = (mesaData.mesasActivas === true || mesaData.q === true);
+    
+    if (metodoAActivar === "Mesa" && estaActiva) {
+        btnCloseMesa.style.display = "block";
+    } else {
+        btnCloseMesa.style.display = "none";
     }
+}
 
-    showColumn(3);
+goStep(3);
+showColumn(3);
   }, 150);
 }
 
@@ -1430,6 +1570,7 @@ function checkInputStatus(id) {
         helper.classList.remove("is-delete");
     }
     updateButtonState();
+    updateStepIndicator();
 }
 
 // Ejecuta Pegar o Borrar
@@ -1460,5 +1601,7 @@ async function handleInputHelper(id) {
     updateTitle();
     updateButtonState();
 }
+
+
 
 window.onload = init;
