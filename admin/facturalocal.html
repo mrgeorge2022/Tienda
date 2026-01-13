@@ -617,61 +617,6 @@
       pdf.save(filename);
     }
   </script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    
-    function cargarDatos() {
-        const rawData = localStorage.getItem("datosFactura");
-        
-        if (!rawData) {
-            // Si no hay datos, mostramos error visual
-            document.body.innerHTML = `
-                <div style="text-align:center; padding:50px; font-family:sans-serif;">
-                    <h1 style="color:red;">⚠️ ERROR</h1>
-                    <p>No se encontró información del pedido.</p>
-                    <button onclick="window.close()" style="padding:10px; cursor:pointer;">Cerrar Ventana</button>
-                </div>`;
-            return;
-        }
-
-        const d = JSON.parse(rawData);
-
-        // Rellenar los campos del HTML (Asegúrate que los IDs coincidan)
-        if(document.getElementById("factura-num")) document.getElementById("factura-num").innerText = d.numeroFactura;
-        if(document.getElementById("cliente-nombre")) document.getElementById("cliente-nombre").innerText = d.nombre;
-        if(document.getElementById("cliente-tel")) document.getElementById("cliente-tel").innerText = d.telefono;
-        if(document.getElementById("entrega-tipo")) document.getElementById("entrega-tipo").innerText = d.tipoEntrega;
-        if(document.getElementById("mesa-num")) document.getElementById("mesa-num").innerText = d.mesa || "N/A";
-
-        // Llenar tabla de productos
-        const tabla = document.getElementById("factura-items");
-        if(tabla && d.productos) {
-            tabla.innerHTML = d.productos.map(p => `
-                <tr>
-                    <td>${p.qty} x ${p.nombre}</td>
-                    <td style="text-align:right;">$${(p.precio * p.qty).toLocaleString()}</td>
-                </tr>
-            `).join("");
-        }
-
-        if(document.getElementById("total-monto")) {
-            document.getElementById("total-monto").innerText = `$${d.totalPagar.toLocaleString()}`;
-        }
-
-        // Borrar el dato después de leerlo para que no se repita en el futuro
-        localStorage.removeItem("datosFactura");
-
-        // Disparar impresión automáticamente
-        setTimeout(() => { window.print(); }, 800);
-    }
-
-    // Ejecutamos la carga
-    cargarDatos();
-});
-</script>
-
 </body>
 
 </html>
-
