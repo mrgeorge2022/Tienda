@@ -5,6 +5,8 @@ let currentStep = 0;
 let config = null;
 let editingOrderId = null; // Almacena el ID del pedido que se está editando
 let originalOrderSnapshot = null; // Almacenará el estado inicial del pedido para comparar
+let isLoadingDomicilio = false; // Bandera para detectar si estamos cargando un domicilio inicial
+let costoDomicilioOriginal = 0; // Guardar el costo original del domicilio para respetarlo
 
 // --- FUNCIONES DEL SPINNER ---
 function showSpinner(text = "Cargando...") {
@@ -189,7 +191,7 @@ async function showMesas() {
             <span style="font-size:0.7rem; color:var(--accent)">PULSA PARA EDITAR</span>
             <div style="font-weight:bold; color:var(--accent)">$${Number(
               m.totalPagar
-            ).toLocaleString()}</div>
+            ).toLocaleString('es-CO')}</div>
         </div>
     </div>`
         )
@@ -243,7 +245,7 @@ async function showPedidos() {
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-top:5px;">
                     <strong>${p.nombre}</strong>
-                    <span style="font-weight:bold;">$${Number(p.totalPagar).toLocaleString()}</span>
+                    <span style="font-weight:bold;">$${Number(p.totalPagar).toLocaleString('es-CO')}</span>
                 </div>
             </div>
         `).join("");
@@ -258,6 +260,8 @@ async function showPedidos() {
 function startNewOrder() {
   editingOrderId = null;
   cart = [];
+  isLoadingDomicilio = false;
+  costoDomicilioOriginal = 0;
 
   // Mostrar el contenedor de servicios y ocultar las listas de Mesas/Pedidos
   document.getElementById("service-content").style.display = "block";
@@ -503,6 +507,8 @@ function forceResetToNew() {
   editingOrderId = null;
   originalOrderSnapshot = null;
   cart = [];
+  isLoadingDomicilio = false;
+  costoDomicilioOriginal = 0;
 
   // 2. Limpieza de todos los inputs (Nombre, Tel, etc.)
   const campos = ["val-nombre", "val-tel", "val-mesa", "val-direccion", "val-referencia", "val-google-maps", "val-observaciones"];
@@ -614,10 +620,10 @@ function setMethod(btn, method) {
         const commands = `checkInputStatus('${id}')${oninput ? '; ' + oninput : ''}; updateButtonState()`;
         return `
         <div class="input-wrapper-pro">
-            <input type="${type}" id="${id}" class="input-pro input-compact" 
-                   placeholder="${placeholder}" 
-                   oninput="${commands}">
-            <span class="btn-input-helper" id="helper-${id}" onclick="handleInputHelper('${id}')">📋</span>
+          <input type="${type}" id="${id}" class="input-pro input-compact" 
+               placeholder="${placeholder}" 
+               oninput="${commands}">
+          <span class="btn-input-helper" id="helper-${id}" onclick="handleInputHelper('${id}')">⎘</span>
         </div>`;
     };
 
@@ -732,7 +738,7 @@ function renderItems(list) {
 
   container.innerHTML = list.map((p) => {
     const estaAgotado = p.activo === false;
-    const precioFormateado = Number(p.precio).toLocaleString();
+    const precioFormateado = Number(p.precio).toLocaleString('es-CO');
 
     return `
     <div class="card-prod ${estaAgotado ? "agotado" : ""}" id="prod-card-${p.id}">
@@ -908,9 +914,9 @@ function updateUI() {
         
         htmlItems += cart.map(i => {
             // Precio Unitario Formateado
-            const precioUnitario = Number(i.precio).toLocaleString();
+            const precioUnitario = Number(i.precio).toLocaleString('es-CO');
             // Subtotal de la línea (Precio * Cantidad)
-            const subtotalItem = (i.precio * i.qty).toLocaleString();
+            const subtotalItem = (i.precio * i.qty).toLocaleString('es-CO');
 
             return `
             <div class="cart-item-line">
@@ -990,11 +996,11 @@ function actualizarFooter(subtotal, esDomicilio, valorEnvio, totalFinal) {
         desgloseContainer.innerHTML = `
             <div class="order-total-row" style="font-size: 0.85rem; color: #777; margin-bottom: 2px; border-top: 1px dashed #333; padding-top: 5px;">
                 <span>SUBTOTAL</span>
-                <span>$ ${subtotal.toLocaleString()}</span>
+                <span>$ ${subtotal.toLocaleString('es-CO')}</span>
             </div>
             <div class="order-total-row" style="font-size: 0.85rem; color: var(--accent); margin-bottom: 5px;">
                 <span>DOMICILIO</span>
-                <span id="display-costo-domicilio">$ ${valorEnvio.toLocaleString()}</span>
+                <span id="display-costo-domicilio">$ ${valorEnvio.toLocaleString('es-CO')}</span>
             </div>
         `;
     } else {
@@ -1003,7 +1009,7 @@ function actualizarFooter(subtotal, esDomicilio, valorEnvio, totalFinal) {
 
     const totalDisplay = document.getElementById("order-total");
     if (totalDisplay) {
-        totalDisplay.innerText = `$ ${totalFinal.toLocaleString()}`;
+        totalDisplay.innerText = `$ ${totalFinal.toLocaleString('es-CO')}`;
     }
 }
 
@@ -1241,9 +1247,25 @@ document.querySelector(".main-grid")?.classList.add("edit-mode");
       if (document.getElementById("val-referencia"))
         document.getElementById("val-referencia").value =
           mesaData.puntoReferencia || "";
-      if (document.getElementById("val-google-maps"))
+      
+      // ✅ GUARDAR COSTO ORIGINAL DEL DOMICILIO
+      costoDomicilioOriginal = mesaData.costoDomicilio || 0;
+      costoDomicilioActual = costoDomicilioOriginal;
+      
+      if (document.getElementById("val-google-maps")) {
         document.getElementById("val-google-maps").value =
           mesaData.ubicacionGoogleMaps || "";
+        
+        // ✅ NUEVA: Marcar que es carga inicial pero SIN RECALCULAR COSTOS
+        if (mesaData.ubicacionGoogleMaps) {
+          isLoadingDomicilio = true;
+          setTimeout(() => {
+            // Solo cargar el mapa visualmente, sin recalcular costos
+            cargarMapaDesdeUbicacionGuardada(mesaData.ubicacionGoogleMaps);
+            isLoadingDomicilio = false;
+          }, 200);
+        }
+      }
     }
 
     updateTitle();
@@ -1335,6 +1357,71 @@ function initMiniMap() {
         document.getElementById("val-google-maps").value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         actualizarPuntoYCostos(lat, lng);
     });
+}
+
+/**
+ * ✅ FUNCIÓN NUEVA: Cargar mapa desde ubicación guardada SIN recalcular costos
+ * Se usa solo en carga inicial de pedidos existentes
+ */
+function cargarMapaDesdeUbicacionGuardada(valor) {
+    if (!valor || valor.trim() === "") return;
+
+    let entradaLimpia = valor.replace(/\(/g, "").replace(/\)/g, "").trim();
+    let lat = null;
+    let lng = null;
+
+    // --- CASCADA PRIORIDAD 1: PARÁMETROS !3d Y !4d ---
+    if (entradaLimpia.includes("!3d") && entradaLimpia.includes("!4d")) {
+        const regex3d4d = /!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/;
+        const match = entradaLimpia.match(regex3d4d);
+        if (match) {
+            lat = parseFloat(match[1]);
+            lng = parseFloat(match[2]);
+        }
+    } 
+    
+    // --- CASCADA PRIORIDAD 2: PARÁMETRO @ ---
+    if (lat === null && entradaLimpia.includes("@")) {
+        const regexAt = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+        const matchAt = entradaLimpia.match(regexAt);
+        if (matchAt) {
+            lat = parseFloat(matchAt[1]);
+            lng = parseFloat(matchAt[2]);
+        }
+    }
+
+    // --- CASCADA PRIORIDAD 3: COORDENADAS PLANAS ---
+    if (lat === null) {
+        let normalizado = entradaLimpia.replace(/(\d+),(\d+)/g, "$1.$2");
+        const regexPlano = /(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/;
+        const matchPlano = normalizado.match(regexPlano);
+        if (matchPlano) {
+            lat = parseFloat(matchPlano[1]);
+            lng = parseFloat(matchPlano[2]);
+        }
+    }
+
+    // SI SE ENCONTRARON COORDENADAS: solo actualizar visualización del mapa
+    if (lat !== null && lng !== null) {
+        const coordsLimpias = `${lat.toFixed(7)}, ${lng.toFixed(7)}`;
+        document.getElementById("val-google-maps").value = coordsLimpias;
+        
+        // ✅ Solo mostrar el mapa, SIN recalcular costos
+        if (miniMap) miniMap.setView([lat, lng], 16);
+        
+        // Mostrar marcador sin recalcular ruta ni costos
+        if (markerUsuarioPos) {
+            markerUsuarioPos.setLatLng([lat, lng]);
+        } else {
+            markerUsuarioPos = L.marker([lat, lng], { draggable: true }).addTo(miniMap);
+            markerUsuarioPos.on('dragend', (e) => {
+                const pos = e.target.getLatLng();
+                document.getElementById("val-google-maps").value = `${pos.lat.toFixed(6)}, ${pos.lng.toFixed(6)}`;
+                // Al arrastrar, SÍ recalcular
+                actualizarPuntoYCostos(pos.lat, pos.lng);
+            });
+        }
+    }
 }
 
 /**
@@ -1534,6 +1621,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         }
 
         // 3. Redondeo Final (Paso Crucial)
+        // ✅ Siempre recalcular cuando se llama a actualizarPuntoYCostos()
         costoDomicilioActual = redondearACien(costoConRecargo);
         updateUI();
 
@@ -1544,10 +1632,10 @@ async function actualizarPuntoYCostos(lat, lng) {
                 <div style="display:flex; flex-direction:column; background: #fff; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span><b>Distancia:</b> ${distanciaKm.toFixed(2)} km</span>
-                        <span style="font-size: 17px; color: #27ae60;"><b>$${costoDomicilioActual.toLocaleString()}</b></span>
+                        <span style="font-size: 17px; color: #27ae60;"><b>$${costoDomicilioActual.toLocaleString('es-CO')}</b></span>
                     </div>
                     <div style="text-align:right; margin-top: 4px; color: #555;">
-                        <small>Base: $${costoBaseProcesado.toLocaleString()}</small>
+                        <small>Base: $${costoBaseProcesado.toLocaleString('es-CO')}</small>
                         ${etiquetaNocturna}
                     </div>
                 </div>
@@ -1556,30 +1644,31 @@ async function actualizarPuntoYCostos(lat, lng) {
     });
 }
 
-// Cambia el icono entre 📋 y ❌
+// Cambia el icono entre símbolo de pegar y símbolo de borrar
 function checkInputStatus(id) {
     const input = document.getElementById(id);
     const helper = document.getElementById(`helper-${id}`);
     if (!input || !helper) return;
 
     if (input.value.trim() !== "") {
-        helper.innerHTML = "❌";
+    helper.innerHTML = "×";
         helper.classList.add("is-delete");
     } else {
-        helper.innerHTML = "📋";
+    helper.innerHTML = "⎘";
         helper.classList.remove("is-delete");
     }
     updateButtonState();
     updateStepIndicator();
 }
 
-// Ejecuta Pegar o Borrar
+// ⎘ = PEGAR DIRECTO DEL PORTAPAPELES (ejecución inmediata al click)
+// × = BORRAR contenido del input
 async function handleInputHelper(id) {
     const input = document.getElementById(id);
     const helper = document.getElementById(`helper-${id}`);
 
     if (helper.classList.contains("is-delete")) {
-        // ACCIÓN: BORRAR
+        // ✂️ ACCIÓN: BORRAR contenido
         input.value = "";
         if (id === "val-google-maps") {
             if (marker) map.removeLayer(marker);
@@ -1587,7 +1676,7 @@ async function handleInputHelper(id) {
             updateUI();
         }
     } else {
-        // ACCIÓN: PEGAR
+        // 📋 ACCIÓN: PEGAR - Lee portapapeles e inserta en el input INMEDIATAMENTE
         try {
             const text = await navigator.clipboard.readText();
             input.value = text;

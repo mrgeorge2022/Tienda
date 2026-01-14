@@ -24,10 +24,6 @@ body {
 }
 
 
-
-
-
-/* LINEA DE PROCESO */
 .process-stepper {
     display: none;
     justify-content: space-between;
@@ -306,13 +302,15 @@ body {
 
 .card-prod {
     display: flex;
-    flex-direction: column; /* Flujo vertical para desc y acciones */
+    flex-direction: column;
+    /* Flujo vertical para desc y acciones */
     background: #111;
     border: 1px solid #222;
     border-radius: 12px;
     margin-bottom: 12px;
     padding: 10px;
-    min-height: 120px; /* Se ajustará si la descripción se abre */
+    min-height: 120px;
+    /* Se ajustará si la descripción se abre */
 }
 
 .card-top-section {
@@ -383,12 +381,13 @@ body {
 }
 
 .prod-desc-text {
-    display: none; /* Se activa con el click */
+    display: none;
+    /* Se activa con el click */
     font-size: 12px;
     color: #aaa;
     padding: 8px 4px;
     border-top: 1px solid #222;
-    }
+}
 
 
 .card-prod h4 {
@@ -518,13 +517,14 @@ body {
         grid-template-columns: 70px 1fr;
     }
 
-.logo-img{
-    margin-right: 200px;
-}
+    .logo-img {
+        margin-right: 200px;
+    }
 
 
-.col {
-        display: none; /* Oculta las columnas por defecto */
+    .col {
+        display: none;
+        /* Oculta las columnas por defecto */
         padding: 5px;
 
         height: auto;
@@ -547,7 +547,7 @@ body {
 
     /* Ajustes de estilo para móvil */
     .sidebar-main {
-        padding:0;
+        padding: 0;
     }
 
     /* Fijar ancho de la barra lateral en móvil para que no ocupe toda la pantalla */
@@ -613,7 +613,7 @@ body {
     }
 
 
-    .grid-items{
+    .grid-items {
         gap: 3px;
     }
 
@@ -621,7 +621,9 @@ body {
         padding: 5px;
         font-size: 10px;
     }
-    .btn-add-fast, .btn-add-note{
+
+    .btn-add-fast,
+    .btn-add-note {
         padding: 0;
         font-size: 12px;
     }
@@ -643,10 +645,12 @@ body {
     z-index: 10;
     transition: transform 0.2s;
     user-select: none;
+    color: #666666
 }
 
 .btn-input-helper.is-delete {
-    color: #ff4444; /* Rojo para la X */
+    color: #666666
+    /* Rojo para la X */
 }
 
 .btn-input-helper:active {
@@ -1154,8 +1158,10 @@ body {
     height: 26px;
     border-radius: 25px;
     border: none;
-    background: #efefef; /* Gris medio */
-    color: #a78f8f; /* Texto gris suave */
+    background: #efefef;
+    /* Gris medio */
+    color: #a78f8f;
+    /* Texto gris suave */
     font-size: 1rem;
     font-weight: 400;
     cursor: pointer;
@@ -1169,14 +1175,16 @@ body {
 .qty-btn:active {
     color: var(--accent);
     transform: scale(0.85);
-    background: rgba(255, 196, 0, 0.1); /* Brillo tenue del amarillo */
+    background: rgba(255, 196, 0, 0.1);
+    /* Brillo tenue del amarillo */
 }
 
 /* El número central */
 .qty-display {
     font-size: 0.85rem;
     font-weight: 500;
-    color: rgb(0 0 0 / 70%); /* No es blanco puro, es un gris claro */
+    color: rgb(0 0 0 / 70%);
+    /* No es blanco puro, es un gris claro */
     min-width: 18px;
     text-align: center;
     letter-spacing: -0.5px;
@@ -1188,28 +1196,32 @@ body {
 .btn-icon-action {
     background: transparent;
     border: none;
-    filter: grayscale(1); /* Quita el color al emoji */
+    filter: grayscale(1);
+    /* Quita el color al emoji */
     transition: all 0.2s ease;
 }
 
 .btn-icon-action:hover {
     opacity: 1;
-    filter: grayscale(0); /* Recupera color al tocar */
+    filter: grayscale(0);
+    /* Recupera color al tocar */
     transform: scale(1.1);
 }
 
 /* Estilo de la Nota */
 .cart-item-note {
     margin-top: 5px;
-    margin-left: 23px; /* Alineado después del icono de basura */
+    margin-left: 23px;
+    /* Alineado después del icono de basura */
     font-size: 0.8rem;
-    color: #888; /* Naranja para resaltar instrucciones */
+    color: #888;
+    /* Naranja para resaltar instrucciones */
     font-style: italic;
     border-radius: 4px;
-    }
+}
 
 
-    /* Contenedor del Switch */
+/* Contenedor del Switch */
 .filter-switch-container {
     display: flex;
     align-items: center;
@@ -1229,8 +1241,13 @@ body {
 }
 
 /* Resaltar label activo */
-#date-toggle:checked ~ .label-hoy { color: var(--accent); }
-#date-toggle:not(:checked) ~ .label-ayer { color: var(--accent); }
+#date-toggle:checked~.label-hoy {
+    color: var(--accent);
+}
+
+#date-toggle:not(:checked)~.label-ayer {
+    color: var(--accent);
+}
 
 /* Estructura del Switch */
 .switch {
@@ -1249,7 +1266,10 @@ body {
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: #333;
     transition: .4s;
     border-radius: 34px;
@@ -1268,11 +1288,11 @@ body {
 }
 
 /* Colores cuando está en "Hoy" (Checked) */
-input:checked + .slider {
+input:checked+.slider {
     background-color: var(--accent);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(22px);
     background-color: #000;
 }
@@ -1283,23 +1303,26 @@ input:checked + .slider:before {
     right: -12px;
     background-color: var(--accent);
     color: #000;
-    font-size: 0.85rem; /* Bajamos un poquito la fuente para que quepan 3 números */
+    font-size: 0.85rem;
+    /* Bajamos un poquito la fuente para que quepan 3 números */
     font-weight: 800;
-    
+
     /* CAMBIO CLAVE: min-width en lugar de width fijo */
-    min-width: 24px; 
+    min-width: 24px;
     height: 24px;
-    padding: 0 6px; /* Espacio extra a los lados para cuando crezca */
-    
+    padding: 0 6px;
+    /* Espacio extra a los lados para cuando crezca */
+
     /* Mantenemos el border-radius alto para que siempre parezca redondeado */
-    border-radius: 12px; 
-    
+    border-radius: 12px;
+
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 10;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    white-space: nowrap; /* Evita que el número se baje de línea */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    /* Evita que el número se baje de línea */
 }
 
 /* Animación de brinco mejorada para el tamaño nuevo */
@@ -1308,9 +1331,18 @@ input:checked + .slider:before {
 }
 
 @keyframes bounce-anim {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.4); } /* Un poco menos de escala ya que el objeto es más grande */
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
+
+    /* Un poco menos de escala ya que el objeto es más grande */
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* ===== SPINNER DE CARGA ===== */
@@ -1355,6 +1387,7 @@ input:checked + .slider:before {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -1370,9 +1403,12 @@ input:checked + .slider:before {
 }
 
 @keyframes pulse-text {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.6;
     }
@@ -1412,23 +1448,26 @@ input:checked + .slider:before {
 }
 
 .step-text {
-    background: var(--accent);
-    color: #000;
+    background: #5a5a5a8a;
+    color: #ffffff;
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(136, 136, 136, 0.3);
 }
 
 
 
 @keyframes bounce-arrow {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0) scale(1);
     }
+
     50% {
         transform: translateY(-12px) scale(1.1);
     }
@@ -1436,5 +1475,5 @@ input:checked + .slider:before {
 
 
 #service-content {
-text-align: center;
+    text-align: center;
 }

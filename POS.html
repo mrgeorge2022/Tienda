@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>POS</title> 
+    <title>POS</title>
+    <link rel="shortcut icon" href="img/icono_tienda.png" type="image/png">
     <link rel="stylesheet" href="POS.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 </head>
 
 <body>
@@ -61,10 +62,11 @@
             <div id="service-content">
                 <h3 class="section-title">Selecciona un servicio</h3>
                 <div id="contenedor-totales-dinamico" style="display: flex; grid-template-columns: 1fr 3fr; gap: 5px;">
-        <button class="btn-method" onclick="setMethod(this, 'Mesa')" style="flex:1">MESA</button>
-        <button class="btn-method" onclick="setMethod(this, 'Recoger en tienda')" style="flex:1">RECOGER</button>
-        <button class="btn-method" onclick="setMethod(this, 'Domicilio')" style="flex:1">DOMICILIO</button>
-    </div>
+                    <button class="btn-method" onclick="setMethod(this, 'Mesa')" style="flex:1">MESA</button>
+                    <button class="btn-method" onclick="setMethod(this, 'Recoger en tienda')"
+                        style="flex:1">RECOGER</button>
+                    <button class="btn-method" onclick="setMethod(this, 'Domicilio')" style="flex:1">DOMICILIO</button>
+                </div>
                 <div class="dynamic-fields" id="fields-container"></div>
             </div>
 
@@ -74,21 +76,21 @@
                 <div id="mesas-list"></div>
             </div>
 
-<div id="view-pedidos" class="view-overlay">
-    <span class="close-view" onclick="closeLists()">×</span>
-    <h3>Historial de Pedidos</h3>
-    
-    <div class="filter-switch-container">
-        <span class="switch-label label-ayer">Ayer</span>
-        <label class="switch">
-            <input type="checkbox" id="date-toggle" checked onchange="showPedidos()">
-            <span class="slider round"></span>
-        </label>
-        <span class="switch-label label-hoy">Hoy</span>
-    </div>
+            <div id="view-pedidos" class="view-overlay">
+                <span class="close-view" onclick="closeLists()">×</span>
+                <h3>Historial de Pedidos</h3>
 
-    <div id="pedidos-list"></div>
-</div>
+                <div class="filter-switch-container">
+                    <span class="switch-label label-ayer">Ayer</span>
+                    <label class="switch">
+                        <input type="checkbox" id="date-toggle" checked onchange="showPedidos()">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switch-label label-hoy">Hoy</span>
+                </div>
+
+                <div id="pedidos-list"></div>
+            </div>
         </div>
 
         <div class="col order-panel" id="m-col-4">
@@ -101,8 +103,7 @@
                     style="font-size: 0.62rem; color: #666; display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Observaciones
                     generales</label>
                 <textarea id="val-observaciones" class="input-pro"
-                    placeholder="Ej: Sin lechuga, portería, billete de ..."
-                    oninput="updateButtonState()"
+                    placeholder="Ej: Sin lechuga, portería, billete de ..." oninput="updateButtonState()"
                     style="background: #fff; color: #000; border: 1px solid #ddd; height: 50px; font-size: 0.8rem; resize: none;"></textarea>
             </div>
             <div class="order-footer">
@@ -126,40 +127,41 @@
                     <button class="btn-action" onclick="finish()" style="flex:1">ENVIAR PEDIDO</button>
                     <button id="btn-cancel-edit" class="btn-action" onclick="cancelEdit()"
                         style="flex:1; background:#666; display:none;">❌ CANCELAR</button>
-                        
+
                 </div>
                 <div id="">
                     <button id="btn-close-mesa" class="btn-action" onclick="closeMesa()"
-                        style="flex:1; background:#d32f2f; display:none; margin-top: 5px;">🔐 CERRAR MESA</button></div>
+                        style="flex:1; background:#d32f2f; display:none; margin-top: 5px;">🔐 CERRAR MESA</button>
+                </div>
             </div>
         </div>
     </div>
 
-<div class="tab-bar" id="bottom-tabs">
-    <div class="tab-item disabled" id="t-1" onclick="goStep(1)">
-        <span class="tab-icon">🍽️</span>
-        <span class="tab-label">Productos</span>
-    </div>
-    <div class="tab-item disabled" id="t-2" onclick="goStep(2)">
-        <span class="tab-icon">📝</span>
-        <span class="tab-label">Datos</span>
-    </div>
-    <div class="tab-item disabled" id="t-3" onclick="goStep(3)">
-        <div style="position: relative; display: inline-block;">
-            <span class="tab-icon">🛒</span>
-            <span id="badge-mobile" class="mobile-badge">0</span>
+    <div class="tab-bar" id="bottom-tabs">
+        <div class="tab-item disabled" id="t-1" onclick="goStep(1)">
+            <span class="tab-icon">🍽️</span>
+            <span class="tab-label">Productos</span>
         </div>
-        <span class="tab-label">Pedido</span>
+        <div class="tab-item disabled" id="t-2" onclick="goStep(2)">
+            <span class="tab-icon">📝</span>
+            <span class="tab-label">Datos</span>
+        </div>
+        <div class="tab-item disabled" id="t-3" onclick="goStep(3)">
+            <div style="position: relative; display: inline-block;">
+                <span class="tab-icon">🛒</span>
+                <span id="badge-mobile" class="mobile-badge">0</span>
+            </div>
+            <span class="tab-label">Pedido</span>
+        </div>
     </div>
-</div>
 
-<!-- INDICADOR DE SIGUIENTE PASO EN MÓVIL -->
-<div class="step-indicator" id="step-indicator" onclick="goNextStep()">
-    <div class="step-indicator-content">
+    <!-- INDICADOR DE SIGUIENTE PASO EN MÓVIL -->
+    <div class="step-indicator" id="step-indicator" onclick="goNextStep()">
+        <div class="step-indicator-content">
 
-        <div class="step-text" id="step-text"></div>
+            <div class="step-text" id="step-text"></div>
+        </div>
     </div>
-</div>
 
     <script src="POS.js"></script>
 </body>
