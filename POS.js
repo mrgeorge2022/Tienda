@@ -165,38 +165,62 @@ async function showMesas() {
     .sort((a, b) => Number(a.mesa || 0) - Number(b.mesa || 0));
 
   hideSpinner();
-  list.innerHTML = activas.length
-    ? activas
-        .map(
-          (m) => `
-    <div class="data-card" onclick="editExistingOrder(${JSON.stringify(
-      m
-    ).replace(
-      /"/g,
-      "&quot;"
-    )})" style="cursor:pointer; border-left: 4px solid var(--accent);">
-        <div style="display:flex; justify-content:space-between; align-items: flex-start;">
-            <div>
-                <span class="status-badge">MESA ${m.mesa}</span>
-                <div style="font-size:0.65rem; color:#888; margin-top:4px;">Fact: ${
-                  m.numeroFactura
-                }</div>
+list.innerHTML = activas.length
+    ? activas.map(m => {
+        // En esta lista siempre son mesas
+        const badge = `<span class="badge-metodo badge-mesa">Mesa ${m.mesa}</span>`;
+        
+        // Convertimos el objeto a String para el botón de editar
+        const mString = JSON.stringify(m).replace(/"/g, "&quot;");
+
+        return `
+        <div class="pedido-card">
+            <div class="pedido-header" onclick="this.parentElement.classList.toggle('abierto')">
+                <div class="header-info">
+                    ${badge}
+                    <div class="header-top">
+                        <span class="pedido-id">${m.numeroFactura}</span>
+                    </div>
+                    <strong class="pedido-nombre">${m.nombre || 'Sin nombre'}</strong>
+                </div>
+                <div class="header-precio">
+                    <div class="pedido-hora">${m.hora || ''} <i class="fas fa-chevron-down arrow-icon"></i></div>
+                    <span class="pedido-total">$${Number(m.totalPagar).toLocaleString('es-CO')}</span>
+                </div>
             </div>
-            <small>${m.hora || ""}</small>
-        </div>
-        <div style="font-size:0.9rem; color:#fff; font-weight:bold;">${
-          m.nombre || ""
-        }</div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.7rem; color:var(--accent)">PULSA PARA EDITAR</span>
-            <div style="font-weight:bold; color:var(--accent)">$${Number(
-              m.totalPagar
-            ).toLocaleString('es-CO')}</div>
-        </div>
-    </div>`
-        )
-        .join("")
-    : "<p>No hay mesas activas.</p>";
+            
+            <div class="pedido-detalle">
+                <div class="detalle-container">
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cel:</span>
+                            <strong><i class="fas fa-phone"></i> ${m.telefono || '0'}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Pago:</span>
+                            <strong><i class="fas fa-wallet"></i> ${m.metodoPago || 'Pendiente'}</strong>
+                        </div>
+                    </div>
+
+                    <div class="info-productos">
+                        <strong class="productos-title">Producto(s) de la Mesa</strong>
+                        <pre class="productos-lista">${m.productos}</pre>
+                    </div>
+
+                    ${m.observaciones ? `
+                    <div class="info-notas">
+                        <strong>Notas:</strong> ${m.observaciones}
+                    </div>` : ''}
+
+                    <button class="btn-edit" onclick="editExistingOrder(${mString})">
+                        <i class="fas fa-external-link-alt"></i> EDITAR MESA ${m.mesa}
+                    </button>
+                </div>
+            </div>
+        </div>`;
+    }).join("")
+    : "<p style='text-align:center; padding:20px; color:#666;'>No hay mesas activas.</p>";
 }
 
 async function showPedidos() {
@@ -236,19 +260,96 @@ async function showPedidos() {
             return;
         }
 
-        // Mostrar lista
-        list.innerHTML = filtrados.reverse().map(p => `
-            <div class="data-card" onclick="editExistingOrder(${JSON.stringify(p).replace(/"/g, "&quot;")})">
-                <div style="display:flex; justify-content:space-between;">
-                    <span style="color:var(--accent); font-weight:bold; font-size:0.8rem;">${p.numeroFactura}</span>
-                    <span style="color:#777; font-size:0.7rem;">${p.hora}</span>
+list.innerHTML = filtrados.reverse().map(p => {
+    // Definir etiquetas
+    let badge = `<span class="badge-metodo badge-recoger">Recoger</span>`;
+    if (p.direccion) badge = `<span class="badge-metodo badge-domicilio">Domicilio</span>`;
+    else if (p.mesa !== "" && p.mesa !== undefined) badge = `<span class="badge-metodo badge-mesa">Mesa ${p.mesa}</span>`;
+
+    const pString = JSON.stringify(p).replace(/"/g, "&quot;");
+    
+    // Contenedor lateral derecho: Envío + Mapa
+    const lateralDerecho = `
+        <div class="direccion-lateral">
+            ${Number(p.costoDomicilio) > 0 ? `
+                <div class="info-domicilio-valor">
+                    <span class="info-label">Envío:</span>
+                    <strong><i class="fas fa-motorcycle"></i> $${Number(p.costoDomicilio).toLocaleString()}</strong>
                 </div>
-                <div style="display:flex; justify-content:space-between; margin-top:5px;">
-                    <strong>${p.nombre}</strong>
-                    <span style="font-weight:bold;">$${Number(p.totalPagar).toLocaleString('es-CO')}</span>
+            ` : ''}
+            
+            ${p.ubicacionGoogleMaps ? `
+                <a href="${p.ubicacionGoogleMaps}" target="_blank" class="link-mapa">
+                    <i class="fas fa-map-marker-alt"></i>Ver Mapa</a>
+            ` : ''}
+        </div>
+    `;
+
+    return `
+        <div class="pedido-card">
+            <div class="pedido-header" onclick="this.parentElement.classList.toggle('abierto')">
+                <div class="header-info">
+                    ${badge}
+                    <div class="header-top">
+                        <span class="pedido-id">${p.numeroFactura}</span>
+                    </div>
+                    <strong class="pedido-nombre">${p.nombre}</strong>
+                </div>
+                <div class="header-precio">
+                    <div class="pedido-hora">${p.hora} <i class="fas fa-chevron-down arrow-icon"></i></div>
+                    <span class="pedido-total">$${Number(p.totalPagar).toLocaleString()}</span>
                 </div>
             </div>
-        `).join("");
+            
+            <div class="pedido-detalle">
+                <div class="detalle-container">
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cel:</span>
+                            <strong><i class="fas fa-phone"></i> ${p.telefono || '0'}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Pago:</span>
+                            <strong><i class="fas fa-wallet"></i> ${p.metodoPago || 'No definido'}</strong>
+                        </div>
+                    </div>
+
+                    ${p.direccion ? `
+                    <div class="info-direccion">
+                        <div class="direccion-header">
+                            <div class="direccion-texto">
+                                <span class="info-label">Dirección de entrega:</span>
+                                <strong>${p.direccion}</strong>
+                                ${p.puntoReferencia ? `<small>Ref: ${p.puntoReferencia}</small>` : ''}
+                            </div>
+                            ${lateralDerecho}
+                        </div>
+                    </div>` : ''}
+
+                    <div class="info-productos">
+                        <strong class="productos-title">Productos</strong>
+                        <pre class="productos-lista">${p.productos}</pre>
+                    </div>
+
+                    ${p.observaciones ? `
+                    <div class="info-notas">
+                        <strong>Notas:</strong> ${p.observaciones}
+                    </div>` : ''}
+
+<div class="acciones-footer">
+    <button class="btn-edit" onclick="editExistingOrder(${pString})">
+        <i class="fas fa-edit"></i> EDITAR
+    </button>
+    <button class="btn-print" onclick='imprimirFacturaPOS(${pString})'>
+        <i class="fas fa-print"></i> VER FACTURA
+    </button>
+</div>
+                </div>
+            </div>
+        </div>
+    `;
+}).join("");
 
     } catch (err) {
         hideSpinner();
@@ -364,10 +465,16 @@ async function finish() {
   }
 
   // 5. CONSTRUCCIÓN DEL PAYLOAD PARA LA API (Alineado con tu doPost de Apps Script)
+
+  const d = fecha.getDate().toString().padStart(2, '0');
+const m = (fecha.getMonth() + 1).toString().padStart(2, '0');
+const a = fecha.getFullYear().toString().slice(-2); // Toma los últimos 2 dígitos (26)
+
+
   const payload = {
     tipoEntrega: currentMethod,
     numeroFactura: facturaId,
-    fecha: fecha.toLocaleDateString(),
+    fecha: `${d}/${m}/${a}`,
     hora: fecha.toLocaleTimeString("it-IT"),
     nombre: inputNombre,
     telefono: inputTel,
@@ -397,9 +504,19 @@ async function finish() {
       body: JSON.stringify(payload),
     });
 
-    hideSpinner();
+hideSpinner();
+
+    // 1. PRIMERA ALERTA: Notificación de éxito
     alert(editingOrderId ? "✅ ¡Pedido actualizado!" : "🚀 ¡Pedido enviado!");
-    location.reload();
+
+    // 2. SEGUNDA ALERTA: Pregunta de impresión
+    if (confirm("¿Desea imprimir la factura ahora?")) {
+        // Llamamos a la nueva función que pusiste al final
+        ejecutarImpresionSilenciosa(payload);
+    } else {
+        // Si no quiere imprimir, solo refrescamos el POS
+        location.reload();
+    }
   } catch (err) {
     hideSpinner();
     alert("❌ Error de conexión.");
@@ -626,10 +743,11 @@ function setMethod(btn, method) {
           <span class="btn-input-helper" id="helper-${id}" onclick="handleInputHelper('${id}')">⎘</span>
         </div>`;
     };
+    
 
     let html = crearInputConAccion("val-nombre", "Nombre cliente", "text", "updateTitle()");
     html += crearInputConAccion("val-tel", "Teléfono", "tel", "updateTitle()");
-    html += crearInputConAccion("val-mesa", "Núm. mesa", "number", "updateTitle()");
+    html += crearInputConAccion("val-mesa", "Número mesa", "number", "updateTitle()");
 
     if (method === "Domicilio") {
       html += crearInputConAccion("val-google-maps", "Pega Link de Maps o Coordenadas", "text", "analizarEntradaMapa(this.value)");
@@ -1191,11 +1309,20 @@ document.querySelector(".main-grid")?.classList.add("edit-mode");
     }
   });
 
-  // 5. Configurar Método y Llenar Campos
-  let metodoAActivar = "Mesa";
-  if (mesaData.direccion) metodoAActivar = "Domicilio";
-  else if (!mesaData.mesa || mesaData.mesa === "0")
-    metodoAActivar = "Recoger en tienda";
+// 5. Configurar Método y Llenar Campos
+let metodoAActivar = "Recoger en tienda"; // Por defecto iniciamos en recoger
+
+if (mesaData.direccion) {
+    // Si tiene dirección, es un domicilio
+    metodoAActivar = "Domicilio"; 
+} else if (mesaData.mesasActivas === true || mesaData.q === true) {
+    // Si en la DB el campo de mesa activa es verdadero, forzamos "Mesa"
+    // aunque el número de mesa sea "0"
+    metodoAActivar = "Mesa";
+} else if (mesaData.mesa && mesaData.mesa !== "" && mesaData.mesa !== "0") {
+    // Si tiene un número de mesa definido y no es cero, es Mesa
+    metodoAActivar = "Mesa";
+}
 
   currentMethod = metodoAActivar;
   const botones = document.querySelectorAll(".btn-method");
@@ -1215,9 +1342,9 @@ document.querySelector(".main-grid")?.classList.add("edit-mode");
     if (document.getElementById("val-nombre"))
       document.getElementById("val-nombre").value = mesaData.nombre || "";
     if (document.getElementById("val-tel"))
-      document.getElementById("val-tel").value = mesaData.telefono || "";
+      document.getElementById("val-tel").value = mesaData.telefono || "0";
     if (document.getElementById("val-mesa"))
-      document.getElementById("val-mesa").value = mesaData.mesa || "";
+      document.getElementById("val-mesa").value = mesaData.mesa || "0";
     if (document.getElementById("val-observaciones"))
       document.getElementById("val-observaciones").value =
         mesaData.observaciones || "";
@@ -1629,7 +1756,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         const infoDiv = document.getElementById("distancia-info");
         if (infoDiv) {
             infoDiv.innerHTML = `
-                <div style="display:flex; flex-direction:column; background: #fff; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
+                <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span><b>Distancia:</b> ${distanciaKm.toFixed(2)} km</span>
                         <span style="font-size: 17px; color: #27ae60;"><b>$${costoDomicilioActual.toLocaleString('es-CO')}</b></span>
@@ -1691,6 +1818,154 @@ async function handleInputHelper(id) {
     updateButtonState();
 }
 
+function imprimirFacturaPOS(pedido) {
+    let productosFinales = [];
 
+// SI VIENE DEL HISTORIAL (Formato: "Promo 2 Salchicheras x2 - $25000")
+// SI VIENE DEL HISTORIAL (Formato: "Rancher x1 - $18000 (Sin plátano amarillo)")
+if (pedido.productos && typeof pedido.productos === 'string') {
+    const lineas = pedido.productos.split('\n');
+    
+    productosFinales = lineas.map(linea => {
+        try {
+            // 1. Extraer instrucciones: lo que está entre ( )
+            let instrucciones = "";
+            const matchParentesis = linea.match(/\(([^)]+)\)/);
+            if (matchParentesis) {
+                instrucciones = matchParentesis[1]; // "Sin plátano amarillo"
+            }
 
+            // 2. Limpiar la línea de las instrucciones para procesar el resto
+            const lineaLimpia = linea.replace(/\s*\([^)]+\)/, "").trim();
+
+            // 3. Separar por el guion para el precio
+            const partes = lineaLimpia.split(' - '); 
+            const precioTexto = partes[1]?.replace('$', '').trim() || "0";
+            const precioUnitario = parseFloat(precioTexto);
+
+            // 4. Separar por " x" para nombre y cantidad
+            const nombreCant = partes[0];
+            const subPartes = nombreCant.split(' x');
+            const nombre = subPartes[0].trim();
+            const cantidad = parseInt(subPartes[1]) || 1;
+
+            return {
+                nombre: nombre,
+                cantidad: cantidad,
+                precio: precioUnitario,
+                instrucciones: instrucciones // <-- AQUÍ SE GUARDAN LAS NOTAS
+            };
+        } catch (e) {
+            return { nombre: linea, cantidad: 1, precio: 0, instrucciones: "" };
+        }
+    });
+}
+    // SI ES UN PEDIDO NUEVO (Viene del carrito)
+    else if (cart && cart.length > 0) {
+        productosFinales = cart.map(item => ({
+            nombre: item.nombre,
+            cantidad: item.cantidad,
+            precio: item.precio,
+            instrucciones: item.nota || ""
+        }));
+    }
+
+    if (productosFinales.length === 0) {
+        alert("No se encontraron productos para imprimir.");
+        return;
+    }
+
+    const datosFactura = {
+        cliente: {
+            nombre: pedido.nombre || "Consumidor Final",
+            telefono: pedido.telefono || "0",
+            direccion: pedido.direccion || "",
+            referencia: pedido.puntoReferencia || ""
+        },
+        pedido: {
+            numero: pedido.numeroFactura,
+            fecha: pedido.fecha,
+            hora: pedido.hora,
+            metodo: pedido.metodoPago,
+            entrega: pedido.tipoEntrega,
+            mesa: pedido.mesa || "0"
+        },
+        itemsPedido: productosFinales,
+        costoDom: pedido.costoDomicilio || 0,
+        total: pedido.totalPagar,
+        resumen: {
+            subtotal: pedido.totalProductos
+        },
+        observaciones: pedido.observaciones || "",
+        ubicacionGoogleMaps: pedido.ubicacionGoogleMaps || ""
+    };
+
+    localStorage.setItem('datosFacturaPOS', JSON.stringify(datosFactura));
+    window.open('POSfactura.html', '_blank');
+}
 window.onload = init;
+
+
+
+function ejecutarImpresionSilenciosa(pedido) {
+    let productosFinales = [];
+    
+    if (typeof cart !== 'undefined' && cart.length > 0) {
+        productosFinales = cart.map(item => {
+            // Buscamos la cantidad en cualquiera de estos nombres comunes
+            // Probamos con 'cant' que es el que usa tu función addToCart
+            const cantidadReal = item.cant || item.cantidad || item.qty || 1;
+            
+            return {
+                nombre: item.nombre || "Producto",
+                cantidad: parseInt(cantidadReal), 
+                precio: parseFloat(item.precio) || 0,
+                instrucciones: item.nota || ""
+            };
+        });
+    }
+
+    const datosFactura = {
+        cliente: {
+            nombre: pedido.nombre || "Consumidor Final",
+            telefono: pedido.telefono || "0",
+            direccion: pedido.direccion || "",
+            referencia: pedido.puntoReferencia || ""
+        },
+        pedido: {
+            numero: pedido.numeroFactura,
+            fecha: pedido.fecha,
+            hora: pedido.hora,
+            metodo: pedido.metodoPago,
+            entrega: pedido.tipoEntrega,
+            mesa: pedido.mesa || "0"
+        },
+        itemsPedido: productosFinales,
+        costoDom: pedido.costoDomicilio || 0,
+        total: pedido.totalPagar,
+        resumen: { subtotal: pedido.totalProductos },
+        observaciones: pedido.observaciones || "",
+        ubicacionGoogleMaps: pedido.ubicacionGoogleMaps || ""
+    };
+
+    // Guardar para que POSfactura.html lo lea
+    localStorage.setItem('datosFacturaPOS', JSON.stringify(datosFactura));
+
+    let iframe = document.getElementById('silent-print-frame');
+    if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'silent-print-frame';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+    }
+
+    iframe.src = 'POSfactura.html';
+
+    iframe.onload = function() {
+        setTimeout(() => {
+            iframe.contentWindow.print();
+            // Recargar después de imprimir
+            setTimeout(() => { location.reload(); }, 1000);
+        }, 700); // Un poco más de tiempo para asegurar renderizado
+    };
+}
