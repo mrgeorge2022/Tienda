@@ -639,6 +639,7 @@ function updateButtonState() {
             mesa: (document.getElementById("val-mesa")?.value || "").trim(),
             obs: (document.getElementById("val-observaciones")?.value || "").trim(),
             pago: (document.getElementById("val-metodo-pago")?.value || ""),
+            referencia: (document.getElementById("val-referencia")?.value || "").trim(),
             metodo: currentMethod,
             items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
         });
@@ -1452,6 +1453,7 @@ if (mesaData.direccion) {
         mesa: (document.getElementById("val-mesa")?.value || "").trim(),
         obs: (document.getElementById("val-observaciones")?.value || "").trim(),
         pago: (document.getElementById("val-metodo-pago")?.value || ""),
+        referencia: (document.getElementById("val-referencia")?.value || "").trim(),
         metodo: currentMethod,
         // Guardamos los productos con su cantidad e ID
         items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
@@ -1535,11 +1537,38 @@ const iconoNegocio = L.icon({
 }
 
 /**
+ * ✅ FUNCIÓN: Dibujar ruta SIN recalcular costos (solo para carga inicial)
+ */
+function dibujarRutaSinCostos(lat, lng) {
+    const tienda = config?.coordenadasSede || [10.373750, -75.473580];
+    
+    // Control de Ruta - Dibuja la línea pero no actualiza costos
+    if (routingControl) miniMap.removeControl(routingControl);
+    
+    routingControl = L.Routing.control({
+        waypoints: [L.latLng(tienda), L.latLng(lat, lng)],
+        createMarker: () => null,
+        addWaypoints: false,
+        show: false,
+        lineOptions: { 
+            styles: [{ color: config?.colores?.["--accent"] || '#ffc400', weight: 6, opacity: 0.8 }] 
+        }
+    }).addTo(miniMap);
+}
+
+/**
  * ✅ FUNCIÓN NUEVA: Cargar mapa desde ubicación guardada SIN recalcular costos
  * Se usa solo en carga inicial de pedidos existentes
  */
 function cargarMapaDesdeUbicacionGuardada(valor) {
     if (!valor || valor.trim() === "") return;
+    
+    // Asegurar que el mapa existe
+    if (!miniMap) {
+        console.warn("Mapa no inicializado aún, reintentando...");
+        setTimeout(() => cargarMapaDesdeUbicacionGuardada(valor), 300);
+        return;
+    }
 
     let entradaLimpia = valor.replace(/\(/g, "").replace(/\)/g, "").trim();
     let lat = null;
@@ -1584,18 +1613,23 @@ function cargarMapaDesdeUbicacionGuardada(valor) {
         // ✅ Solo mostrar el mapa, SIN recalcular costos
         if (miniMap) miniMap.setView([lat, lng], 16);
         
-        // Mostrar marcador sin recalcular ruta ni costos
+        // ✅ Remover marcador anterior si existe
         if (markerUsuarioPos) {
-            markerUsuarioPos.setLatLng([lat, lng]);
-        } else {
-            markerUsuarioPos = L.marker([lat, lng], { draggable: true }).addTo(miniMap);
-            markerUsuarioPos.on('dragend', (e) => {
-                const pos = e.target.getLatLng();
-                document.getElementById("val-google-maps").value = `${pos.lat.toFixed(6)}, ${pos.lng.toFixed(6)}`;
-                // Al arrastrar, SÍ recalcular
-                actualizarPuntoYCostos(pos.lat, pos.lng);
-            });
+            miniMap.removeLayer(markerUsuarioPos);
+            markerUsuarioPos = null;
         }
+        
+        // ✅ Crear marcador nuevo y añadirlo al mapa
+        markerUsuarioPos = L.marker([lat, lng], { draggable: true }).addTo(miniMap);
+        markerUsuarioPos.on('dragend', (e) => {
+            const pos = e.target.getLatLng();
+            document.getElementById("val-google-maps").value = `${pos.lat.toFixed(6)}, ${pos.lng.toFixed(6)}`;
+            // Al arrastrar, SÍ recalcular
+            actualizarPuntoYCostos(pos.lat, pos.lng);
+        });
+        
+        // ✅ NUEVO: Dibujar la ruta sin recalcular costos
+        dibujarRutaSinCostos(lat, lng);
     }
 }
 
