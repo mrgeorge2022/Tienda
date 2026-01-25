@@ -21,6 +21,11 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    position: fixed;
+    width: 100%;
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
 }
 
 
@@ -202,7 +207,7 @@ body {
 
 #m-col-3 {
     overflow-y: auto;
-
+padding-bottom: 50px;
 }
 
 .btn-method {
@@ -425,7 +430,6 @@ body {
 
 .order-footer {
     padding: 8px;
-    background: #f0f0f0;
     border-top: 1px solid #ddd;
 }
 
@@ -462,9 +466,12 @@ body {
 /* TABS MÓVIL */
 .tab-bar {
     display: none;
+    position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    height: 65px;
+    height: calc(65px + max(env(safe-area-inset-bottom), 0px));
     background: rgba(0, 0, 0, 0.85);
     /* Negro con transparencia */
     backdrop-filter: blur(10px);
@@ -473,6 +480,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 2000;
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
 }
 
 .tab-item {
@@ -515,6 +523,7 @@ body {
 @media (max-width: 1000px) {
     .main-grid {
         grid-template-columns: 70px 1fr;
+        padding-bottom: calc(65px + max(env(safe-area-inset-bottom), 0px));
     }
 
     .logo-img {
@@ -533,6 +542,7 @@ body {
 
     .col.active-m {
         display: flex !important;
+        padding-bottom: 60px;
     }
 
     /* Mostrar siempre la sidebar (m-col-1) en móvil; el servicio (m-col-2)
@@ -612,7 +622,9 @@ body {
     }
 
 
-
+    .cat-list-vertical {
+        padding-bottom: 50px;
+    }
 
     .grid-items {
         gap: 3px;
@@ -1539,7 +1551,7 @@ input:checked+.slider:before {
 
 .pedido-id {
     color: #999;
-    font-size: 0.75rem;
+    font-size: 0.55rem;
     letter-spacing: 0.5px;
 }
 
@@ -1547,6 +1559,7 @@ input:checked+.slider:before {
 
 .pedido-nombre {
     color: #fff;
+    font-size: 0.70rem;
     text-transform: uppercase;
 }
 
@@ -1833,3 +1846,4 @@ input:checked+.slider:before {
 .direccion-texto strong {
     display: block;
 }
+
