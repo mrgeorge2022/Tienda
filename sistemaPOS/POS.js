@@ -1812,7 +1812,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         
         const valorKM = config?.costoPorKilometro || 1000;
         const baseEnvio = config?.costoEnvioBase || 2000; 
-        const TARIFA_MINIMA = 4000;
+        const TARIFA_MINIMA = 3000;
         const redondearACien = (valor) => Math.ceil(valor / 100) * 100;
 
         // 1. Precio Base y Mínima
