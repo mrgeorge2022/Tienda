@@ -1806,7 +1806,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         }
     }).addTo(miniMap);
 
-    routingControl.on('routesfound', function(e) {
+        routingControl.on('routesfound', function(e) {
         const route = e.routes[0];
         const distanciaKm = route.summary.totalDistance / 1000;
         
@@ -1820,24 +1820,14 @@ async function actualizarPuntoYCostos(lat, lng) {
         let costoBaseProcesado = Math.max(calculoInicial, TARIFA_MINIMA);
 
         // 2. Recargo Nocturno (Simulando 10 PM)
-        // const hora = new Date().getHours();
-        // let costoConRecargo = costoBaseProcesado;
-        // let etiquetaNocturna = "";
-
-        // if (hora >= 22 || hora < 6) {
-        //     costoConRecargo = costoBaseProcesado * 1.20; 
-        //     etiquetaNocturna = `<br><span style="color:#e74c3c; font-weight:bold;">🌙 Recargo Nocturno (+20%)</span>`;
-        // }
-        
-        // RECARGO NOCTURNO DESACTIVADO
         const hora = new Date().getHours();
         let costoConRecargo = costoBaseProcesado;
         let etiquetaNocturna = "";
-        
-        // if (hora >= 22 || hora < 6) {
-        //     costoConRecargo = costoBaseProcesado * 1.20; 
-        //     etiquetaNocturna = `<br><span style="color:#e74c3c; font-weight:bold;">🌙 Recargo Nocturno (+20%)</span>`;
-        // }
+
+        if (hora >= 22 || hora < 6) {
+            costoConRecargo = costoBaseProcesado * 1.20; 
+            etiquetaNocturna = `<br><span style="color:#e74c3c; font-weight:bold;">🌙 Recargo Nocturno (+20%)</span>`;
+        }
 
         // 3. Redondeo Final (Paso Crucial)
         // ✅ Siempre recalcular cuando se llama a actualizarPuntoYCostos()
@@ -2061,3 +2051,4 @@ function ejecutarImpresionSilenciosa(pedido) {
         }, 700); // Un poco más de tiempo para asegurar renderizado
     };
 }
+
