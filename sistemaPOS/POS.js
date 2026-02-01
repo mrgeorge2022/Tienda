@@ -110,17 +110,28 @@ function calcularCambio() {
     }
 }
 
+/**
+ * Formatea el valor del input a moneda COP (puntos de miles) mientras se escribe.
+ * @param {HTMLInputElement} input 
+ */
 function formatearMontoColombiano(input) {
-    // Obtener solo los números
+    // 1. Obtener solo los números del valor actual
     let valor = input.value.replace(/\D/g, '');
     
-    // Formatear con puntos cada 3 dígitos
+    // 2. Formatear con puntos cada 3 dígitos (COP)
     if (valor) {
-        valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        valor = new Number(valor).toLocaleString('es-CO').replace(/,/g, '.');
     }
     
+    // 3. Asignar el valor formateado de vuelta al input
     input.value = valor;
-    calcularCambio();
+
+    // 4. Actualizar cálculos inmediatamente
+    if (input.id === "val-costo-domicilio") {
+        actualizarTotalesConDomicilio();
+    } else if (input.id === "val-monto-efectivo") {
+        calcularCambio();
+    }
 }
 
 
@@ -2054,20 +2065,21 @@ async function actualizarPuntoYCostos(lat, lng) {
         const distanciaKm = route.summary.totalDistance / 1000;
         
         const valorKM = config?.costoPorKilometro || 1000;
-        const baseEnvio = config?.costoEnvioBase || 2000; 
-        const TARIFA_MINIMA = 3000;
+        const baseEnvio = config?.costoEnvioBase || 2000;
+        const tarifaMinima = config?.domicilio?.tarifaMinima || 3000; // Leer desde config
+        const recargoNocturnoActivo = config?.domicilio?.recargoNocturnoActivo !== false; // true por defecto
         const redondearACien = (valor) => Math.ceil(valor / 100) * 100;
 
         // 1. Precio Base y Mínima
         let calculoInicial = (distanciaKm * valorKM) + baseEnvio;
-        let costoBaseProcesado = Math.max(calculoInicial, TARIFA_MINIMA);
+        let costoBaseProcesado = Math.max(calculoInicial, tarifaMinima);
 
-        // 2. Recargo Nocturno (Simulando 10 PM)
+        // 2. Recargo Nocturno (Solo si está activo en config)
         const hora = new Date().getHours();
         let costoConRecargo = costoBaseProcesado;
         let etiquetaNocturna = "";
 
-        if (hora >= 22 || hora < 6) {
+        if (recargoNocturnoActivo && (hora >= 22 || hora < 6)) {
             costoConRecargo = costoBaseProcesado * 1.20; 
             etiquetaNocturna = `<br><span style="color:#e74c3c; font-weight:bold;">🌙 Recargo Nocturno (+20%)</span>`;
         }
@@ -2081,20 +2093,30 @@ async function actualizarPuntoYCostos(lat, lng) {
         const infoDiv = document.getElementById("distancia-info");
         if (infoDiv) {
             infoDiv.innerHTML = `
-                <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span><b>Distancia:</b> ${distanciaKm.toFixed(2)} km</span>
-                        <span style="font-size: 17px; color: #27ae60;"><b>$${costoDomicilioActual.toLocaleString('es-CO')}</b></span>
-                    </div>
-                    <div style="text-align:right; margin-top: 4px; color: #555;">
-                        <small>Base: $${costoBaseProcesado.toLocaleString('es-CO')}</small>
-                        ${etiquetaNocturna}
-                    </div>
+              <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span><b>Distancia:</b> ${distanciaKm.toFixed(2)} km</span>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <span style="font-size: 12px; color: #999;">$</span>
+                    <input 
+                      type="text" 
+                      id="tarifa-domicilio-input" 
+                      value="${costoDomicilioActual.toLocaleString('es-CO')}" 
+                      style="width: 110px; padding: 6px 8px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; color: #fff; background: #222; text-align: right;"
+                      oninput="formatearTarifaCOP(this)"
+                    >
+                  </div>
                 </div>
+                <div style="text-align:right; margin-top: 4px; color: #555;">
+                  <small>Base: $${costoBaseProcesado.toLocaleString('es-CO')}</small>
+                  ${etiquetaNocturna}
+                </div>
+              </div>
             `;
         }
     });
 }
+
 
 // Cambia el icono entre símbolo de pegar y símbolo de borrar
 function checkInputStatus(id) {
@@ -2111,6 +2133,29 @@ function checkInputStatus(id) {
     }
     updateButtonState();
     updateStepIndicator();
+}
+// 📌 FUNCIÓN: Formatear tarifa en COP y actualizar total en tiempo real
+function formatearTarifaCOP(input) {
+  // Obtener solo los dígitos
+  let valor = input.value.replace(/\D/g, '');
+    
+  // Si está vacío, dejar así
+  if (valor === '') {
+    input.value = '';
+    costoDomicilioActual = 0;
+    updateUI();
+    return;
+  }
+    
+  // Convertir a número
+  let numValor = parseInt(valor);
+    
+  // Formatear en COP
+  input.value = numValor.toLocaleString('es-CO');
+    
+  // Actualizar la tarifa y el total instantáneamente
+  costoDomicilioActual = numValor;
+  updateUI();
 }
 
 // ⎘ = PEGAR DIRECTO DEL PORTAPAPELES (ejecución inmediata al click)

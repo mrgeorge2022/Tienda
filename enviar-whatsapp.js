@@ -84,26 +84,20 @@ function enviarPedidoWhatsApp(pedido) {
     msg += `*Ubicación en Google Maps:*\n${ubicacion}\n\n`;
   }
 
-
-
   msg += `\n\n\n\n*Envía tu pedido aqui --------->*`;
 
-  // Abre la pestaña primero (autorizada por el clic)
-  const win = window.open("", "_blank");
-
-  // Luego hace el fetch
+  // 📱 Obtener número de WhatsApp y enviar
   fetch("config.json")
     .then((response) => response.json())
     .then((config) => {
       const numeroWhatsApp = config.numeroWhatsAppMensajes;
-      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(
-        msg
-      )}`;
-      win.location.href = url; // redirige
+      // 🚀 SIEMPRE enviar a WhatsApp
+      const win = window.open("", "_blank");
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
+      win.location.href = url;
     })
     .catch((error) => {
       console.error("Error al cargar config.json:", error);
-      win.close(); // cierra la ventana si falló
     });
 
   // ✅ Guardar pedido
@@ -122,7 +116,7 @@ function enviarPedidoWhatsApp(pedido) {
     // Silencioso: sin mensajes en consola
   }
 
-  // ✅ Mostrar modal
+  // ✅ SIEMPRE mostrar el modal
   mostrarModalFactura();
 }
 

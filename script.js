@@ -1214,7 +1214,7 @@ function closeCustomerModal() {
 // ============================================
 // 🧾 FORMULARIO DE DATOS DEL CLIENTE (ENVÍO A WHATSAPP)
 // ============================================
-customerForm.addEventListener("submit", (e) => {
+customerForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Evitar recarga
 
   const name = document.getElementById("customer-name").value.trim();
@@ -1283,15 +1283,10 @@ const pedido = {
 // 💾 Guardar pedido para factura
 localStorage.setItem('lastPedido', JSON.stringify(pedido));
 
-
-// 🚀 Enviar pedido a WhatsApp
+// � SIEMPRE enviar pedido (para mostrar el modal)
+// La función enviarPedidoWhatsApp() decide internamente si envía a WhatsApp o no
 enviarPedidoWhatsApp(pedido);
 enviarPedidoASheets(pedido);
-
-// 🚀 Luego abrir la factura
-setTimeout(() => {
-  window.open('factura.html', '_blank');
-}, 500);
 
 // 🧹 Limpiar carrito y cerrar modal
 cart = [];
