@@ -91,9 +91,14 @@ function enviarPedidoWhatsApp(pedido) {
     .then((response) => response.json())
     .then((config) => {
       const numeroWhatsApp = config.numeroWhatsAppMensajes;
-      // 🚀 SIEMPRE enviar a WhatsApp (más compatible con iPhone y navegadores)
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-      window.open(url, "_blank");
+      // Detectar si es móvil
+      const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = url;
+      } else {
+        window.open(url, "_blank");
+      }
     })
     .catch((error) => {
       console.error("Error al cargar config.json:", error);
