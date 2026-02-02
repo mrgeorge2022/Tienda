@@ -91,10 +91,9 @@ function enviarPedidoWhatsApp(pedido) {
     .then((response) => response.json())
     .then((config) => {
       const numeroWhatsApp = config.numeroWhatsAppMensajes;
-      // 🚀 SIEMPRE enviar a WhatsApp
-      const win = window.open("", "_blank");
+      // 🚀 SIEMPRE enviar a WhatsApp (más compatible con iPhone y navegadores)
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-      win.location.href = url;
+      window.open(url, "_blank");
     })
     .catch((error) => {
       console.error("Error al cargar config.json:", error);
