@@ -474,7 +474,7 @@
                 <div id="total-sin-propina"><strong>$0</strong></div>
             </div>
             <div class="row">
-                <div>Propina (10%)</div>
+                <div>Propina 10% (Opcional)</div>
                 <div id="propina">$0</div>
             </div>
             <div class="row total" id="total-final-row">
@@ -580,7 +580,12 @@
             document.getElementById('btn-print').addEventListener('click', () => window.print());
             document.getElementById('btn-close').addEventListener('click', () => {
                 localStorage.removeItem('lastPedido');
-                window.location.href = 'POS.html';
+                // Intenta cerrar la pestaña actual
+                window.close();
+                // Si no se puede cerrar (por restricciones del navegador), redirige a POS.html en la misma pestaña
+                setTimeout(() => {
+                    window.location.replace('POS.html');
+                }, 200);
             });
 
             // Guardar PDF: captura el elemento #page y genera un PDF sin los botones

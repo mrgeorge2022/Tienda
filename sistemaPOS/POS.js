@@ -11,6 +11,9 @@ let pedidosCargados = []; // Almacenar todos los pedidos para filtrado
 let mesasCargadas = []; // Almacenar todas las mesas para filtrado
 
 
+let timeoutInactividad = null;
+let sistemaSuspendido = false;
+
 
 
 
@@ -271,7 +274,7 @@ async function init() {
 
     renderCats();
     renderItems(db);
-    
+    resetInactivityTimer();
     hideSpinner();
   } catch (err) {
     hideSpinner();
@@ -2340,3 +2343,27 @@ function ejecutarImpresionSilenciosa(pedido) {
     };
 }
 
+function resetInactivityTimer() {
+    // Si el sistema ya está en pantalla negra, no hacemos nada aquí 
+    // (esperamos el clic para recargar)
+    if (sistemaSuspendido) return;
+
+    clearTimeout(timeoutInactividad);
+    
+    timeoutInactividad = setTimeout(() => {
+        mostrarPantallaSuspension();
+    }, 5 * 60 * 1000); // 5 Minutos
+}
+
+function mostrarPantallaSuspension() {
+    sistemaSuspendido = true;
+    const overlay = document.getElementById("overlay-suspension");
+    if (overlay) {
+        overlay.style.display = "flex";
+    }
+}
+
+// Escuchar interacciones
+['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => {
+    document.addEventListener(evt, resetInactivityTimer, true);
+});
