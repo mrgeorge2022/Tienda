@@ -104,18 +104,12 @@
             </div>
             <div class="order-content" id="cart-box"></div>
             <div style="border-top: 1px solid #eee; padding: 10px 8px;">
-                <label
-                    style="font-size: 0.62rem; color: #666; display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Observaciones
-                    generales</label>
                 <textarea id="val-observaciones" class="input-pro"
-                    placeholder="Ej: Sin lechuga, portería, billete de ..." oninput="updateButtonState()"
+                    placeholder="Observaciones..." oninput="updateButtonState()"
                     style="background: #fff; color: #000; border: 1px solid #ddd; height: 50px; font-size: 0.8rem; resize: none;"></textarea>
             </div>
             <div class="order-footer">
                 <div class="order-method">
-                    <label
-                        style="font-size: 0.62rem; color: #666; display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Método
-                        de Pago</label>
                     <select id="val-metodo-pago" class="input-pro" onchange="updateButtonState(); mostrarCampoMonto()"
                         style="background: #fff; color: #000; border: 1px solid #ddd; padding: 8px; height: 40px; font-weight: bold;">
                         <option value="" selected disabled>Seleccionar método de pago</option>
@@ -125,8 +119,7 @@
                     </select>
                 </div>
                 <div id="container-monto-efectivo" style="display: none; margin-top: 10px;">
-                    <label style="font-size: 0.62rem; color: #666; display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Monto recibido (opcional) </label>
-                    <input type="text" id="val-monto-efectivo" class="input-pro" placeholder="00.000" oninput="formatearMontoColombiano(this)" style="background: #fff; color: #000; border: 1px solid #ddd; padding: 8px; height: 40px;">
+                    <input type="text" id="val-monto-efectivo" class="input-pro" placeholder="Monto recibido (opcional)" oninput="formatearMontoColombiano(this)" style="background: #fff; color: #000; border: 1px solid #ddd; padding: 8px; height: 40px;">
                 </div>
 
                 <div class="order-total-row">
@@ -175,8 +168,10 @@
 
     <div id="overlay-suspension" onclick="location.reload()">
     <div class="suspension-content">
-        <h2 class="pulse-text">🌙 Sistema en reposo</h2>
-        <p>Haz clic o toca cualquier parte para continuar</p>
+        <img class="pulse-text" src="../img/logo.png" alt="suspension-img">
+        <h3 class="pulse-text">🌙</h3>
+        <h2 class="pulse-text">Sistema en reposo</h2>
+        <p>(Haz clic o toca cualquier parte para continuar)</p>
     </div>
 </div>
 

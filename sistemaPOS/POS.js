@@ -14,6 +14,9 @@ let mesasCargadas = []; // Almacenar todas las mesas para filtrado
 let timeoutInactividad = null;
 let sistemaSuspendido = false;
 
+// Cantidades en edición (preview) por cartId — permite actualizar totales mientras se escribe
+const previewQtys = {};
+
 
 
 
@@ -49,6 +52,58 @@ function validarSoloLetras(input) {
     // Permite letras, espacios y acentos
     const valorLimpio = input.value.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, '');
     input.value = valorLimpio;
+}
+
+/**
+ * Formatea el nombre capitalizando la primera letra de cada palabra.
+ * Ej: "jorge daniel" -> "Jorge Daniel"
+ */
+function formatNombreCapitalizado(input) {
+  if (!input) return;
+  const el = input;
+  const original = el.value || '';
+
+  // Detectar borrado (Backspace/Delete): si la longitud actual es menor
+  // que la anterior, asumimos que el usuario está borrando y no
+  // forzamos el capitalizado en ese evento para no bloquear el borrado.
+  const prevLen = parseInt(el.dataset.prevLen || '0', 10);
+  if (original.length < prevLen) {
+    el.dataset.prevLen = original.length;
+    el.dataset.prevValue = original;
+    return;
+  }
+
+  // Normalizar múltiples espacios a uno solo
+  const normalized = original.replace(/\s+/g, ' ');
+  if (normalized === '') { el.value = ''; el.dataset.prevLen = 0; el.dataset.prevValue = ''; return; }
+  const hadTrailingSpace = /\s$/.test(original);
+  const words = normalized.split(' ');
+  const capitalized = words.map(w => w ? (w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()) : '');
+  let newVal = capitalized.join(' ');
+  if (hadTrailingSpace) newVal += ' ';
+
+  // Mantener posición del cursor
+  const selStart = (typeof el.selectionStart === 'number') ? el.selectionStart : original.length;
+  const wasAtEnd = selStart === original.length;
+
+  el.value = newVal;
+  el.dataset.prevLen = el.value.length;
+  el.dataset.prevValue = el.value;
+
+  if (wasAtEnd) {
+    el.setSelectionRange(el.value.length, el.value.length);
+  } else {
+    const pos = Math.min(selStart, el.value.length);
+    el.setSelectionRange(pos, pos);
+  }
+}
+
+// Formatea una cadena numérica o número a formato COP con puntos de miles.
+function formatNumberCOP(val) {
+  const s = String(val || '');
+  const digits = s.replace(/[^0-9]/g, '');
+  if (!digits) return '';
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 function validarTelefono(input) {
@@ -854,17 +909,30 @@ function updateButtonState() {
 
     if (editingOrderId) {
         btn.innerText = "ACTUALIZAR PEDIDO";
+      // Si aún no se ha creado el snapshot original (por ejemplo, estamos cargando
+      // la ubicación inicial), mantenemos el botón deshabilitado hasta entonces.
+      if (!originalOrderSnapshot) {
+        btn.disabled = true;
+        btn.style.opacity = "0.4";
+        btn.style.cursor = "not-allowed";
+        btn.style.background = "#ff6b35";
+        return;
+      }
 
-        // Creamos la "foto" del estado actual
-        const currentSnapshot = JSON.stringify({
+      // Creamos la "foto" del estado actual
+      const currentSnapshot = JSON.stringify({
             nombre: (document.getElementById("val-nombre")?.value || "").trim(),
             tel: (document.getElementById("val-tel")?.value || "").trim(),
             mesa: (document.getElementById("val-mesa")?.value || "").trim(),
+            direccion: (document.getElementById("val-direccion")?.value || "").trim(),
             obs: (document.getElementById("val-observaciones")?.value || "").trim(),
             pago: (document.getElementById("val-metodo-pago")?.value || ""),
             referencia: (document.getElementById("val-referencia")?.value || "").trim(),
             metodo: currentMethod,
-            items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
+          // Incluir ubicacion y costo actual para detectar cambios en domicilios
+          googleMaps: (document.getElementById("val-google-maps")?.value || "").trim(),
+          costoDomicilio: (typeof costoDomicilioActual !== 'undefined' ? costoDomicilioActual : 0),
+          items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
         });
 
         // Solo se habilita si hay cambios REALES
@@ -1022,7 +1090,7 @@ function setMethod(btn, method) {
     };
     
 
-    let html = crearInputConAccion("val-nombre", "Nombre cliente", "text", "validarSoloLetras(this); updateTitle()");
+    let html = crearInputConAccion("val-nombre", "Nombre cliente", "text", "validarSoloLetras(this); formatNombreCapitalizado(this); updateTitle()");
     
     html += crearInputConAccion("val-tel", "Teléfono", "tel", "validarTelefono(this); updateTitle()");
     
@@ -1048,7 +1116,20 @@ function setMethod(btn, method) {
         html += crearInputConAccion("val-referencia", "Punto de referencia");
         html += `
             <div id="map-pos" style="height: 350px; width: 100%; margin-top: 10px; border-radius: 8px;"></div>
-            <div id="distancia-info" style="font-size: 12px; color: var(--accent); margin-top: 5px; font-weight: bold;"></div>
+            <div id="distancia-info" style="background: #111; font-size: 12px; color: var(--accent); margin-top: 10px; font-weight: bold;">
+              <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span><b>Distancia:</b> 0 km</span>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <span style="font-size: 12px; color: #999;">$</span>
+                    <input type="text" id="tarifa-domicilio-input" value="${(costoDomicilioActual || 0).toLocaleString('es-CO')}" style="width: 110px; padding: 6px 8px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; color: #fff; background: #222; text-align: right;" oninput="formatearTarifaCOP(this)">
+                  </div>
+                </div>
+                <div style="text-align:right; margin-top: 4px; color: #555;">
+                  <small id="base-domicilio-display">Base: $ 0</small>
+                </div>
+              </div>
+            </div>
         `;
         setTimeout(() => initMiniMap(), 100);
     }
@@ -1187,6 +1268,18 @@ function renderItems(list) {
         </div>
     </div>`;
   }).join("");
+
+  // Al renderizar una nueva lista (filtrado o cambio de categoría),
+  // hacer scroll hacia arriba del contenedor de productos.
+  try {
+    if (typeof container.scrollTo === 'function') {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      container.scrollTop = 0;
+    }
+  } catch (e) {
+    container.scrollTop = 0;
+  }
 }
 
 // Función para mostrar/ocultar descripción
@@ -1302,6 +1395,110 @@ function editNote(cartId) {
     updateButtonState();
   }
 }
+// Actualizar cantidad en vivo mientras el usuario escribe (oninput)
+function setQtyLive(cartId, rawValue) {
+  const digits = String(rawValue || '').replace(/[^0-9]/g, '');
+  // Permitir campo vacío (usuario borrando): guardamos '' para indicar edición pendiente
+  if (digits === '') {
+    previewQtys[cartId] = '';
+    updateTotalsForPreview();
+    // mostrar campo vacío también en el input
+    try {
+      const inpEmpty = document.querySelector(`.cart-item-qty-input[data-cartid="${cartId}"]`);
+      if (inpEmpty) inpEmpty.value = '';
+    } catch (e) {}
+    updateButtonState();
+    return;
+  }
+  const n = parseInt(digits, 10) || 0;
+  previewQtys[cartId] = n;
+  updateTotalsForPreview();
+  // Formatear y mostrar en el input con puntos mientras se escribe
+  try {
+    const inp = document.querySelector(`.cart-item-qty-input[data-cartid="${cartId}"]`);
+    const formatted = formatNumberCOP(digits);
+    if (inp) {
+      inp.value = formatted;
+      // colocar cursor al final para facilitar tipeo continuo
+      try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {}
+    }
+    adjustQtyInputWidth(cartId, formatted);
+  } catch (e) {}
+  updateButtonState();
+}
+
+// Confirmar la cantidad al perder foco (blur) o al presionar Enter
+function commitQty(cartId, rawValue) {
+  const item = cart.find(i => i.cartId === cartId);
+  if (!item) return;
+  const digits = String(rawValue || '').replace(/[^0-9]/g, '');
+  let n = parseInt(digits, 10);
+  if (Number.isNaN(n) || n < 1) {
+    // Restaurar a 1 si el usuario dejó vacío o puso 0
+    n = 1;
+  }
+  item.qty = n;
+  if (previewQtys[cartId] !== undefined) delete previewQtys[cartId];
+  updateUI();
+  adjustQtyInputWidth(cartId, formatNumberCOP(n));
+  updateButtonState();
+}
+
+// Actualiza solo los totales y subtotales en pantalla usando previewQtys (sin re-renderizar la lista)
+function updateTotalsForPreview() {
+  // Recalcular subtotal general
+  const subtotalProductos = cart.reduce((s, i) => {
+    const q = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? Number(previewQtys[i.cartId]) : i.qty;
+    return s + i.precio * q;
+  }, 0);
+
+  const esDomicilio = (currentMethod === "Domicilio");
+  const valorEnvio = esDomicilio ? (costoDomicilioActual || 0) : 0;
+  const totalFinal = subtotalProductos + valorEnvio;
+
+  // Actualizar display total
+  const totalDisplay = document.getElementById("order-total");
+  if (totalDisplay) totalDisplay.innerText = `$ ${totalFinal.toLocaleString('es-CO')}`;
+
+  // Actualizar subtotales por línea si existen en DOM
+  cart.forEach(i => {
+    const elem = document.getElementById(`subtotal-${i.cartId}`);
+    if (elem) {
+      const q = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? Number(previewQtys[i.cartId]) : i.qty;
+      elem.textContent = (i.precio * q).toLocaleString('es-CO');
+    }
+    // También actualizar el subtotal visible dentro de la tarjeta si existe
+    try {
+      const inp = document.querySelector(`.cart-item-qty-input[data-cartid="${i.cartId}"]`);
+      if (inp) {
+        const row = inp.closest('.cart-item-line');
+        const visiblePrice = row ? row.querySelector('.cart-item-price') : null;
+        if (visiblePrice) {
+          const qv = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? Number(previewQtys[i.cartId]) : i.qty;
+          visiblePrice.textContent = `$${(i.precio * qv).toLocaleString('es-CO')}`;
+        }
+      }
+    } catch (e) { /* silent */ }
+  });
+
+  // Actualizar badge
+  const badge = document.getElementById("badge-mobile");
+  if (badge) {
+    const totalItems = cart.reduce((sum, item) => {
+      const q = (previewQtys[item.cartId] !== undefined && previewQtys[item.cartId] !== '') ? Number(previewQtys[item.cartId]) : item.qty;
+      return sum + q;
+    }, 0);
+    badge.textContent = totalItems;
+    badge.style.display = totalItems > 0 ? "flex" : "none";
+  }
+
+  // Actualizar desglose de domicilio si aplica
+  const displayCosto = document.getElementById('display-costo-domicilio');
+  if (displayCosto) displayCosto.innerText = `$ ${valorEnvio.toLocaleString('es-CO')}`;
+
+  // Recalcular vuelto si necesario
+  calcularCambio();
+}
 
 // NUEVA: Vaciar comanda completa
 function clearCart() {
@@ -1313,7 +1510,10 @@ function clearCart() {
 
 function updateUI() {
     const box = document.getElementById("cart-box");
-    const subtotalProductos = cart.reduce((s, i) => s + i.precio * i.qty, 0);
+    const subtotalProductos = cart.reduce((s, i) => {
+      const q = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? Number(previewQtys[i.cartId]) : i.qty;
+      return s + i.precio * q;
+    }, 0);
     const esDomicilio = (currentMethod === "Domicilio");
     const valorEnvio = esDomicilio ? (costoDomicilioActual || 0) : 0;
     const totalFinal = subtotalProductos + valorEnvio;
@@ -1327,7 +1527,10 @@ function updateUI() {
             // Precio Unitario Formateado
             const precioUnitario = Number(i.precio).toLocaleString('es-CO');
             // Subtotal de la línea (Precio * Cantidad)
-            const subtotalItem = (i.precio * i.qty).toLocaleString('es-CO');
+            const qtyForCalc = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? Number(previewQtys[i.cartId]) : i.qty;
+            const subtotalItem = (i.precio * qtyForCalc).toLocaleString('es-CO');
+            const displayQty = (previewQtys[i.cartId] !== undefined && previewQtys[i.cartId] !== '') ? previewQtys[i.cartId] : i.qty;
+            const formattedDisplayQty = formatNumberCOP(displayQty);
 
             return `
             <div class="cart-item-line">
@@ -1358,24 +1561,51 @@ function updateUI() {
                             </button>
 
                             <div class="qty-controls">
-                                <button class="qty-btn" onclick="changeQty(${i.cartId}, -1)">−</button>
-                                <span class="qty-display">${i.qty}</span>
-                                <button class="qty-btn" onclick="changeQty(${i.cartId}, 1)">+</button>
+                              <button class="qty-btn" onclick="changeQty(${i.cartId}, -1)">−</button>
+                              <input type="text" inputmode="numeric" pattern="\d*" data-cartid="${i.cartId}" class="cart-item-qty-input" value="${formattedDisplayQty}" min="0" oninput="setQtyLive(${i.cartId}, this.value)" onblur="commitQty(${i.cartId}, this.value)" onkeydown="if(event.key==='Enter'){ this.blur(); }">
+                              <button class="qty-btn" onclick="changeQty(${i.cartId}, 1)">+</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                ${i.nota ? `
-                    <div class="cart-item-note">
-                        <span>📌 ${i.nota}</span>
-                    </div>
-                ` : ''}
+                
+                      ${i.nota ? `
+                        <div class="cart-item-note">
+                          <span>📌 ${i.nota}</span>
+                        </div>
+                      ` : ''}
+                
+                      <!-- Subtotal por línea, usado para updates en vivo -->
+                      <div style="display:none;" id="subtotal-${i.cartId}">${(i.precio * qtyForCalc).toLocaleString('es-CO')}</div>
             </div>
             `;
         }).join("");
         
+        // Preservar foco y posición del cursor si estamos editando una cantidad
+        const active = document.activeElement;
+        let activeInfo = null;
+        if (active && active.classList && active.classList.contains('cart-item-qty-input')) {
+          activeInfo = { cartId: active.dataset.cartid, selStart: active.selectionStart, value: active.value };
+        }
+
         box.innerHTML = htmlItems;
+
+        // Restaurar foco y cursor si aplicable
+        if (activeInfo) {
+          const newInput = box.querySelector(`.cart-item-qty-input[data-cartid="${activeInfo.cartId}"]`);
+          if (newInput) {
+            newInput.focus();
+            const pos = Math.min(activeInfo.selStart || 0, (newInput.value || '').length);
+            try { newInput.setSelectionRange(pos, pos); } catch (e) { /* algunos navegadores pueden fallar */ }
+          }
+        }
+        // Ajustar ancho de inputs según dígitos existentes
+        try {
+          cart.forEach(ci => {
+            const inp = box.querySelector(`.cart-item-qty-input[data-cartid="${ci.cartId}"]`);
+            if (inp) adjustQtyInputWidth(ci.cartId, inp.value);
+          });
+        } catch (e) { /* silent */ }
     }
 
     // Actualizar badge de número de productos en móvil
@@ -1388,6 +1618,8 @@ function updateUI() {
 
     // ... (resto del código del footer igual)
     actualizarFooter(subtotalProductos, esDomicilio, valorEnvio, totalFinal);
+    // Asegurar que el estado del botón se recalcula cuando cambia la UI (incluye costo/ubicación)
+    try { updateButtonState(); } catch(e) { /* no bloquear si falla */ }
 }
 
 // Función auxiliar para no repetir código del footer
@@ -1427,16 +1659,32 @@ function actualizarFooter(subtotal, esDomicilio, valorEnvio, totalFinal) {
     calcularCambio();
 }
 
+  // Ajusta el ancho del input de cantidad según la longitud de los dígitos
+  function adjustQtyInputWidth(cartId, value) {
+    try {
+      const v = String(value || '');
+      const inp = document.querySelector(`.cart-item-qty-input[data-cartid="${cartId}"]`);
+      if (!inp) return;
+      const len = Math.max(1, v.length);
+      // Usar 'ch' para que el ancho dependa del número de caracteres
+      inp.style.width = (Math.min(12, len + 1)) + 'ch';
+    } catch (e) {
+      // no bloquear
+    }
+  }
+
 // FUNCIONES DE APOYO (Asegúrate de tenerlas)
 function changeQty(cartId, delta) {
-    const item = cart.find(i => i.cartId === cartId);
-    if (!item) return;
-    item.qty += delta;
-    if (item.qty <= 0) {
-        cart = cart.filter(i => i.cartId !== cartId);
-    }
-    updateUI();
-    updateButtonState();
+  // Si hay una edición en curso para este cartId, descartarla
+  if (previewQtys[cartId] !== undefined) delete previewQtys[cartId];
+  const item = cart.find(i => i.cartId === cartId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.cartId !== cartId);
+  }
+  updateUI();
+  updateButtonState();
 }
 
 function editNote(cartId) {
@@ -1697,21 +1945,44 @@ if (mesaData.direccion) {
     updateTitle();
     updateUI();
 
-// NUEVO: Guardamos el estado exacto del pedido al abrirlo
-    originalOrderSnapshot = JSON.stringify({
+    // Guardar snapshot de estado: si estamos cargando un domicilio inicial,
+    // deferimos la creación del snapshot hasta que termine la carga del mapa
+    const grabarSnapshot = () => {
+      originalOrderSnapshot = JSON.stringify({
         nombre: (document.getElementById("val-nombre")?.value || "").trim(),
         tel: (document.getElementById("val-tel")?.value || "").trim(),
         mesa: (document.getElementById("val-mesa")?.value || "").trim(),
+        direccion: (document.getElementById("val-direccion")?.value || "").trim(),
         obs: (document.getElementById("val-observaciones")?.value || "").trim(),
         pago: (document.getElementById("val-metodo-pago")?.value || ""),
         referencia: (document.getElementById("val-referencia")?.value || "").trim(),
         metodo: currentMethod,
+        // Ubicación y costo original (para detectar cambios en domicilio)
+        googleMaps: (document.getElementById("val-google-maps")?.value || "").trim(),
+        costoDomicilio: (typeof costoDomicilioOriginal !== 'undefined' ? costoDomicilioOriginal : 0),
         // Guardamos los productos con su cantidad e ID
         items: cart.map(item => ({ id: item.id, qty: item.qty, nota: item.nota }))
-    });
+      });
 
-    // Forzamos la actualización del botón (esto lo deshabilitará al inicio)
-    updateButtonState();
+      // Forzamos la actualización del botón (esto lo deshabilitará al inicio)
+      updateButtonState();
+    };
+
+    // Si `isLoadingDomicilio` está activo, significa que hay un timeout pendiente
+    // que cargará el mapa; en ese caso, esperamos a que termine.
+    if (!isLoadingDomicilio) {
+      grabarSnapshot();
+    } else {
+      // Reintentar hasta que isLoadingDomicilio sea false (máx 5 intentos)
+      let intentos = 0;
+      const espera = setInterval(() => {
+        intentos++;
+        if (!isLoadingDomicilio || intentos > 10) {
+          clearInterval(espera);
+          grabarSnapshot();
+        }
+      }, 200);
+    }
 
     // Limpiar el monto recibido y el cambio cuando se edita un pedido
     const inputMonto = document.getElementById("val-monto-efectivo");
@@ -1782,9 +2053,8 @@ const iconoNegocio = L.icon({
 });
 
     L.marker(tiendaCoords, { icon: iconoNegocio })
-        .addTo(miniMap)
-        .bindPopup(`<b>${config?.nombreRestaurante || "Nuestra Sede"}</b>`)
-        .openPopup();
+      .addTo(miniMap)
+      .bindPopup(`<b>${config?.nombreRestaurante || "Nuestra Sede"}</b>`);
 
     miniMap.on('click', function(e) {
         const { lat, lng } = e.latlng;
@@ -1887,6 +2157,9 @@ function cargarMapaDesdeUbicacionGuardada(valor) {
         
         // ✅ NUEVO: Dibujar la ruta sin recalcular costos
         dibujarRutaSinCostos(lat, lng);
+        // También actualizar los costos y la información de distancia al cargar un pedido
+        // de edición para que se muestre la distancia y la base inmediatamente.
+        try { actualizarPuntoYCostos(lat, lng); } catch (e) { console.warn('No se pudo actualizar costos al cargar ubicación:', e); }
     }
 }
 
@@ -2067,7 +2340,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         const route = e.routes[0];
         const distanciaKm = route.summary.totalDistance / 1000;
         
-        const valorKM = config?.costoPorKilometro || 1000;
+        const valorKM = config?.domicilio?.costoPorKilometro || 1500;
         const baseEnvio = config?.costoEnvioBase || 2000;
         const tarifaMinima = config?.domicilio?.tarifaMinima || 3000; // Leer desde config
         const recargoNocturnoActivo = config?.domicilio?.recargoNocturnoActivo !== false; // true por defecto
@@ -2096,7 +2369,7 @@ async function actualizarPuntoYCostos(lat, lng) {
         const infoDiv = document.getElementById("distancia-info");
         if (infoDiv) {
             infoDiv.innerHTML = `
-              <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
+              <div style="display:flex; flex-direction:column; padding: 12px; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px; ">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <span><b>Distancia:</b> ${distanciaKm.toFixed(2)} km</span>
                   <div style="display:flex; align-items:center; gap: 8px;">
@@ -2194,8 +2467,6 @@ async function handleInputHelper(id) {
 function imprimirFacturaPOS(pedido) {
     let productosFinales = [];
 
-// SI VIENE DEL HISTORIAL (Formato: "Promo 2 Salchicheras x2 - $25000")
-// SI VIENE DEL HISTORIAL (Formato: "Rancher x1 - $18000 (Sin plátano amarillo)")
 if (pedido.productos && typeof pedido.productos === 'string') {
     const lineas = pedido.productos.split('\n');
     

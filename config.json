@@ -30,6 +30,7 @@
     "footerLogo": "img/logo.png",
     "domicilio": {
         "tarifaMinima": 3000,
+        "costoPorKilometro": 1500,
         "recargoNocturnoActivo": true
     },
     "crearTienda": "https://wa.me/573022666530?text=Quiero%20crear%20mi%20tienda",

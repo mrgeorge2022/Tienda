@@ -530,27 +530,30 @@ function calcularRutaYCostos(destino) {
             maxZoom: 14 // Opcional: Evita un zoom demasiado cerca si la ruta es muy corta
         });
         // ----------------------------------------------------
-        
-        let costoBase = distanciaKm * 2500;
+        // Obtener parámetros desde config (costo por km, base y mínima)
+        const valorKM = config?.domicilio?.costoPorKilometro || 1500;
+        const baseEnvio = config?.costoEnvioBase || 2000;
+        const tarifaMinima = config?.domicilio?.tarifaMinima || 3000;
+        const recargoNocturnoActivo = config?.domicilio?.recargoNocturnoActivo !== false; // true por defecto
 
-      // 🕒 Hora real
-      const hora = new Date().getHours();
-      let recargoTexto = "";
-      let recargo = 0;
-      
-      // Obtener configuración desde config.json
-      const tarifaMinima = config?.domicilio?.tarifaMinima || 3000;
-      const recargoNocturnoActivo = config?.domicilio?.recargoNocturnoActivo !== false; // true por defecto
+        // Cálculo base: distancia * valorKM + baseEnvio
+        let calculoInicial = (distanciaKm * valorKM) + baseEnvio;
 
-      // 1️⃣ Redondear al siguiente cien y aplicar tarifa mínima desde config
-      costoBase = Math.max(redondearACien(costoBase), tarifaMinima);
+        // 🕒 Hora real
+        const hora = new Date().getHours();
+        let recargoTexto = "";
 
-      // 2️⃣ Aplicar recargo nocturno sobre el valor ya redondeado (solo si está activo)
-      if (recargoNocturnoActivo && (hora >= 22 || hora < 6)) {        recargo = costoBase * 0.2; // +20%
-        recargoTexto = " (+20%)";
-      }
-      // 3️⃣ Sumar recargo y redondear de nuevo al siguiente cien
-      costoDomicilio = redondearACien(costoBase + recargo);
+        // 1️⃣ Aplicar tarifa mínima
+        let costoBase = Math.max(redondearACien(calculoInicial), tarifaMinima);
+
+        // 2️⃣ Aplicar recargo nocturno si aplica
+        if (recargoNocturnoActivo && (hora >= 22 || hora < 6)) {
+            const recargo = costoBase * 0.2;
+            recargoTexto = " (+20%)";
+            costoDomicilio = redondearACien(costoBase + recargo);
+        } else {
+            costoDomicilio = redondearACien(costoBase);
+        }
 
       // Actualizar la UI
       actualizarCostos(recargoTexto, hora);
