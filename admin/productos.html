@@ -72,7 +72,7 @@
        SIDEBAR (ESTILO CIERRE_CAJA)
        ================================ */
         .sidebar {
-            background: #212133;  
+            background: #212133;
             position: sticky;
             top: 20px;
             height: calc(100vh - 40px);
@@ -83,7 +83,7 @@
             padding: 22px;
         }
 
-        
+
 
         .brand {
             display: flex;
@@ -143,17 +143,23 @@
             padding: 10px 12px;
             border-radius: 8px;
             font-weight: 600;
-            transition: background .18s, color .18s;
+            transition: background .18s, color .18s, border-color .18s;
+            border-left: 4px solid transparent;
         }
 
         .nav-link.active {
             background: var(--primary);
             color: var(--input);
+            border-left: 4px solid var(--success);
         }
 
         .nav-link:hover {
-            background: var(--input);
+            background: rgba(91, 192, 222, 0.1);
             color: var(--primary)
+        }
+
+        .nav-link:not(.active):hover {
+            border-left: 4px solid var(--primary);
         }
 
         /* Botón principal (Estilo CIERRE_CAJA) */
@@ -218,15 +224,16 @@
             justify-content: space-between;
             padding: 18px 20px;
             border-radius: 12px;
-background: linear-gradient(90deg, #181822, #232332);
+            background: linear-gradient(90deg, #181822, #232332);
         }
 
-        
+
         @media (max-width: 899px) {
-    .topbar {
-        display: flex;  /* ahora sí aparece en móvil */
-    }
-}
+            .topbar {
+                display: flex;
+                /* ahora sí aparece en móvil */
+            }
+        }
 
         .topbar-left {
             display: flex;
@@ -384,6 +391,7 @@ background: linear-gradient(90deg, #181822, #232332);
             font-size: 1rem;
             padding: 0;
         }
+
         /* ------------------------------------- */
 
         .kpi-row {
@@ -416,19 +424,19 @@ background: linear-gradient(90deg, #181822, #232332);
         }
 
         /* GRID PRODUCTS (ESTILO CIERRE_CAJA) */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-    padding-top: 10px;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            padding-top: 10px;
+        }
 
-/* SOLO en móviles → forzar 2 columnas */
-@media (max-width: 600px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+        /* SOLO en móviles → forzar 2 columnas */
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
 
         .card {
@@ -484,7 +492,7 @@ background: linear-gradient(90deg, #181822, #232332);
             color: var(--warning);
             font-size: 1.1rem;
         }
-        
+
 
         .card-body h3 {
             margin: 0;
@@ -526,21 +534,23 @@ background: linear-gradient(90deg, #181822, #232332);
             backdrop-filter: blur(4px);
         }
 
-.modal-content {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    /* --- INICIO DE MODIFICACIONES PARA SCROLL --- */
-    max-height: 90vh; /* Máximo 90% de la altura de la vista */
-    overflow-y: auto; /* Habilita el scroll vertical cuando el contenido es mayor */
-    /* --- FIN DE MODIFICACIONES --- */
-    background: var(--card);
-    border-radius: 14px;
-    padding: 18px;
-    z-index: 2;
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-1);
-}
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            /* --- INICIO DE MODIFICACIONES PARA SCROLL --- */
+            max-height: 90vh;
+            /* Máximo 90% de la altura de la vista */
+            overflow-y: auto;
+            /* Habilita el scroll vertical cuando el contenido es mayor */
+            /* --- FIN DE MODIFICACIONES --- */
+            background: var(--card);
+            border-radius: 14px;
+            padding: 18px;
+            z-index: 2;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-1);
+        }
 
         .modal-content img {
             width: 100%;
@@ -549,6 +559,282 @@ background: linear-gradient(90deg, #181822, #232332);
             border-radius: 10px;
             margin-bottom: 12px;
             border: 1px solid var(--line);
+        }
+
+        /* ================================
+       ESTILOS PARA GESTOR DE IMÁGENES
+       ================================ */
+        .image-manager-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--glass);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--input);
+            display: block;
+        }
+
+        /* 📦 DROPZONE PARA CARGA NATIVA */
+        .image-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            background: rgba(91, 192, 222, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 180px;
+        }
+
+        .image-dropzone:hover {
+            border-color: var(--accent);
+            background: rgba(91, 192, 222, 0.1);
+            transform: scale(1.02);
+        }
+
+        .image-dropzone.dragover {
+            border-color: var(--success);
+            background: rgba(99, 212, 113, 0.1);
+        }
+
+        .image-dropzone p {
+            margin: 0;
+            text-align: center;
+        }
+
+        .image-manager-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-select-image,
+        .btn-clear-image {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background .18s, transform .12s;
+        }
+
+        .btn-select-image {
+            background: var(--primary);
+            color: var(--input);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-select-image:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn-clear-image {
+            background: var(--danger);
+            color: var(--text);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-clear-image:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-select-image:active,
+        .btn-clear-image:active {
+            transform: translateY(0);
+        }
+
+        /* ================================
+       GALERÍA DE IMÁGENES RECICLABLES
+       ================================ */
+
+        /* 🖼️ ACCESO RÁPIDO A GALERÍA DESDE MODAL */
+        .btn-gallery-shortcut {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--radius, 8px);
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, var(--primary), rgba(91, 192, 222, 0.8));
+            color: var(--input);
+            box-shadow: 0 4px 12px rgba(38, 126, 255, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gallery-shortcut:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(38, 126, 255, 0.35);
+        }
+
+        .btn-gallery-shortcut:active {
+            transform: scale(0.96);
+        }
+
+        /* Modal con scroll para galería */
+        .gallery-modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* Grid de galerías */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color .18s, transform .12s, box-shadow .18s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            background: var(--input);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+        }
+
+        .gallery-item.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary), 0 6px 16px rgba(0, 0, 0, 0.45);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity .18s;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .gallery-item.selected::after {
+            opacity: 0;
+        }
+
+        .gallery-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        /* ================================
+       ASSETS MANAGEMENT - Grid con checkbox
+       ================================ */
+        .asset-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--line);
+            transition: all .18s;
+            background: var(--input);
+            cursor: pointer;
+        }
+
+        .asset-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .asset-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+            border-color: var(--primary);
+        }
+
+        .asset-checkbox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 10;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--line);
+            border-radius: 4px;
+            transition: all .15s;
+        }
+
+        .asset-checkbox:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(91, 192, 222, 0.2);
+        }
+
+        .asset-checkbox:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .asset-checkbox:checked::after {
+            content: '✔';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: var(--input);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .asset-item.selected {
+            border-color: var(--primary);
+            box-shadow: inset 0 0 0 3px var(--primary);
+        }
+
+        .asset-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(91, 192, 222, 0.2);
+            opacity: 0;
+            transition: opacity .15s;
+            z-index: 5;
+        }
+
+        .asset-item.selected::before {
+            opacity: 1;
         }
 
         .close-span {
@@ -785,68 +1071,397 @@ background: linear-gradient(90deg, #181822, #232332);
         /* ================================
    ESTILOS PARA EL SWITCH (SUICHE)
    ================================ */
-.switch-container {
-    /* Ajusta el layout del estado y el switch */
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+        .switch-container {
+            /* Ajusta el layout del estado y el switch */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px; /* Ancho del switch */
-    height: 28px; /* Alto del switch */
-}
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            /* Ancho del switch */
+            height: 28px;
+            /* Alto del switch */
+        }
 
-/* Ocultar el checkbox por defecto */
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+        /* Ocultar el checkbox por defecto */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--danger); /* Color Inactivo: Rojo */
-    transition: .4s;
-    border-radius: 28px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
-}
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--danger);
+            /* Color Inactivo: Rojo */
+            transition: .4s;
+            border-radius: 28px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+        }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background-color: var(--text); /* Círculo interior */
-    transition: .4s;
-    border-radius: 50%;
-}
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--text);
+            /* Círculo interior */
+            transition: .4s;
+            border-radius: 50%;
+        }
 
-/* Cambiar a color Success (Verde) cuando está checked */
-input:checked + .slider {
-    background-color: var(--success);
-}
+        /* Cambiar a color Success (Verde) cuando está checked */
+        input:checked+.slider {
+            background-color: var(--success);
+        }
 
-/* Mover el círculo (thumb) a la derecha */
-input:checked + .slider:before {
-    transform: translateX(22px);
-}
+        /* Mover el círculo (thumb) a la derecha */
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
 
-/* Ajuste para el label de texto */
-.activo-label {
-    font-weight: 700;
-    /* Eliminamos el color fijo de la versión anterior para que lo controle JS */
-}
+        /* Ajuste para el label de texto */
+        .activo-label {
+            font-weight: 700;
+            /* Eliminamos el color fijo de la versión anterior para que lo controle JS */
+        }
+
+        /* ================================
+       🏛️ BÓVEDA DE ACTIVOS - Estilos Glassmorphic
+       ================================ */
+        .assets-vault-content {
+            max-width: 1200px !important;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, rgba(43, 43, 63, 0.8), rgba(30, 30, 45, 0.9)) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(91, 192, 222, 0.2) !important;
+        }
+
+        /* Sección de carga masiva */
+        .assets-upload-section {
+            margin-bottom: 24px;
+        }
+
+        .upload-dropzone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 32px;
+            border: 2.5px dashed var(--primary);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(91, 192, 222, 0.08), rgba(70, 184, 218, 0.05));
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 200px;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-dropzone::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(91, 192, 222, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+
+        .upload-dropzone:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(91, 192, 222, 0.12), rgba(70, 184, 218, 0.08));
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(91, 192, 222, 0.15);
+        }
+
+        .upload-dropzone.dragover {
+            border-color: var(--success);
+            background: linear-gradient(135deg, rgba(99, 212, 113, 0.12), rgba(99, 212, 113, 0.08));
+            box-shadow: 0 12px 40px rgba(99, 212, 113, 0.2);
+        }
+
+        /* Controles de búsqueda y filtros */
+        .assets-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .btn-control {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--input);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.18s;
+            white-space: nowrap;
+        }
+
+        .btn-control:hover {
+            border-color: var(--primary);
+            background: rgba(91, 192, 222, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Panel de acciones inteligente */
+        .assets-action-panel {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(91, 192, 222, 0.08), rgba(70, 184, 218, 0.05));
+            border-radius: 12px;
+            border: 1px solid rgba(91, 192, 222, 0.2);
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-danger-action {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--danger), #ff4757);
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+            margin-left: auto;
+        }
+
+        .btn-danger-action:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.35);
+            background: linear-gradient(135deg, #ff4757, #ee5a6f);
+        }
+
+        .btn-danger-action:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Grid de activos mejorado */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .asset-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--line);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--input);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .asset-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .asset-card:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .asset-checkbox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 10;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--line);
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+
+        .asset-checkbox:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 192, 222, 0.2);
+            background: white;
+        }
+
+        .asset-checkbox:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .asset-checkbox:checked::after {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: var(--input);
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* Badge de uso */
+        .usage-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--input);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(91, 192, 222, 0.3);
+            z-index: 9;
+        }
+
+        /* Overlay oscuro en hover */
+        .asset-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .asset-card:hover .asset-overlay {
+            opacity: 1;
+        }
+
+        .asset-selected {
+            border-color: var(--primary) !important;
+            box-shadow: inset 0 0 0 2px var(--primary), 0 8px 24px rgba(91, 192, 222, 0.3) !important;
+        }
+
+        /* Modal de eliminación inteligente */
+        .smart-delete-modal {
+            max-width: 500px;
+            background: linear-gradient(135deg, rgba(43, 43, 63, 0.9), rgba(30, 30, 45, 0.95)) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(91, 192, 222, 0.2) !important;
+        }
+
+        .delete-option {
+            padding: 16px;
+            border-radius: 10px;
+            border: 1.5px solid var(--line);
+            background: rgba(91, 192, 222, 0.05);
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .delete-option:hover {
+            border-color: var(--primary);
+            background: rgba(91, 192, 222, 0.1);
+        }
+
+        .delete-option input[type=radio] {
+            margin-right: 8px;
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Botones de acción del modal */
+        .btn-cancel {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--muted);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-confirm {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--success), #51cf66);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99, 212, 113, 0.25);
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 212, 113, 0.35);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .assets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+            }
+
+            .assets-action-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-danger-action {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .assets-controls {
+                flex-direction: column;
+            }
+
+            .btn-control {
+                width: 100%;
+            }
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.10.1/dist/compressor.min.js"></script>
 </head>
 
 <body>
@@ -857,9 +1472,11 @@ input:checked + .slider:before {
             <div>
                 <div class="section-title" style="margin-top:0">Productos</div>
                 <nav class="nav">
-                    <a href="productos2.html" class="nav-link active">
+                    <button id="gestorBtn" class="nav-link active"
+                        style="justify-content: flex-start;  border:none; cursor:pointer;">
                         📦 Gestor de Productos
-                    </a>
+                    </button>
+
                     <button id="addProductBtn" class="nav-link"
                         style="justify-content: flex-start; background:none; border:none; cursor:pointer;">
                         ➕ Añadir Producto
@@ -888,7 +1505,7 @@ input:checked + .slider:before {
                     </div>
                 </div>
                 <div class="topbar-actions">
-                    </div>
+                </div>
             </div>
 
             <div class="content-area">
@@ -909,7 +1526,7 @@ input:checked + .slider:before {
                             <label for="filterCategory">Categoría:</label>
                             <select id="filterCategory" aria-label="Filtrar por categoría">
                                 <option value="all">Todas</option>
-                                </select>
+                            </select>
                         </div>
                     </div>
 
@@ -922,7 +1539,8 @@ input:checked + .slider:before {
                                 <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <input id="search" placeholder="Buscar nombre o descripción..." aria-label="Buscar productos">
+                            <input id="search" placeholder="Buscar nombre o descripción..."
+                                aria-label="Buscar productos">
                         </div>
                     </div>
                 </div>
@@ -950,7 +1568,7 @@ input:checked + .slider:before {
                     </div>
                 </div>
 
-                <section>
+                <section id="productosSeccion">
                     <div id="productGrid" class="grid" aria-live="polite">
                     </div>
                 </section>
@@ -963,9 +1581,26 @@ input:checked + .slider:before {
         <div class="modal-content" role="document">
             <span id="closeModal" class="close-span" title="Cerrar">&times;</span>
 
-            <img id="modalImg" src="https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg" alt="Imagen producto">
 
-            <h2 style="margin:0 0 8px 0; color:var(--primary);">🛠️ Editor de Producto</h2>
+
+            <div class="modal-section">
+                <label>Imagen del Producto</label>
+                <div id="dropzone" class="image-dropzone">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="opacity:0.6; margin-bottom:8px;">
+                        <path d="M12 2L2 12h3v8h14v-8h3L12 2z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    <p style="margin:0; color:var(--text); font-weight:600;">Arrastra o toca para subir</p>
+                    <p style="margin:6px 0 0 0; color:var(--muted); font-size:0.9rem;">.png, .jpg, .jpeg</p>
+                </div>
+                <img id="previewImg" src="https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg"
+                    alt="Vista previa" class="image-preview" style="display:none;">
+                <div class="image-manager-buttons" style="display:none;">
+                    <button type="button" id="changeImageBtn" class="btn-select-image">🔄 Cambiar</button>
+                    <button type="button" id="clearImageBtn" class="btn-clear-image">❌ Eliminar</button>
+                </div>
+                <input id="editImagenFile" type="file" accept="image/*" style="display: none;">
+            </div>
 
             <div class="modal-section">
                 <label>ID</label>
@@ -977,23 +1612,16 @@ input:checked + .slider:before {
                 <input id="editNombre" placeholder="Nombre del producto">
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div>
                 <div class="modal-section">
                     <label>Categoría</label>
                     <select id="editCategoria">
-                        </select>
+                    </select>
                     <input type="text" id="editCategoriaCustom" placeholder="Escriba la nueva categoría aquí"
                         style="display:none; margin-top: 10px;">
                 </div>
 
-                <div class="modal-section">
-                    <label>Configuración</label>
-                    <select id="editConfig">
-                        <option value="">(Sin configuración)</option>
-                        <option value="manualpizza">Para Pizzas 🍕</option>
-                        <option value="manualalmuerzo">Para Almuerzos 🍛</option>
-                    </select>
-                </div>
+
             </div>
 
             <div class="modal-section">
@@ -1001,33 +1629,34 @@ input:checked + .slider:before {
                 <input id="editPrecio" placeholder="0" type="number" step="0.01">
             </div>
 
-            <div class="modal-section">
-                <label>URL Imagen</label>
-                <input id="editImagen" placeholder="https://..." type="text">
-            </div>
+
+
+            <input id="editImagen" type="hidden" value="">
 
             <div class="modal-section">
                 <label>Descripción</label>
                 <textarea id="editDescripcion" placeholder="Descripción del producto"></textarea>
             </div>
 
-<div style="display:flex; align-items:center; gap:8px; justify-content:space-between;">
-    <div class="switch-container">
-        <span id="activoLabel" class="activo-label">Estado:</span>
+            <div style="display:flex; align-items:center; gap:8px; justify-content:space-between;">
+                <div class="switch-container">
+                    <span id="activoLabel" class="activo-label">Estado:</span>
 
-        <label class="switch">
-            <input type="checkbox" id="editActivo">
-            <span class="slider"></span>
-        </label>
-    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="editActivo">
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-    <div class="modal-buttons" style="margin-left:12px; display:flex; gap:10px;">
-        <button id="saveBtn">Guardar</button>
-        <button id="deleteBtn" class="delete-btn">Eliminar</button>
-    </div>
-</div>
+                <div class="modal-buttons" style="margin-left:12px; display:flex; gap:10px;">
+                    <button id="saveBtn">Guardar</button>
+                    <button id="deleteBtn" class="delete-btn">Eliminar</button>
+                </div>
+            </div>
         </div>
     </div>
+
+
 
     <div class="loader-overlay" id="loaderOverlay">
         <div class="loader" role="status" aria-live="polite">
@@ -1037,59 +1666,390 @@ input:checked + .slider:before {
     </div>
 
     <script>
-    let API_URL; // Se cargará desde config.json
-    const DEFAULT_IMG = "https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg";
-    let products = [];
-    let isNewProduct = false;
+        let API_URL; // Se cargará desde config.json
+        const DEFAULT_IMG = "https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg";
+        let products = [];
+        let isNewProduct = false;
 
-    // Referencias DOM
-    const loader = document.getElementById("loaderOverlay");
-    const loaderText = document.getElementById("loaderText");
-    const modal = document.getElementById("productModal");
-    const saveBtn = document.getElementById("saveBtn");
-    const deleteBtn = document.getElementById("deleteBtn");
-    const closeModalSpan = document.getElementById("closeModal");
-    const addProductBtn = document.getElementById("addProductBtn");
-    const searchInput = document.getElementById("search");
-    const editImagenInput = document.getElementById("editImagen");
-    const editActivoCheckbox = document.getElementById("editActivo");
-    const modalImg = document.getElementById("modalImg");
-    const activoLabel = document.getElementById("activoLabel");
+        // Referencias DOM
+        const loader = document.getElementById("loaderOverlay");
+        const loaderText = document.getElementById("loaderText");
+        const modal = document.getElementById("productModal");
+        const saveBtn = document.getElementById("saveBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
+        const closeModalSpan = document.getElementById("closeModal");
+        const addProductBtn = document.getElementById("addProductBtn");
+        const gestorBtn = document.getElementById("gestorBtn");
+        const productosSeccion = document.getElementById("productosSeccion");
+        const searchInput = document.getElementById("search");
+        const editImagenInput = document.getElementById("editImagen");
+        const editImagenFileInput = document.getElementById("editImagenFile");
+        const previewImg = document.getElementById("previewImg");
+        const dropzone = document.getElementById("dropzone");
+        const changeImageBtn = document.getElementById("changeImageBtn");
+        const clearImageBtn = document.getElementById("clearImageBtn");
+        const imageManagerButtons = document.querySelector(".image-manager-buttons");
 
-    const filterStatus = document.getElementById("filterStatus");
-    const filterCategory = document.getElementById("filterCategory");
-    const editCategoria = document.getElementById("editCategoria");
-    const editCategoriaCustom = document.getElementById("editCategoriaCustom");
+        const editActivoCheckbox = document.getElementById("editActivo");
+        const activoLabel = document.getElementById("activoLabel");
 
-    // Cargar config.json y asignar API_URL
-    async function loadConfig() {
-        try {
-            const response = await fetch("../config.json");
-            if (!response.ok) throw new Error("No se pudo cargar config.json");
-            const config = await response.json();
-            API_URL = config.apiUrls.productos;
-            initApp();
-        } catch (error) {
-            console.error("❌ Error al cargar config.json:", error);
-            alert("No se pudo cargar la configuración. Revise la consola.");
+        const filterStatus = document.getElementById("filterStatus");
+        const filterCategory = document.getElementById("filterCategory");
+        const editCategoria = document.getElementById("editCategoria");
+        const editCategoriaCustom = document.getElementById("editCategoriaCustom");
+
+        // Supabase vars
+        let supabaseClient = null;
+        let currentProductId = null; // Para rastrear el producto actual siendo editado
+        let originalImageUrl = null; // Imagen ORIGINAL cuando se abre el modal (para detectar cambios)
+
+        // Galería multi-tenant
+        let businessName = null; // Nombre del negocio (config.nombreRestaurante)
+
+        /* 🖼️ COMPRESIÓN DE IMAGEN - Reduce tamaño automáticamente si sobrepasa 1MB */
+        async function compressImageIfNeeded(file) {
+            // Si el tamaño es menor que 1MB, devolver el archivo original
+            const MAX_SIZE = 1 * 1024 * 1024; // 1MB
+            if (file.size <= MAX_SIZE) {
+                return file;
+            }
+
+            // Si supera 1MB, comprimir
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    const img = new Image();
+                    img.src = reader.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Mantener aspect ratio
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Reducir dimensiones si son muy grandes
+                        const maxDim = 2000;
+                        if (width > maxDim || height > maxDim) {
+                            const ratio = Math.min(maxDim / width, maxDim / height);
+                            width *= ratio;
+                            height *= ratio;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Convertir a blob con compresión JPEG
+                        canvas.toBlob(
+                            (blob) => {
+                                // Si aún está muy grande, reducir calidad
+                                if (blob.size > MAX_SIZE) {
+                                    const qualityReduction = MAX_SIZE / blob.size;
+                                    canvas.toBlob(
+                                        (finalBlob) => {
+                                            const compressedFile = new File([finalBlob], file.name, { type: 'image/jpeg' });
+                                            resolve(compressedFile);
+                                        },
+                                        'image/jpeg',
+                                        Math.max(0.3, 0.8 * qualityReduction)
+                                    );
+                                } else {
+                                    const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+                                    resolve(compressedFile);
+                                }
+                            },
+                            'image/jpeg',
+                            0.8
+                        );
+                    };
+                    img.onerror = () => reject(new Error('Error al cargar la imagen'));
+                };
+                reader.onerror = () => reject(new Error('Error al leer el archivo'));
+            });
         }
-    }
 
-function initApp() {
-    fetchProducts(); // Llamamos directamente, sin depender de DOMContentLoaded
-}
+        // Cargar config.json y asignar API_URL + inicializar Supabase
+        async function loadConfig() {
+            try {
+                const response = await fetch("../config.json");
+                if (!response.ok) throw new Error("No se pudo cargar config.json");
+                const config = await response.json();
+
+                API_URL = config.apiUrls.productos;
+                businessName = config.nombreRestaurante; // 🏢 Obtener nombre del negocio para galería multi-tenant
+
+                // Inicializar cliente Supabase
+                const { createClient } = window.supabase;
+                supabaseClient = createClient(config.supabase.url, config.supabase.publicToken);
+
+                initApp();
+            } catch (error) {
+                alert("No se pudo cargar la configuración. Revise la consola.");
+            }
+        }
+
+        function initApp() {
+            fetchProducts(); // Cargar productos
+        }
+
+        /* SUPABASE: Subir imagen a Supabase Storage (SIN eliminar anterior) */
+        async function uploadImageToSupabase(file) {
+            if (!file) return null;
+
+            // Validar que sea una imagen
+            if (!file.type.startsWith("image/")) {
+                throw new Error("❌ Por favor selecciona un archivo de imagen válida.");
+            }
+
+            // 🖼️ Comprimir si es necesario
+            let finalFile = file;
+            if (file.size > 1 * 1024 * 1024) {
+                showLoader("Comprimiendo imagen...");
+                finalFile = await compressImageIfNeeded(file);
+            }
+
+            try {
+                // Generar nombre único usando timestamp
+                const timestamp = Date.now();
+                const fileExtension = finalFile.name.substring(finalFile.name.lastIndexOf('.'));
+                const fileName = `${timestamp}${fileExtension}`;
+
+                // Subir a Supabase Storage
+                const { data, error } = await supabaseClient.storage
+                    .from("productos")
+                    .upload(fileName, finalFile, {
+                        cacheControl: "3600",
+                        upsert: false
+                    });
+
+                if (error) throw error;
+
+                // Obtener la URL pública
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from("productos")
+                    .getPublicUrl(fileName);
+
+                return publicUrlData.publicUrl;
+            } catch (error) {
+                throw new Error(`No se pudo subir la imagen: ${error.message}`);
+            }
+        }
+
+        /* SUPABASE: Subir imagen con ruta específica (para /nombreRestaurante/) */
+        async function uploadImageToSupabaseWithPath(file, filePath) {
+            if (!file) return null;
+
+            // Validar que sea una imagen
+            if (!file.type.startsWith("image/")) {
+                throw new Error("❌ Por favor selecciona un archivo de imagen válida.");
+            }
+
+            // 🖼️ Comprimir si es necesario
+            let finalFile = file;
+            if (file.size > 1 * 1024 * 1024) {
+                showLoader("Comprimiendo imagen...");
+                finalFile = await compressImageIfNeeded(file);
+            }
+
+            try {
+                // Subir a la ruta específica /nombreRestaurante/nombrearchivo
+                const { data, error } = await supabaseClient.storage
+                    .from("productos")
+                    .upload(filePath, finalFile, {
+                        cacheControl: "3600",
+                        upsert: false
+                    });
+
+                if (error) throw error;
+
+                // Obtener la URL pública
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from("productos")
+                    .getPublicUrl(filePath);
+
+                return publicUrlData.publicUrl;
+            } catch (error) {
+                throw new Error(`No se pudo subir la imagen: ${error.message}`);
+            }
+        }
+
+        /* SUPABASE: Verificar si URL pertenece a nuestro Supabase */
+        function isSupabaseUrl(url) {
+            return url && url.includes("xrmqmrwfogupimteewqe.supabase.co");
+        }
+
+        /* SUPABASE: Extraer nombre de archivo de URL */
+        function extractFileNameFromUrl(url) {
+            try {
+                // URL típica: https://xrmqmrwfogupimteewqe.supabase.co/storage/v1/object/public/productos/1710000000.jpg
+                const parts = url.split("/");
+                const fileName = parts[parts.length - 1];
+                return fileName ? decodeURIComponent(fileName) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        /* SUPABASE: Eliminar imagen del Storage */
+        async function deleteImageFromSupabase(fileName) {
+            if (!fileName) {
+                throw new Error("Nombre de archivo vacío");
+            }
+
+            try {
+                const { error } = await supabaseClient.storage
+                    .from("productos")
+                    .remove([fileName]);
+
+                if (error) throw error;
+
+            } catch (error) {
+                throw new Error(`No se pudo eliminar el archivo: ${error.message}`);
+            }
+        }
 
 
-    /* LOADER */
-    function showLoader(msg = "Cargando...") {
-        loaderText.textContent = msg;
-        loader.classList.add("active");
-        loader.style.display = "flex";
-    }
-    function hideLoader() {
-        loader.classList.remove("active");
-        loader.style.display = "none";
-    }
+        /* 📋 REGISTRAR IMAGEN EN TABLA imagenes_negocios */
+        async function registerImageInGallery(imageUrl, fileName, negocioId) {
+            if (!negocioId) {
+                return { id: null, url: imageUrl }; // Devolver URL aunque falle
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from("imagenes_negocios")
+                    .insert([
+                        {
+                            url: imageUrl,
+                            nombre_archivo: fileName,
+                            negocio_id: negocioId,
+                            created_at: new Date().toISOString()
+                        }
+                    ])
+                    .select("id, url");
+
+                if (error) throw error;
+
+                return { id: data[0].id, url: data[0].url };
+            } catch (error) {
+                // No bloqueamos - devolvemos la URL aunque falle
+                return { id: null, url: imageUrl };
+            }
+        }
+
+        /* 🗑️ ELIMINAR IMAGEN DE TABLA imagenes_negocios */
+        async function deleteImageFromGallery(imageId) {
+            if (!imageId) {
+                return false;
+            }
+
+            try {
+                // 1️⃣ OBTENER la imagen de la tabla (necesitamos URL para extraer ruta correcta)
+                const { data: imageData, error: fetchError } = await supabaseClient
+                    .from("imagenes_negocios")
+                    .select("url, nombre_archivo, negocio_id")
+                    .eq("id", imageId)
+                    .single();
+
+                let filePath = null;
+                if (!fetchError && imageData) {
+                    // Extraer el filePath de la URL (ésta es la forma más segura)
+                    // URL es como: https://xrmqmrwfogupimteewqe.supabase.co/storage/v1/object/public/productos/Mi%20Tienda/1234...jpg
+                    if (imageData.url && imageData.url.includes("/storage/v1/object/")) {
+                        // Extraer desde "/productos/" en adelante
+                        const match = imageData.url.match(/\/productos\/(.+)$/);
+                        if (match) {
+                            filePath = decodeURIComponent(match[1]); // Decodificar espacios (Mi%20Tienda → Mi Tienda)
+                        }
+                    }
+
+                    // Fallback: construir manualmente
+                    if (!filePath) {
+                        filePath = `${imageData.negocio_id}/${imageData.nombre_archivo}`;
+                    }
+                }
+
+                // 2️⃣ ELIMINAR de la tabla
+                const { error: deleteError } = await supabaseClient
+                    .from("imagenes_negocios")
+                    .delete()
+                    .eq("id", imageId);
+
+                if (deleteError) throw deleteError;
+
+                // 3️⃣ ELIMINAR del Storage usando la ruta exacta
+                if (filePath) {
+                    try {
+                        // PRIMERO: Listar qué hay en la carpeta
+                        const folderName = filePath.split('/')[0]; // "Mi Tienda"
+                        const { data: filesInFolder, error: listError } = await supabaseClient.storage
+                            .from("productos")
+                            .list(folderName, { limit: 100 });
+
+                        if (listError) { }
+
+                        // Verificar si el archivo existe en la lista
+                        const fileName = filePath.split('/')[1];
+                        const fileExists = filesInFolder?.some(f => f.name === fileName);
+
+                        // SEGUNDO: Intentar eliminar
+                        const { data, error } = await supabaseClient.storage
+                            .from("productos")
+                            .remove([filePath]);
+
+                        if (error) {
+                            throw new Error(error.message);
+                        }
+                    } catch (storageError) {
+
+                        // Intentar CON LA RUTA ENCODED (espacios como %20)
+                        try {
+                            const encodedPath = filePath.replace(/ /g, '%20');
+                            const { data: data2, error: error2 } = await supabaseClient.storage
+                                .from("productos")
+                                .remove([encodedPath]);
+
+                            if (!error2) {
+                                return true;
+                            }
+                        } catch (error3) {
+                        }
+
+                        // Último intento: eliminar con negocio_id extraído
+                        try {
+                            const originalPath = `${imageData?.negocio_id}/${imageData?.nombre_archivo}`;
+                            const { data: data3, error: error3 } = await supabaseClient.storage
+                                .from("productos")
+                                .remove([originalPath]);
+
+                            if (!error3) {
+                                return true;
+                            }
+                        } catch (errorFinal) {
+                        }
+                    }
+                } else {
+                }
+
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+
+        /* LOADER */
+        function showLoader(msg = "Cargando...") {
+            loaderText.textContent = msg;
+            loader.classList.add("active");
+            loader.style.display = "flex";
+        }
+        function hideLoader() {
+            loader.classList.remove("active");
+            loader.style.display = "none";
+        }
 
         /* OBTENER PRODUCTOS */
         async function fetchProducts() {
@@ -1116,7 +2076,6 @@ function initApp() {
 
                 updateKPIs();
             } catch (err) {
-                console.error("❌ Error al cargar productos:", err);
                 document.getElementById("productGrid").innerHTML = '<p style="color:var(--danger); text-align:center; padding:40px; font-size:16px;">Error de conexión con la API. Revise la consola (F12) o su API_URL.</p>';
             } finally {
                 hideLoader();
@@ -1205,7 +2164,7 @@ function initApp() {
             otherOption.value = 'otra';
             otherOption.textContent = '➕ Otra...';
             editCategoria.appendChild(otherOption);
-            
+
             // 4. Preseleccionar la categoría si existe
             if (categories.includes(currentCategory)) {
                 editCategoria.value = currentCategory;
@@ -1224,30 +2183,32 @@ function initApp() {
                 editCategoriaCustom.style.display = 'none';
                 // Si cambiamos a una categoría válida o a 'seleccionar', limpiamos el input custom
                 if (editCategoria.value !== 'otra') {
-                     editCategoriaCustom.value = '';
+                    editCategoriaCustom.value = '';
                 }
             }
         }
         editCategoria.addEventListener('change', updateCustomCategoryInput);
 
 
-        /* NUEVO: FUNCIÓN CENTRAL DE FILTRADO (se mantiene) */
+        /* FILTRADO: CORRECCIÓN DE ERROR + ROBUSTEZ */
         function applyFilters() {
-            const searchText = searchInput.value.toLowerCase().trim();
+            const searchText = String(searchInput.value || "").toLowerCase().trim();
             const statusFilter = filterStatus.value;
-            const categoryFilter = filterCategory.value.toLowerCase();
+            const categoryFilter = String(filterCategory.value || "").toLowerCase();
 
             const filteredList = products.filter(p => {
                 const isActive = p.activo;
                 const statusMatch = statusFilter === 'all' || (statusFilter === 'active' && isActive) || (statusFilter === 'inactive' && !isActive);
                 if (!statusMatch) return false;
 
-                const productCategory = (p.categoria || "").toLowerCase();
+                const productCategory = String(p.categoria || "").toLowerCase();
                 const categoryMatch = categoryFilter === 'all' || productCategory === categoryFilter;
                 if (!categoryMatch) return false;
 
-                const productName = (p.nombre || "").toLowerCase();
-                const productDescription = (p.descripcion || "").toLowerCase();
+                // ✅ CORRECCIÓN: Convertir a String ANTES de usar toLowerCase()
+                // Previene error si p.nombre es número, null o undefined
+                const productName = String(p.nombre || "").toLowerCase();
+                const productDescription = String(p.descripcion || "").toLowerCase();
 
                 const textMatch = !searchText || productName.includes(searchText) || productDescription.includes(searchText);
 
@@ -1267,26 +2228,118 @@ function initApp() {
             activoLabel.style.color = isActive ? "var(--success)" : "var(--danger)";
         });
 
-        // Vista previa de la imagen
+        /* ================================
+       GESTOR DE IMÁGENES: DROPZONE + NATIVE CAPTURE
+       ================================ */
+
+        // Mostrar preview - ocultar dropzone
+        function showImagePreview() {
+            dropzone.style.display = "none";
+            previewImg.style.display = "block";
+            imageManagerButtons.style.display = "grid";
+        }
+
+        // Ocultar preview - mostrar dropzone
+        function hideImagePreview() {
+            dropzone.style.display = "flex";
+            previewImg.style.display = "none";
+            imageManagerButtons.style.display = "none";
+        }
+
+        // Procesar archivo seleccionado
+        function processImageFile(file) {
+            if (!file || !file.type.startsWith("image/")) {
+                alert("❌ Por favor selecciona una imagen válida");
+                return;
+            }
+            const previewUrl = URL.createObjectURL(file);
+            previewImg.src = previewUrl;
+            showImagePreview();
+        }
+
+        // DROPZONE: Click
+        dropzone.addEventListener('click', () => {
+            editImagenFileInput.click();
+        });
+
+        // DROPZONE: Drag & Drop
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                editImagenFileInput.files = e.dataTransfer.files;
+                processImageFile(file);
+            }
+        });
+
+        // Input file: cambio
+        editImagenFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                processImageFile(file);
+            }
+        });
+
+        // Botón "Cambiar" imagen (después de preview)
+        changeImageBtn.addEventListener('click', () => {
+            editImagenFileInput.click();
+        });
+
+        // Vista previa de URL manual
         editImagenInput.addEventListener('input', (e) => {
-            modalImg.src = e.target.value.trim() || DEFAULT_IMG;
+            const url = e.target.value.trim();
+            if (editImagenFileInput.files.length === 0) {
+                if (url) {
+                    previewImg.src = url;
+                    showImagePreview();
+                } else {
+                    hideImagePreview();
+                }
+            }
+        });
+
+        // Botón "Eliminar Imagen" (reset inteligente)
+        clearImageBtn.addEventListener('click', () => {
+            editImagenFileInput.value = ""; // Limpiar el input file
+            editImagenInput.value = ""; // Limpiar la URL manual
+            hideImagePreview(); // Mostrar dropzone
         });
 
         function openModal(p) {
             isNewProduct = false;
+            currentProductId = p.id;
+            originalImageUrl = p.imagen; // 🔴 RASTREAR imagen original para detectar cambios
+            isRecycled = false; // Reset: asumir que la imagen actual NO es reciclada (es nueva o manual)
 
             document.getElementById("editId").value = p.id;
             document.getElementById("editNombre").value = p.nombre;
-            document.getElementById("editConfig").value = p.config || "";
             document.getElementById("editPrecio").value = p.precio;
             editImagenInput.value = p.imagen;
+            editImagenFileInput.value = ""; // Limpiar input file
             document.getElementById("editDescripcion").value = p.descripcion;
+
+            // Mostrar previsualización de la imagen actual
+            if (p.imagen) {
+                previewImg.src = p.imagen;
+                showImagePreview();
+            } else {
+                hideImagePreview();
+            }
 
             populateEditCategories(p.categoria); // Carga y preselecciona
 
             // Configuración del input custom y select
             if (editCategoria.value === 'otra') {
-                 // Si es 'otra' (categoría nueva que no está en la lista), cargamos el nombre en el input custom
                 editCategoriaCustom.value = p.categoria;
             } else {
                 editCategoriaCustom.value = '';
@@ -1295,11 +2348,9 @@ function initApp() {
 
             const isActive = p.activo;
             editActivoCheckbox.checked = isActive;
-            modalImg.src = p.imagen || DEFAULT_IMG;
 
             activoLabel.textContent = isActive ? "Activo 🟢" : "Inactivo 🔴";
             activoLabel.style.color = isActive ? "var(--success)" : "var(--danger)";
-
 
             deleteBtn.style.display = "inline-block";
             saveBtn.textContent = "Guardar";
@@ -1309,16 +2360,21 @@ function initApp() {
         /* NUEVO PRODUCTO */
         addProductBtn.onclick = () => {
             isNewProduct = true;
+            currentProductId = null;
+            originalImageUrl = null; // No hay imagen original para nuevo producto
+
             const nextId = products.length ? Math.max(...products.map(p => Number(p.id))) + 1 : 1;
 
             document.getElementById("editId").value = nextId;
             document.getElementById("editNombre").value = "";
-            document.getElementById("editConfig").value = "";
             document.getElementById("editPrecio").value = "";
             editImagenInput.value = "";
+            editImagenFileInput.value = ""; // Limpiar input de archivo
             document.getElementById("editDescripcion").value = "";
             editActivoCheckbox.checked = true;
-            modalImg.src = DEFAULT_IMG;
+
+            // Mostrar dropzone (nuevo producto = sin imagen)
+            hideImagePreview();
 
             populateEditCategories(); // Carga las categorías sin preselección
 
@@ -1335,19 +2391,19 @@ function initApp() {
             modal.style.display = "flex";
         };
 
-        /* GUARDAR */
+        /* GUARDAR - CON LÓGICA INTELIGENTE DE GALERÍA MULTI-TENANT 🧠 */
         saveBtn.onclick = async () => {
             const nombre = document.getElementById("editNombre").value.trim();
             const precioStr = document.getElementById("editPrecio").value.replace(/\./g, "").replace(/,/g, "");
             const precio = Number(precioStr);
-            let finalCategory = editCategoria.value; // Valor del select
+            let finalCategory = editCategoria.value;
 
-            // 1. Obtener la categoría final (maneja el caso 'otra')
+            // 1. Obtener la categoría final
             if (finalCategory === 'otra') {
                 finalCategory = editCategoriaCustom.value.trim();
             }
 
-            // 2. Validación
+            // 2. Validación básica
             if (!nombre) {
                 alert("❌ El nombre del producto es obligatorio.");
                 return;
@@ -1357,39 +2413,121 @@ function initApp() {
                 return;
             }
             if (!finalCategory) {
-                 alert("❌ La categoría del producto es obligatoria.");
-                 return;
+                alert("❌ La categoría del producto es obligatoria.");
+                return;
             }
 
-            const body = {
-                id: document.getElementById("editId").value,
-                nombre: nombre,
-                categoria: finalCategory, // Usar el valor final
-                config: document.getElementById("editConfig").value,
-                precio: precioStr,
-                imagen: editImagenInput.value.trim(),
-                descripcion: document.getElementById("editDescripcion").value.trim(),
-                activo: editActivoCheckbox.checked,
-            };
+            // 3️⃣ LÓGICA DE IMAGEN: SUBIR NUEVA, REGISTRAR EN TABLA, ELIMINAR ANTIGUA
+            let imageUrl = null;
+            let oldImageId = null; // ID en tabla imagenes_negocios para eliminar después
+            let oldImageFilePathForDeletion = null;
 
-            const action = isNewProduct ? "add" : "update";
+            const hasNewFile = editImagenFileInput.files.length > 0;
+            const currentManualUrl = editImagenInput.value.trim();
+            const imageChanged = originalImageUrl !== currentManualUrl || hasNewFile;
 
-            showLoader("Guardando...");
+            showLoader("Procesando imagen...");
+
             try {
+                // PASO 1: Determinar si hay nueva imagen para subir
+                if (hasNewFile) {
+                    // 🔼 NUEVA IMAGEN CARGADA: subir primero
+                    const file = editImagenFileInput.files[0];
+                    const fileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+                    const filePath = `${businessName}/${fileName}`;
+
+                    showLoader("Subiendo imagen...");
+                    const uploadedUrl = await uploadImageToSupabaseWithPath(file, filePath);
+
+                    // Registrar en tabla imagenes_negocios
+                    showLoader("Registrando en catálogo...");
+                    const registeredImage = await registerImageInGallery(uploadedUrl, fileName, businessName);
+                    imageUrl = registeredImage.url;
+
+                    // Guardar antigua para eliminar DESPUÉS
+                    if (isNewProduct === false && originalImageUrl && isSupabaseUrl(originalImageUrl)) {
+                        oldImageFilePathForDeletion = extractFileNameFromUrl(originalImageUrl);
+                    }
+
+                } else if (currentManualUrl) {
+                    // 🔗 URL MANUAL: usar directamente
+                    imageUrl = currentManualUrl;
+
+                    // Si es producto existente y la URL cambió, eliminar antigua
+                    if (isNewProduct === false && originalImageUrl !== currentManualUrl && isSupabaseUrl(originalImageUrl)) {
+                        oldImageFilePathForDeletion = extractFileNameFromUrl(originalImageUrl);
+                    }
+
+                } else if (currentManualUrl === "") {
+                    // 🚫 USUARIO ELIMINÓ LA IMAGEN: enviar VACÍO
+                    imageUrl = "";
+
+                    // Eliminar la antigua de Storage
+                    if (isNewProduct === false && originalImageUrl && isSupabaseUrl(originalImageUrl)) {
+                        oldImageFilePathForDeletion = extractFileNameFromUrl(originalImageUrl);
+                    }
+
+                } else {
+                    // ℹ️ SIN CAMBIOS: mantener original
+                    imageUrl = originalImageUrl;
+                }
+
+                // PASO 2: Eliminar imagen antigua de tabla Y Storage
+                if (oldImageFilePathForDeletion) {
+                    showLoader("Limpiando imágenes antiguas...");
+                    try {
+                        // 🔍 BUSCAR en tabla por nombre_archivo
+                        const { data: oldImageRecord, error: searchError } = await supabaseClient
+                            .from("imagenes_negocios")
+                            .select("id")
+                            .eq("nombre_archivo", oldImageFilePathForDeletion)
+                            .eq("negocio_id", businessName);
+
+                        // Si encontró, eliminar de tabla (y Storage automáticamente vía función)
+                        if (!searchError && oldImageRecord && oldImageRecord.length > 0) {
+                            await deleteImageFromGallery(oldImageRecord[0].id);
+                        } else {
+                            // Fallback: eliminar solo del Storage si no está en tabla
+                            await deleteImageFromSupabase(oldImageFilePathForDeletion);
+                        }
+                    } catch (error) {
+                    }
+                }
+
+                // Validación final: solo asignar DEFAULT_IMG si imageUrl es realmente nulo/undefined
+                // ❌ NO reemplazar strings vacíos "" (eso fue intencional - usuario eliminó imagen)
+                if (imageUrl === null || imageUrl === undefined) {
+                    imageUrl = DEFAULT_IMG;
+                }
+
+                // 4️⃣ GUARDAR EN GOOGLE SHEETS
+                const body = {
+                    id: document.getElementById("editId").value,
+                    nombre: nombre,
+                    categoria: finalCategory,
+                    config: "",
+                    precio: precioStr,
+                    imagen: imageUrl,
+                    descripcion: document.getElementById("editDescripcion").value.trim(),
+                    activo: editActivoCheckbox.checked,
+                };
+
+                const action = isNewProduct ? "add" : "update";
+
+                showLoader("Guardando...");
                 const response = await fetch(API_URL, {
                     method: "POST",
                     body: JSON.stringify({ action, ...body }),
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
                 modal.style.display = "none";
+                editImagenFileInput.value = "";
                 await fetchProducts();
                 applyFilters();
 
             } catch (error) {
-                console.error("❌ Error al guardar/actualizar producto:", error);
-                alert("Hubo un error al comunicarse con la API. Revise la consola.");
+                alert("Error: " + error.message);
             } finally {
                 hideLoader();
             }
@@ -1399,22 +2537,52 @@ function initApp() {
         deleteBtn.onclick = async () => {
             if (!confirm("¿Está seguro de eliminar este producto? Esta acción no se puede deshacer.")) return;
 
+            const productId = document.getElementById("editId").value;
+
             showLoader("Eliminando...");
+
             try {
+                // 1️⃣ ELIMINAR IMAGEN DE LA TABLA imagenes_negocios (por URL - es única)
+                if (originalImageUrl && isSupabaseUrl(originalImageUrl)) {
+
+                    // Buscar por URL (es más seguro que por fileName)
+                    const { data: imageRecords, error: searchError } = await supabaseClient
+                        .from('imagenes_negocios')
+                        .select('id')
+                        .eq('url', originalImageUrl);
+
+                    if (!searchError && imageRecords && imageRecords.length > 0) {
+                        // Eliminar de la tabla (también elimina del Storage)
+                        await deleteImageFromGallery(imageRecords[0].id);
+                    } else {
+                        // Si no está en tabla pero está en Supabase, intentar eliminar solo del Storage
+                        try {
+                            const fileName = extractFileNameFromUrl(originalImageUrl);
+                            if (fileName) {
+                                const filePath = `${businessName}/${fileName}`;
+                                await supabaseClient.storage
+                                    .from('productos')
+                                    .remove([filePath]);
+                            }
+                        } catch (fallbackError) {
+                        }
+                    }
+                }
+
+                // 2️⃣ ELIMINAR PRODUCTO DE GOOGLE SHEETS
+                showLoader("Eliminando de catálogo...");
                 const response = await fetch(API_URL, {
                     method: "POST",
-                    body: JSON.stringify({ action: "delete", id: document.getElementById("editId").value }),
+                    body: JSON.stringify({ action: "delete", id: productId }),
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
                 modal.style.display = "none";
                 await fetchProducts();
                 applyFilters();
 
             } catch (error) {
-                console.error("❌ Error al eliminar producto:", error);
-                alert("Hubo un error al comunicarse con la API. Revise la consola.");
+                alert("Hubo un error al eliminar el producto. Revise la consola.");
             } finally {
                 hideLoader();
             }
@@ -1437,7 +2605,18 @@ function initApp() {
             }
         });
 
- loadConfig(); // Inicia todo cargando la configuración
+        /* Button: Gestor de Productos */
+        gestorBtn.addEventListener("click", () => {
+            // Mostrar sección de productos
+            productosSeccion.style.display = "block";
+            gestorBtn.classList.add("active");
+            document.querySelector(".page-title").textContent = "Productos";
+        });
+
+
+
+
+        loadConfig(); // Inicia todo cargando la configuración
     </script>
 
 </body>
