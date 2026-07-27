@@ -7,6 +7,9 @@ let editingOrderId = null; // Almacena el ID del pedido que se está editando
 let originalOrderSnapshot = null; // Almacenará el estado inicial del pedido para comparar
 let isLoadingDomicilio = false; // Bandera para detectar si estamos cargando un domicilio inicial
 let costoDomicilioOriginal = 0; // Guardar el costo original del domicilio para respetarlo
+let costoDomicilioActual = 0; // Costo efectivo que se usa al enviar o editar el pedido
+let costoDomicilioCalculado = 0; // Costo calculado por el mapa en el contexto actual
+let costoDomicilioManual = false; // Indica si el costo actual fue cargado/ajustado manualmente
 let pedidosCargados = []; // Almacenar todos los pedidos para filtrado
 let mesasCargadas = []; // Almacenar todas las mesas para filtrado
 
@@ -736,6 +739,9 @@ function startNewOrder() {
   cart = [];
   isLoadingDomicilio = false;
   costoDomicilioOriginal = 0;
+  costoDomicilioActual = 0;
+  costoDomicilioCalculado = 0;
+  costoDomicilioManual = false;
 
   // Mostrar el contenedor de servicios y ocultar las listas de Mesas/Pedidos
   document.getElementById("service-content").style.display = "block";
@@ -1040,6 +1046,9 @@ function forceResetToNew() {
   cart = [];
   isLoadingDomicilio = false;
   costoDomicilioOriginal = 0;
+  costoDomicilioActual = 0;
+  costoDomicilioCalculado = 0;
+  costoDomicilioManual = false;
 
   // 2. Limpieza de todos los inputs (Nombre, Tel, etc.)
   const campos = [
@@ -2121,6 +2130,8 @@ function editExistingOrder(mesaData) {
       // ✅ GUARDAR COSTO ORIGINAL DEL DOMICILIO
       costoDomicilioOriginal = mesaData.costoDomicilio || 0;
       costoDomicilioActual = costoDomicilioOriginal;
+      costoDomicilioCalculado = 0;
+      costoDomicilioManual = false;
 
       if (document.getElementById("val-google-maps")) {
         document.getElementById("val-google-maps").value =
@@ -2130,8 +2141,11 @@ function editExistingOrder(mesaData) {
         if (mesaData.ubicacionGoogleMaps) {
           isLoadingDomicilio = true;
           setTimeout(() => {
-            // Solo cargar el mapa visualmente, sin recalcular costos
-            cargarMapaDesdeUbicacionGuardada(mesaData.ubicacionGoogleMaps);
+            // Solo cargar el mapa visualmente, sin recalcular costos cuando existe tarifa guardada
+            cargarMapaDesdeUbicacionGuardada(
+              mesaData.ubicacionGoogleMaps,
+              costoDomicilioOriginal > 0,
+            );
             isLoadingDomicilio = false;
           }, 200);
         }
@@ -2236,7 +2250,6 @@ function closeLists() {
 
 let miniMap, markerUsuarioPos;
 let rutaPolylinesPOS = []; // capas del arco para limpiarlas
-let costoDomicilioActual = 0;
 
 /**
  * 1. INICIALIZAR EL MAPA
@@ -2411,8 +2424,6 @@ function _dibujarArcoPOS(lat, lng, soloVisual = false) {
     });
   } catch (e) {}
 
-  if (soloVisual) return; // No actualizar costos — solo dibujar
-
   // ─── Calcular y mostrar costos ────────────────────────────────────────────
   const valorKM = config?.domicilio?.costoPorKilometro || 1500;
   const baseEnvio = config?.costoEnvioBase || 2000;
@@ -2431,11 +2442,23 @@ function _dibujarArcoPOS(lat, lng, soloVisual = false) {
     etiquetaNocturna = `<br><span style="color:#e74c3c;font-weight:bold;">🌙 Recargo Nocturno (+20%)</span>`;
   }
 
-  costoDomicilioActual = costoFinal;
-  updateUI();
-
   const infoDiv = document.getElementById("distancia-info");
+  costoDomicilioCalculado = costoFinal;
+
   if (infoDiv) {
+    const costoParaMostrar =
+      costoDomicilioActual > 0 ? costoDomicilioActual : costoFinal;
+
+    const mostrarTarifaEditada =
+      costoDomicilioActual > 0 &&
+      costoDomicilioActual !== costoDomicilioCalculado;
+
+    const tarifaEditadaHtml = mostrarTarifaEditada
+      ? `<div style="color:#ffd600; font-size:0.82rem; font-weight:700; margin-top:6px;">
+            Tarifa editada aplicada.
+         </div>`
+      : "";
+
     infoDiv.innerHTML = `
           <div style="display:flex;flex-direction:column;padding:12px;border-radius:8px;border-left:5px solid var(--accent);box-shadow:0 2px 6px rgba(0,0,0,0.1);font-size:14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -2443,7 +2466,7 @@ function _dibujarArcoPOS(lat, lng, soloVisual = false) {
               <div style="display:flex;align-items:center;gap:8px;">
                 <span style="font-size:12px;color:#999;">$</span>
                 <input type="text" id="tarifa-domicilio-input"
-                  value="${costoDomicilioActual.toLocaleString("es-CO")}"
+                  value="${costoParaMostrar.toLocaleString("es-CO")}"
                   style="width:110px;padding:6px 8px;border:none;border-radius:6px;font-size:16px;font-weight:bold;color:#fff;background:#222;text-align:right;"
                   oninput="formatearTarifaCOP(this)">
               </div>
@@ -2452,20 +2475,32 @@ function _dibujarArcoPOS(lat, lng, soloVisual = false) {
               <small>Base: $${costoBase.toLocaleString("es-CO")}</small>
               ${etiquetaNocturna}
             </div>
+            ${tarifaEditadaHtml}
           </div>`;
   }
+
+  if (costoDomicilioActual === 0) {
+    costoDomicilioActual = costoFinal;
+  }
+  costoDomicilioManual = false;
+  updateUI();
+
+  if (soloVisual) return; // No actualizar costo interno adicional
 }
 
 /**
  * ✅ FUNCIÓN: Cargar mapa desde ubicación guardada SIN recalcular costos
  * Usa la misma cascada de domicilio.js para parsear coords.
  */
-function cargarMapaDesdeUbicacionGuardada(valor) {
+function cargarMapaDesdeUbicacionGuardada(valor, preservarCosto = true) {
   if (!valor || valor.trim() === "") return;
 
   if (!miniMap) {
     console.warn("Mapa no inicializado aún, reintentando...");
-    setTimeout(() => cargarMapaDesdeUbicacionGuardada(valor), 300);
+    setTimeout(
+      () => cargarMapaDesdeUbicacionGuardada(valor, preservarCosto),
+      300,
+    );
     return;
   }
 
@@ -2489,8 +2524,8 @@ function cargarMapaDesdeUbicacionGuardada(valor) {
     });
   }
 
-  // Dibujar arco + calcular costos (igual que al cargar en domicilio.js)
-  _dibujarArcoPOS(lat, lng, /* soloVisual */ false);
+  // Dibujar arco sin recalcular costos si ya hay una tarifa guardada.
+  _dibujarArcoPOS(lat, lng, preservarCosto);
 }
 
 /**
@@ -2556,6 +2591,10 @@ function analizarEntradaMapa(valor) {
  * Usa Haversine + arco Bézier (igual que domicilio.js) — SIN servidor externo.
  */
 async function actualizarPuntoYCostos(lat, lng) {
+  // Usuario está cambiando la ubicación; recalculamos con el mapa.
+  costoDomicilioActual = 0;
+  costoDomicilioCalculado = 0;
+  costoDomicilioManual = false;
   // Marcador del usuario
   if (markerUsuarioPos) {
     markerUsuarioPos.setLatLng([lat, lng]);
@@ -2613,6 +2652,7 @@ function formatearTarifaCOP(input) {
   if (valor === "") {
     input.value = "";
     costoDomicilioActual = 0;
+    costoDomicilioManual = false;
     updateUI();
     return;
   }
@@ -2625,6 +2665,7 @@ function formatearTarifaCOP(input) {
 
   // Actualizar la tarifa y el total instantáneamente
   costoDomicilioActual = numValor;
+  costoDomicilioManual = true;
   updateUI();
 }
 
