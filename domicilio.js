@@ -536,7 +536,7 @@ function calcularRutaYCostos(destino) {
 
   // ─── 💰 Calcular costo ───────────────────────────────────────────────
   const valorKM = config?.domicilio?.costoPorKilometro || 1500;
-  const baseEnvio = config?.costoEnvioBase || 1000;
+  const baseEnvio = config?.costoEnvioBase || 2000;
   const tarifaMinima = config?.domicilio?.tarifaMinima || 3000;
   const recargoNocturnoActivo =
     config?.domicilio?.recargoNocturnoActivo !== false;
