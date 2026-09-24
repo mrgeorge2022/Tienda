@@ -30,8 +30,16 @@ document.addEventListener("configCargado", (e) => {
 
 // DOM Elements
 // DOM Elements
-const skeletonLoadingEl = document.getElementById("skeleton-loading");
+const loadingProgressEl = document.getElementById("loading-progress");
+const loadingProgressTextEl = document.getElementById("loading-progress-text");
+const loadingProgressPercentEl = document.getElementById(
+  "loading-progress-percent",
+);
 const errorEl = document.getElementById("error-message");
+let renderRequestId = 0;
+let loadingProgressValue = 0;
+let loadingProgressTimer = null;
+let initialProductsShown = false;
 
 // Nuevos Elementos de Filtro
 const categorySelect = document.getElementById("category-select");
@@ -74,7 +82,7 @@ async function setupCategoryAndSearchFilters() {
   });
 
   // 3. 💥 ¡CRUCIAL! Ejecutar el filtrado para el renderizado inicial de TODOS los productos.
-  filterProducts(false); // false indica que es la carga inicial
+  await filterProducts(false); // false indica que es la carga inicial
 }
 /**
  * 🔍 Función principal para filtrar y mostrar los productos.
@@ -105,7 +113,7 @@ function filterProducts(userInteraction = false) {
 
   // 3. Renderizar los productos filtrados
   // DEBES tener una función 'renderProducts' definida en otra parte de tu script.
-  renderProducts(filteredProducts);
+  return renderProducts(filteredProducts);
 
   // 4. 📜 Scroll automático SOLO cuando el usuario filtra (no en carga inicial)
   if (userInteraction) {
@@ -178,16 +186,16 @@ async function loadProducts() {
     showLoading(true);
     // Pedimos explícitamente la hoja Productos para evitar confusiones con otras hojas
     const url = `${APPS_SCRIPT_URL}?sheet=Productos`;
+    updateLoadingProgress(10, `Buscando productos de ${getRestaurantName()}`);
     const response = await fetch(url);
 
-    // Clonar y registrar texto crudo para depuración (no afecta al parseo)
-    const rawText = await response.clone().text();
-    try {
-    } catch (e) {}
+    // Leer el cuerpo una sola vez evita duplicar el trabajo y la memoria usados por la respuesta.
+    const rawText = await response.text();
+    updateLoadingProgress(35, `Cargando el menú de ${getRestaurantName()}`);
 
     let data;
     try {
-      data = await response.json();
+      data = JSON.parse(rawText);
     } catch (err) {
       // Si la respuesta no es JSON (p. ej. JSONP), intentar parsear como texto y extraer JSON
       data = tryParsePossibleJSONP(rawText);
@@ -221,7 +229,7 @@ async function loadProducts() {
         .replace(/\s+/g, "")
         .toLowerCase();
 
-    products = data.map((row, idx) => {
+    const normalizeProduct = (row, idx) => {
       const p = {};
       // construir mapa de claves normalizadas -> valor
       const keyMap = {};
@@ -266,7 +274,30 @@ async function loadProducts() {
         ]) || "";
       p.config = getNormalized(["config", "Config"]) || "";
       return p;
-    });
+    };
+
+    products = [];
+    const normalizationBatchSize = 200;
+    for (let start = 0; start < data.length; start += normalizationBatchSize) {
+      const batch = data
+        .slice(start, start + normalizationBatchSize)
+        .map((row, index) => normalizeProduct(row, start + index));
+      products.push(...batch);
+
+      if (products.length >= 20 && !initialProductsShown) {
+        await renderProducts(products.slice(0, 20));
+      }
+
+      updateLoadingProgress(
+        35 + (products.length / data.length) * 30,
+        `Preparando productos de ${getRestaurantName()} (${products.length} de ${data.length})`,
+      );
+
+      if (start + normalizationBatchSize < data.length) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+    }
+    updateLoadingProgress(65, `Organizando el menú de ${getRestaurantName()}`);
     // Si no hay productos, mostrar pista útil para depuración
     if (!products || products.length === 0) {
       console.warn(
@@ -277,12 +308,20 @@ async function loadProducts() {
       errorEl.textContent =
         'No se encontraron productos en la respuesta. Revisa la consola (raw response) o asegúrate de que la hoja "Productos" exista y tenga datos.';
     }
-    setupCategoryAndSearchFilters();
+    await setupCategoryAndSearchFilters();
 
+    updateLoadingProgress(
+      100,
+      `${getRestaurantName()} está listo para recibir tu pedido`,
+    );
     showLoading(false);
     //renderProducts();
   } catch (err) {
     console.error(err);
+    updateLoadingProgress(
+      100,
+      `No se pudo cargar el menú de ${getRestaurantName()}`,
+    );
     showLoading(false);
     errorEl.style.display = "block";
   }
@@ -321,7 +360,7 @@ function tryParsePossibleJSONP(txt) {
  * y por el renderizado inicial.
  * @param {Array<Object>} productsToRender - Lista de productos a dibujar.
  */
-function renderProducts(productsToRender) {
+async function renderProducts(productsToRender) {
   // 💡 Define el ID de tu contenedor principal en index.html
   const mainGridContainer = document.getElementById("main-products-grid");
 
@@ -333,6 +372,7 @@ function renderProducts(productsToRender) {
   }
 
   mainGridContainer.innerHTML = ""; // Limpiar contenido anterior
+  const currentRenderRequest = ++renderRequestId;
 
   // Usa los productos filtrados, o si no hay argumento, usa el array global (aunque filterProducts lo enviará siempre)
   const finalProducts = productsToRender || products;
@@ -346,12 +386,34 @@ function renderProducts(productsToRender) {
     return;
   }
 
-  // Dibuja TODAS las tarjetas en el único contenedor
-  finalProducts.forEach((product) => {
-    // Asegúrate de que tienes una función 'createProductCard' definida en otra parte del script
-    const productCard = createProductCard(product);
-    mainGridContainer.appendChild(productCard);
-  });
+  // Dividir el trabajo permite que el navegador pinte y responda entre lotes.
+  const batchSize = 20;
+  for (let start = 0; start < finalProducts.length; start += batchSize) {
+    if (currentRenderRequest !== renderRequestId) return;
+
+    const fragment = document.createDocumentFragment();
+    finalProducts.slice(start, start + batchSize).forEach((product) => {
+      fragment.appendChild(createProductCard(product));
+    });
+    mainGridContainer.appendChild(fragment);
+    if (loadingProgressEl.style.display !== "none") {
+      const renderedCount = Math.min(start + batchSize, finalProducts.length);
+      updateLoadingProgress(
+        65 + (renderedCount / finalProducts.length) * 35,
+        `Preparando productos de ${getRestaurantName()} (${renderedCount} de ${finalProducts.length})`,
+      );
+
+      // Mostrar el primer lote mientras los demás se agregan en segundo plano.
+      if (!initialProductsShown) {
+        initialProductsShown = true;
+        showLoading(false);
+      }
+    }
+
+    if (start + batchSize < finalProducts.length) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
+  }
 
   // Llama a la función para configurar los botones de producto si es necesario
   updateProductButtons();
@@ -372,7 +434,7 @@ function createProductCard(product) {
   card.className = `product-card ${!product.activo ? "inactive" : ""}`;
 
   const imageContent = product.imagen
-    ? `<img src="${product.imagen}" alt="${product.nombre}" onerror="this.src='https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg';">`
+    ? `<img src="${product.imagen}" alt="${product.nombre}" loading="lazy" decoding="async" onerror="this.src='https://mrgeorge2022.github.io/Uploader/imagenes/default.jpg';">`
     : getCategoryEmoji(product.categoria);
 
   const descripcionValue =
@@ -1413,10 +1475,51 @@ window.addEventListener("scroll", () => {
  * @param {boolean} show
  */
 function showLoading(show) {
-  skeletonLoadingEl.style.display = show ? "grid" : "none";
+  if (show) {
+    loadingProgressValue = 0;
+    initialProductsShown = false;
+    loadingProgressEl.style.display = "flex";
+    updateLoadingProgress(0, `Cargando ${getRestaurantName()}`);
+    startLoadingProgressSimulation();
+  } else {
+    stopLoadingProgressSimulation();
+    loadingProgressEl.style.display = "none";
+  }
   document.querySelector(".menu-sections").style.display = show
     ? "none"
     : "block";
+}
+
+function getRestaurantName() {
+  return configTienda?.nombreRestaurante || "tu restaurante";
+}
+
+function updateLoadingProgress(percent, message) {
+  const safePercent = Math.max(0, Math.min(100, percent));
+  if (safePercent >= 100) {
+    loadingProgressValue = 100;
+  } else if (safePercent > loadingProgressValue) {
+    loadingProgressValue = Math.min(safePercent, loadingProgressValue + 1);
+  }
+  loadingProgressPercentEl.textContent = `${Math.round(loadingProgressValue)}%`;
+  loadingProgressTextEl.textContent = message;
+}
+
+function startLoadingProgressSimulation() {
+  stopLoadingProgressSimulation();
+  loadingProgressTimer = setInterval(() => {
+    if (loadingProgressValue < 92) {
+      loadingProgressValue = Math.min(92, loadingProgressValue + 1);
+      loadingProgressPercentEl.textContent = `${loadingProgressValue}%`;
+    }
+  }, 120);
+}
+
+function stopLoadingProgressSimulation() {
+  if (loadingProgressTimer) {
+    clearInterval(loadingProgressTimer);
+    loadingProgressTimer = null;
+  }
 }
 
 /**
