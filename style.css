@@ -1,4 +1,3 @@
-
 html,
 body {
     touch-action: manipulation;
@@ -34,25 +33,26 @@ body {
     overflow-x: hidden;
     position: relative;
 
-    
+
 }
 
 /* 🔹 Capa del fondo difuminado y oscurecido */
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: var(--bg-body);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: var(--bg-body);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 
 
-  transform: scale(1.05); /* evita bordes cortados */
-  z-index: -1;
+    transform: scale(1.05);
+    /* evita bordes cortados */
+    z-index: -1;
 
-  /* 🔸 Oscurecer con una capa negra semitransparente */
-  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.5);
+    /* 🔸 Oscurecer con una capa negra semitransparente */
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.5);
 }
 
 input,
@@ -85,7 +85,7 @@ select {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
     /* 💡 OPTIMIZACIÓN CRÍTICA: Promueve a la GPU */
-    transform: translateZ(0); 
+    transform: translateZ(0);
     will-change: transform, box-shadow;
 }
 
@@ -368,21 +368,22 @@ select {
 .filter-controls {
     /* Flexbox por defecto */
     display: flex;
-    
+
     /* Espaciado moderno */
-    gap: 15px; 
+    gap: 15px;
     padding: 15px 20px;
-    
+
     /* Centrado en el flujo del documento */
     margin: 0 auto;
-    
+
     /* Ancho: Ocupa el 100% hasta un máximo, ignora el 70% fijo si la pantalla es más pequeña */
-    width: 95%; 
-    max-width: 1200px; 
-    
+    width: 95%;
+    max-width: 1200px;
+
     /* Alineación */
-    justify-content: flex-start; /* Alinea los elementos a la izquierda/inicio (Mejor que 'center' para UX) */
-    align-items: center; 
+    justify-content: flex-start;
+    /* Alinea los elementos a la izquierda/inicio (Mejor que 'center' para UX) */
+    align-items: center;
 }
 
 /* ================================================================= */
@@ -392,35 +393,38 @@ select {
 #product-search {
     /* Diseño Base */
     background-color: var(--card-bg, #222);
-    color: var(--text, #fff); /* Usamos var(--text) por si el tema define otro color */
-    padding: 12px 18px; 
-    border-radius: 25px; 
+    color: var(--text, #fff);
+    /* Usamos var(--text) por si el tema define otro color */
+    padding: 12px 18px;
+    border-radius: 25px;
     font-size: 1rem;
-    
+
     /* Borde / Sombra */
-    border: none; 
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15); 
-    
+    border: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+
     /* Transiciones para suavizar el cambio de estado */
     transition: box-shadow 0.2s ease-in-out, background-color 0.2s;
     outline: none;
 }
 
-#category-select{    /* Diseño Base */
+#category-select {
+    /* Diseño Base */
     background-color: var(--card-bg, #222);
-    color: var(--text, #fff); /* Usamos var(--text) por si el tema define otro color */
-    padding: 12px 18px; 
-    border-radius: 25px; 
+    color: var(--text, #fff);
+    /* Usamos var(--text) por si el tema define otro color */
+    padding: 12px 18px;
+    border-radius: 25px;
     font-size: 1rem;
-    
+
     /* Borde / Sombra */
-    border: none; 
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15); 
-    
+    border: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+
     /* Transiciones para suavizar el cambio de estado */
     transition: box-shadow 0.2s ease-in-out, background-color 0.2s;
     outline: none;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 /* ================================================================= */
@@ -429,31 +433,32 @@ select {
 
 #category-select {
     /* Escritorio: Ancho base fijo y no se encoge (220px) */
-    flex-basis: 220px; 
-    flex-shrink: 0; 
-    flex-grow: 0; 
+    flex-basis: 220px;
+    flex-shrink: 0;
+    flex-grow: 0;
 
     /* Eliminación de apariencia nativa */
     appearance: none;
     -webkit-appearance: none;
-    
+
     /* Icono de flecha SVG y posición */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z" fill="%2"/></svg>'); 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z" fill="%2"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 18px center; 
-    padding-right: 45px; /* Espacio para el icono */
+    background-position: right 18px center;
+    padding-right: 45px;
+    /* Espacio para el icono */
 }
 
 #product-search {
     /* Escritorio: Crece para ocupar el espacio restante */
-    flex-grow: 1; 
-    flex-shrink: 1; 
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 /* Estilo específico para el placeholder (compatible con CSS puro) */
 #product-search::placeholder {
     color: var(--text);
-    opacity: 0.7; 
+    opacity: 0.7;
 }
 
 /* ================================================================= */
@@ -468,15 +473,15 @@ select {
 
     #category-select {
         /* En móvil: Ocupa el 35% del ancho */
-        flex-basis: 35%; 
+        flex-basis: 35%;
         flex-grow: 0;
         flex-shrink: 0;
         font-size: 0.95rem;
-        
+
         /* Ajuste de padding y posición de icono para móvil */
-        padding: 10px 15px; 
+        padding: 10px 15px;
         background-position: right 10px center;
-        padding-right: 30px; 
+        padding-right: 30px;
         width: 10%;
     }
 
@@ -492,7 +497,94 @@ select {
 }
 
 /* ===============================
-   🦴 SKELETON LOADING - SIMULACIÓN EXACTA DE PRODUCT-CARD
+   BARRA DE PROGRESO DE PRODUCTOS
+================================= */
+
+.loading-progress {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: var(--bg-body, #222);
+    z-index: 2000;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 82px;
+    height: 82px;
+    display: grid;
+    place-items: center;
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--accent, #ff8000);
+    border-right-color: var(--accent, #ff8000);
+    border-radius: 50%;
+    animation: loading-spin 0.9s linear infinite;
+}
+
+.loading-progress-percent {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    animation: loading-counter-still 0.9s linear infinite;
+}
+
+.loading-progress-message {
+    margin: 15px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+@keyframes loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loading-counter-still {
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+.loading-progress-message::after {
+    content: "...";
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: loading-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes loading-dots {
+
+    0%,
+    20% {
+        width: 0;
+    }
+
+    40% {
+        width: 0.35em;
+    }
+
+    60% {
+        width: 0.7em;
+    }
+
+    80%,
+    100% {
+        width: 1.05em;
+    }
+}
+
+/* ===============================
+   Estilos heredados de skeleton (sin uso en el catálogo)
 ================================= */
 
 .skeleton-container {
@@ -815,11 +907,11 @@ select {
     transition: all 0.3s ease;
 
     /* 💡 OPTIMIZACIÓN CRÍTICA: La clave para la fluidez en móviles */
-    transform: translateZ(0); 
-    will-change: transform; 
+    transform: translateZ(0);
+    will-change: transform;
 
     /* ⚠️ Si el problema persiste, elimina cualquier 'backdrop-filter: blur(...);' */
-    /* backdrop-filter: none; */ 
+    /* backdrop-filter: none; */
 }
 
 
@@ -913,10 +1005,14 @@ select {
 
 .product-modal-content {
     background: #444;
-    width: 600px;          /* ancho fijo para PC */
-    max-width: 90%;        /* no exceda el 90% del viewport */
-    max-height: 90vh;      /* altura máxima para que no ocupe toda la pantalla */
-    border-radius: 12px;   /* esquinas redondeadas */
+    width: 600px;
+    /* ancho fijo para PC */
+    max-width: 90%;
+    /* no exceda el 90% del viewport */
+    max-height: 90vh;
+    /* altura máxima para que no ocupe toda la pantalla */
+    border-radius: 12px;
+    /* esquinas redondeadas */
     overflow-y: auto;
     position: relative;
 
@@ -1182,21 +1278,24 @@ select {
 
 
 .quantity-display {
-  width: 50px;
-  text-align: center;
-  font-size: 1.2rem;
-  border: none;
-  background: transparent;
-  color: #fff; /* o el color que uses */
-  outline: none;
-  /* Quitar flechas / líneas laterales */
-  -moz-appearance: textfield; /* Firefox */
+    width: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    border: none;
+    background: transparent;
+    color: #fff;
+    /* o el color que uses */
+    outline: none;
+    /* Quitar flechas / líneas laterales */
+    -moz-appearance: textfield;
+    /* Firefox */
 }
 
 .quantity-display::-webkit-outer-spin-button,
 .quantity-display::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0; /* Chrome, Safari, Edge */
+    -webkit-appearance: none;
+    margin: 0;
+    /* Chrome, Safari, Edge */
 }
 
 
@@ -2112,7 +2211,8 @@ select {
 /* Posicionamos el botón absolutamente dentro de .inputs-group para centrarlo
    verticalmente entre los dos inputs */
 .inputs-left {
-    flex: 0 0 56px; /* ancho fijo para el botón */
+    flex: 0 0 56px;
+    /* ancho fijo para el botón */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2264,46 +2364,47 @@ select {
 /* 🧭 Botón de ubicación */
 .locate-btn {
     /* 1. Establece RELATIVE: CLAVE para posicionar la alerta ABSOLUTA dentro */
-    position: relative; 
-    
+    position: relative;
+
     /* 2. Luego, anula el RELATIVE y fija la posición en la pantalla (comportamiento original) */
-    position: fixed; 
+    position: fixed;
 
     /* TUS ESTILOS ORIGINALES */
     right: 20px;
     z-index: 1000;
-    
+
     /* 💡 Aceleración GPU */
-    transform: translateZ(0); 
+    transform: translateZ(0);
     will-change: transform;
 
     /* Diseño */
     background: #1E88E5;
     border: none;
-    
+
     /* 🎯 CAMBIO CLAVE 1: Usamos un radio fijo para el modo 'pastilla' (expandido) */
     border-radius: 25px;
-    
+
     /* Permite que el botón crezca con el texto */
-    width: auto; 
+    width: auto;
     height: auto;
     /* Mantiene el tamaño mínimo del ícono (35px + 10px*2 padding = 55px) */
-    min-width: 30px; 
-    padding: 10px; 
+    min-width: 30px;
+    padding: 10px;
     gap: 10px;
     font-size: 26px;
     color: white;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    
+
     /* 🎯 CAMBIO CLAVE: Usa Flex para alinear imagen y texto */
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Alinea los elementos al inicio */
-    
+    justify-content: flex-start;
+    /* Alinea los elementos al inicio */
+
     /* Transiciona el ancho y el border-radius */
-    transition: all 0.7s ease; 
-    
+    transition: all 0.7s ease;
+
     /* Filtro por defecto (para escritorio) */
     backdrop-filter: blur(4px);
 }
@@ -2311,7 +2412,8 @@ select {
 /* 🎯 CAMBIO CLAVE 3: Cuando el botón contiene el texto oculto, se vuelve círculo */
 .locate-btn:has(> .hidden) {
     gap: 0px;
-    border-radius: 30px; /* Fuerza la forma circular */
+    border-radius: 30px;
+    /* Fuerza la forma circular */
     /* 🎯 CORRECCIÓN: Sobrescribe la transición de 'border-radius'. Dura 0s (es instantáneo) 
        y espera 0.7s (el tiempo de la animación de encogimiento). Esto asegura que el 
        redondeo se aplica SOLO cuando el botón ya está encogido, eliminando el óvalo intermedio. */
@@ -2330,35 +2432,35 @@ select {
 /* 📢 ESTILOS DE LA ALERTA TEMPORAL CON ANIMACIÓN CLIP-PATH (PAC-MAN) */
 .location-alert-text {
     /* ❌ ELIMINAMOS POSICIONAMIENTO ABSOLUTO Y RIGHT FIJO (es flex item) */
-    position: static; 
-    right: auto; 
+    position: static;
+    right: auto;
     top: auto;
-    transform: none; 
-    
+    transform: none;
+
     /* Apariencia */
-    padding: 2px 0; 
-    background-color: transparent; 
+    padding: 2px 0;
+    background-color: transparent;
     color: white;
     font-size: 14px;
     font-weight: bold;
-    border-radius: 0; 
-    box-shadow: none; 
+    border-radius: 0;
+    box-shadow: none;
     white-space: nowrap;
-    z-index: 999; 
-    
+    z-index: 999;
+
     /* Establecemos un ancho máximo para poder hacer la transición a 0 */
-    max-width: 300px; 
+    max-width: 300px;
     overflow: hidden;
-    
+
     /* CONTROL DE ANIMACIÓN (CLAVE) */
-    
+
     /* 1. Estado inicial: visible (clip-path cubre el 100% del elemento) */
-    clip-path: inset(0% 0% 0% 0%); 
-    
+    clip-path: inset(0% 0% 0% 0%);
+
     /* 2. Transición: Animamos clip-path, opacidad y el ancho máximo (para encoger el botón) */
-    transition: clip-path 0.7s ease-in-out, opacity 0.7s ease-in-out, max-width 0.7s ease-in-out; 
-    
-    pointer-events: none; 
+    transition: clip-path 0.7s ease-in-out, opacity 0.7s ease-in-out, max-width 0.7s ease-in-out;
+
+    pointer-events: none;
 }
 
 /* Clase para ocultar (usada por JavaScript) */
@@ -2366,15 +2468,16 @@ select {
     /* 🎯 Efecto de Pac-Man: Se cierra el área visible de izquierda a derecha (hacia el botón) */
     /* clip-path: inset(Top Right Bottom Left) */
     /* Cerramos el borde derecho al 100% para simular que el botón lo oculta */
-    clip-path: inset(0% 0% 0% 100%); 
-    
+    clip-path: inset(0% 0% 0% 100%);
+
     /* Reducimos la opacidad para un cierre suave */
     opacity: 0;
-    
+
     /* 🎯 CAMBIO CLAVE para forzar el encogimiento del botón padre y que vuelva a ser redondo */
-    max-width: 0; 
+    max-width: 0;
     /* Hacemos que la imagen se pegue al borde derecho quitando su margen */
 }
+
 /* === OPTIMIZACIÓN MÓVIL (< 600px) === */
 @media (max-width: 600px) {
     .locate-btn {
@@ -2396,18 +2499,21 @@ select {
 
 /* 1. Definición de la animación pulsante */
 @keyframes pulse-route {
-  0% {
-    /* Estado inicial: Sombra transparente */
-    filter: drop-shadow(0 0 0 rgba(255, 255, 0, 0.0)); 
-  }
-  50% {
-    /* Estado máximo: Sombra brillante (luz neón) */
-    filter: drop-shadow(0 0 10px #1E88E5); /* Amarillo brillante */
-  }
-  100% {
-    /* Vuelve al estado inicial */
-    filter: drop-shadow(0 0 0 rgba(255, 255, 0, 0.0));
-  }
+    0% {
+        /* Estado inicial: Sombra transparente */
+        filter: drop-shadow(0 0 0 rgba(255, 255, 0, 0.0));
+    }
+
+    50% {
+        /* Estado máximo: Sombra brillante (luz neón) */
+        filter: drop-shadow(0 0 10px #1E88E5);
+        /* Amarillo brillante */
+    }
+
+    100% {
+        /* Vuelve al estado inicial */
+        filter: drop-shadow(0 0 0 rgba(255, 255, 0, 0.0));
+    }
 }
 
 /* 2. Clase que aplica la animación a la línea de la ruta (SVG) */
@@ -2415,7 +2521,8 @@ select {
 .route-pulsing .leaflet-routing-alt-line,
 .route-pulsing path.leaflet-interactive {
     /* Aplica la animación */
-    animation: pulse-route 1.5s infinite ease-in-out; /* 1.5s de duración, se repite */
+    animation: pulse-route 1.5s infinite ease-in-out;
+    /* 1.5s de duración, se repite */
 }
 
 .panel .linea {
