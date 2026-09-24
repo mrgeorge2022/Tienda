@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title></title>
   <link rel="icon" type="image/png" href="">
   <link rel="stylesheet" href="style.css">
@@ -12,7 +13,7 @@
 
 <body>
   <!-- HEADER + CATEGORÍAS combinados -->
- <header class="header-wrapper">
+  <header class="header-wrapper">
     <div class="header">
       <div class="header-left">
         <a href="index.html">
@@ -27,118 +28,23 @@
     </div>
 
 
-  <!-- 🔥 Botones generados dinámicamente -->
-<div class="filter-controls">
-    <select id="category-select" aria-label="Seleccionar Categoría"></select>
-    <input type="text" id="product-search" placeholder="Buscar..." aria-label="Buscar producto">
-  </div>
+    <!-- 🔥 Botones generados dinámicamente -->
+    <div class="filter-controls">
+      <select id="category-select" aria-label="Seleccionar Categoría"></select>
+      <input type="text" id="product-search" placeholder="Buscar..." aria-label="Buscar producto">
+    </div>
   </header>
 
 
 
 
 
-  <!-- 🦴 Skeletal Loading -->
-  <div class="skeleton-container" id="skeleton-loading" style="display: none;">
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
+  <!-- Loading de productos -->
+  <div class="loading-progress" id="loading-progress" role="status" aria-live="polite">
+    <div class="loading-spinner" aria-hidden="true">
+      <strong class="loading-progress-percent" id="loading-progress-percent">0%</strong>
     </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-card">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-info">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-price"></div>
-        <div class="skeleton-line skeleton-description"></div>
-        <div class="skeleton-line skeleton-description"></div>
-      </div>
-    </div>
+    <p class="loading-progress-message" id="loading-progress-text">Cargando productos</p>
   </div>
 
 
@@ -147,11 +53,11 @@
     Error al cargar los productos. Por favor, actualiza la página.
   </div>
   <!-- Menu Sections -->
-<main class="menu-sections"> 
+  <main class="menu-sections">
     <section id="main-products-grid" class="product-grid-container">
-        </section>
+    </section>
 
-    </main>
+  </main>
 
 
 
@@ -178,14 +84,8 @@
         <div class="quantity-section">
           <div class="quantity-control">
             <button class="quantity-btn-modal" onclick="decreaseQuantity()" id="decrease-btn">-</button>
-<input
-  type="number"
-  class="quantity-display"
-  id="modal-quantity"
-  min="1"
-  value="1"
-  oninput="handleManualQuantityInput(event)"
->
+            <input type="number" class="quantity-display" id="modal-quantity" min="1" value="1"
+              oninput="handleManualQuantityInput(event)">
             <button class="quantity-btn-modal" onclick="increaseQuantity()">+</button>
           </div>
         </div>
@@ -316,7 +216,8 @@
         <input type="text" id="customer-name" placeholder="👤 Nombre completo" required>
         <input type="tel" id="customer-phone" placeholder="📞 Número de teléfono" required>
         <div id="mesa-field" style="display:none;">
-          <input type="text" id="customer-mesa" placeholder="🍽️ Número de mesa" inputmode="numeric" pattern="[0-9]*" required>
+          <input type="text" id="customer-mesa" placeholder="🍽️ Número de mesa" inputmode="numeric" pattern="[0-9]*"
+            required>
         </div>
 
         <!-- ⚠️ Nuevo texto de aviso -->
@@ -344,7 +245,7 @@
       <a href="#" target="_blank" class="social-link">
         <img src="iconos/redes/whatsapp.png" alt="WhatsApp">
       </a>
-     <a href="#" target="_blank" class="social-link">
+      <a href="#" target="_blank" class="social-link">
         <img src="iconos/redes/instagram.png" alt="Instagram">
       </a>
       <a href="#" target="_blank" class="social-link">
@@ -356,9 +257,9 @@
       <img src="" alt="QR">
     </div>
 
-  <div class="footer-branches">
-    <p></p>
-  </div>
+    <div class="footer-branches">
+      <p></p>
+    </div>
 
 
     <div class="footer-policies">
@@ -366,57 +267,63 @@
       <a href="privacity.html" target="_blank">Políticas de privacidad</a>
     </div>
 
-  <div class="footer-content">
-    <div>
-      <img src="" alt="Logo" class="footer-logo">
-    </div>
+    <div class="footer-content">
+      <div>
+        <img src="" alt="Logo" class="footer-logo">
+      </div>
+
 
   </footer>
-  
 
-<div id="tienda-fix-container" style="position: fixed; left: 0; bottom: 50px; z-index: 999999; font-family: sans-serif;">
-  
-  <div id="tienda-open-btn" style="background: linear-gradient(90deg, #25D366, #128c7e); color: white; width: 28px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 0 15px 15px 0; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.15); font-size: 14px; user-select: none; -webkit-tap-highlight-color: transparent;">
-    <span style="margin-left: -2px;">❯</span>
-  </div>
-  
-  <div id="tienda-info-panel" style="position: absolute; bottom: 0; left: -320px; width: 260px; background: white; padding: 22px 18px; border-radius: 0 20px 20px 0; box-shadow: 10px 0 30px rgba(0,0,0,0.15); transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); border: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 12px;">
-    
-    <span id="tienda-close-x" style="position: absolute; top: 8px; right: 12px; cursor: pointer; font-size: 24px; color: #d1d1d1; line-height: 1; font-weight: bold; padding: 5px; user-select: none;">&times;</span>
 
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <div style="background: #25D366; width: 8px; height: 8px; border-radius: 50%;"></div>
-        <h4 style="margin: 0; color: #1a1a1a; font-size: 15px; font-weight: 700;">¿Quieres una tienda así?</h4>
+  <div id="tienda-fix-container"
+    style="position: fixed; left: 0; bottom: 50px; z-index: 999999; font-family: sans-serif;">
+
+    <div id="tienda-open-btn"
+      style="background: linear-gradient(90deg, #25D366, #128c7e); color: white; width: 28px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 0 15px 15px 0; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.15); font-size: 14px; user-select: none; -webkit-tap-highlight-color: transparent;">
+      <span style="margin-left: -2px;">❯</span>
     </div>
 
-    <p style="margin: 0; color: #777; font-size: 13px; line-height: 1.4;">Crea tu propio catálogo digital y recibe pedidos directo al WhatsApp.</p>
-    
-    <a href="https://wa.me/573024345404?text=Hola,%20quiero%20crear%20mi%20tienda" target="_blank" style="background: #25D366; color: white; text-decoration: none; padding: 12px; text-align: center; border-radius: 12px; font-weight: bold; font-size: 13px; display: block; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);">
-      ¡La quiero ahora!
-    </a>
+    <div id="tienda-info-panel"
+      style="position: absolute; bottom: 0; left: -320px; width: 260px; background: white; padding: 22px 18px; border-radius: 0 20px 20px 0; box-shadow: 10px 0 30px rgba(0,0,0,0.15); transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); border: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 12px;">
+
+      <span id="tienda-close-x"
+        style="position: absolute; top: 8px; right: 12px; cursor: pointer; font-size: 24px; color: #d1d1d1; line-height: 1; font-weight: bold; padding: 5px; user-select: none;">&times;</span>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="background: #25D366; width: 8px; height: 8px; border-radius: 50%;"></div>
+        <h4 style="margin: 0; color: #1a1a1a; font-size: 15px; font-weight: 700;">¿Quieres una tienda así?</h4>
+      </div>
+
+      <p style="margin: 0; color: #777; font-size: 13px; line-height: 1.4;">Crea tu propio catálogo digital y recibe
+        pedidos directo al WhatsApp.</p>
+
+      <a href="https://wa.me/573024345404?text=Hola,%20quiero%20crear%20mi%20tienda" target="_blank"
+        style="background: #25D366; color: white; text-decoration: none; padding: 12px; text-align: center; border-radius: 12px; font-weight: bold; font-size: 13px; display: block; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);">
+        ¡La quiero ahora!
+      </a>
+    </div>
   </div>
-</div>
 
-<script>
-  (function() {
-    const openBtn = document.getElementById('tienda-open-btn');
-    const panel = document.getElementById('tienda-info-panel');
-    const closeX = document.getElementById('tienda-close-x');
+  <script>
+    (function () {
+      const openBtn = document.getElementById('tienda-open-btn');
+      const panel = document.getElementById('tienda-info-panel');
+      const closeX = document.getElementById('tienda-close-x');
 
-    openBtn.addEventListener('click', function() {
-      panel.style.left = '0px';
-      openBtn.style.display = 'none'; // Desaparece al abrir
-    });
+      openBtn.addEventListener('click', function () {
+        panel.style.left = '0px';
+        openBtn.style.display = 'none'; // Desaparece al abrir
+      });
 
-    closeX.addEventListener('click', function() {
-      panel.style.left = '-320px';
-      setTimeout(() => {
-        openBtn.style.display = 'flex'; // Reaparece al cerrar
-      }, 400); 
-    });
-  })();
-</script>
-
+      closeX.addEventListener('click', function () {
+        panel.style.left = '-320px';
+        setTimeout(() => {
+          openBtn.style.display = 'flex'; // Reaparece al cerrar
+        }, 400);
+      });
+    })();
+  </script>
 
 
   <script src="config-loader.js"></script>
